@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA - Regimental PDF Archives</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Pro Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bg-olive-military { background-color: #2d3f29; }
+        .bg-maroon-military { background-color: #5c1324; }
+        [data-lang="en"] { display: none; }
+        /* Custom scrollbar for better look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between" data-current-lang="hi">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-14 rounded-lg overflow-hidden border border-amber-500 shadow-sm bg-white flex items-center justify-center shrink-0">
+                    <img src="gurslogo.jpg" alt="GEWA Logo" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-slate-900 tracking-tight leading-none">GEWA Media Gallery</h1>
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-1">Regd No. S/3924/SDM/NW/2023 Distt. Delhi (03-07-2023)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLanguage()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-language text-emerald-800 text-sm"></i>
+                    <span id="langBtnText">Read in English</span>
+                </button>
+                <a href="index.html" class="bg-olive-military hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-lang="hi">मुख्य पेज पर जाएँ</span><span data-lang="en">Back to Home</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN GALLERY AREA -->
+    <main class="max-w-6xl mx-auto px-4 py-12 w-full flex-grow">
+        
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-maroon-military text-xs font-extrabold uppercase tracking-widest block mb-1">2 GUARDS (1 GRENADIERS)</span>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tight" data-lang="hi">ऐतिहासिक दस्तावेज़ दीर्घा</h2>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tight" data-lang="en">Historical Document Gallery</h2>
+            <div class="h-1 w-24 bg-maroon-military mx-auto mt-4 rounded"></div>
+            <p class="text-sm text-slate-500 mt-4" data-lang="hi">पलटन के कमांडिंग ऑफिसर्स, सूबेदार मेजर्स और शूरवीरों के अभिलेखागार। आप नीचे सीधे PDF पढ़ सकते हैं।</p>
+            <p class="text-sm text-slate-500 mt-4" data-lang="en">Archives of the Regiment's Commanding Officers, Subedar Majors, and Heroes. You can read the PDFs directly below.</p>
+        </div>
+
+        <div class="space-y-16">
+
+            <!-- PDF 1: COMMANDING OFFICERS -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 md:p-8 shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-olive-military text-white flex items-center justify-center text-2xl shadow-inner shrink-0">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-2xl text-slate-900">Commanding Officers (1947 - Present)</h3>
+                            <p class="text-xs text-slate-500 mt-1 font-bold">2 Guards (1 Grenadiers)</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Embedded PDF Viewer (Vertical Scroll) -->
+                <div class="w-full h-[600px] md:h-[800px] rounded-xl overflow-hidden border-2 border-slate-200 bg-slate-100 relative">
+                    <iframe src="co.pdf#toolbar=0" class="w-full h-full border-0" title="Commanding Officers">
+                        <p>Your browser does not support PDFs. <a href="co.pdf">Download the PDF</a>.</p>
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- PDF 2: SUBEDAR MAJORS -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 md:p-8 shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-600 text-white flex items-center justify-center text-2xl shadow-inner shrink-0">
+                            <i class="fa-solid fa-id-badge"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-2xl text-slate-900">Subedar Majors (1948 - Present)</h3>
+                            <p class="text-xs text-slate-500 mt-1 font-bold">2 Guards (1 Grenadiers)</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Embedded PDF Viewer (Vertical Scroll) -->
+                <div class="w-full h-[600px] md:h-[800px] rounded-xl overflow-hidden border-2 border-slate-200 bg-slate-100 relative">
+                    <iframe src="sm.pdf#toolbar=0" class="w-full h-full border-0" title="Subedar Majors">
+                        <p>Your browser does not support PDFs. <a href="sm.pdf">Download the PDF</a>.</p>
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- PDF 3: GALLANTRY AWARDEES -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-4 md:p-8 shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-maroon-military text-white flex items-center justify-center text-2xl shadow-inner shrink-0">
+                            <i class="fa-solid fa-medal"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-2xl text-slate-900">Gallantry Awardees (Our Heroes)</h3>
+                            <p class="text-xs text-slate-500 mt-1 font-bold">Vir Chakra, Shaurya Chakra, Sena Medal</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Embedded PDF Viewer (Vertical Scroll) -->
+                <div class="w-full h-[600px] md:h-[800px] rounded-xl overflow-hidden border-2 border-slate-200 bg-slate-100 relative">
+                    <iframe src="hero.pdf#toolbar=0" class="w-full h-full border-0" title="Gallantry Awardees">
+                        <p>Your browser does not support PDFs. <a href="hero.pdf">Download the PDF</a>.</p>
+                    </iframe>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-500 text-center py-6 border-t border-slate-900 text-[11px] font-medium tracking-wide mt-auto">
+        <p>&copy; 2026 Gurais Ex-Servicemen Welfare Association (GEWA). All Rights Reserved.</p>
+    </footer>
+
+    <!-- TRANSLATION SCRIPT -->
+    <script>
+        function toggleLanguage() {
+            const body = document.body;
+            const currentLang = body.getAttribute('data-current-lang');
+            const langBtnText = document.getElementById('langBtnText');
+            if (currentLang === 'hi') {
+                body.setAttribute('data-current-lang', 'en');
+                langBtnText.innerText = 'हिंदी में पढ़ें';
+                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'block');
+            } else {
+                body.setAttribute('data-current-lang', 'hi');
+                langBtnText.innerText = 'Read in English';
+                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'block');
+            }
+        }
+    </script>
+</body>
+</html>
