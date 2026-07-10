@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA - Welfare Donation & Support Desk</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Pro Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bg-olive-military { background-color: #2d3f29; }
+        .bg-maroon-military { background-color: #5c1324; }
+        [data-lang="en"] { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between" data-current-lang="hi">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-14 rounded-lg overflow-hidden border border-amber-500 shadow-sm bg-white flex items-center justify-center shrink-0">
+                    <img src="gurslogo.jpg" alt="GEWA Logo" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-slate-900 tracking-tight leading-none">GEWA Welfare Desk</h1>
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-1">Regd No. S/3924/SDM/NW/2023 Distt. Delhi (03-07-2023)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLanguage()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-language text-emerald-800 text-sm"></i>
+                    <span id="langBtnText">Read in English</span>
+                </button>
+                <a href="index.html" class="bg-olive-military hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-lang="hi">मुख्य पेज पर जाएँ</span><span data-lang="en">Back to Home</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN PORTAL AREA -->
+    <main class="max-w-6xl mx-auto px-4 py-12 w-full flex-grow">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-maroon-military text-xs font-extrabold uppercase tracking-widest block mb-1">Fiscal Solidarity Matrix</span>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight" data-lang="hi">सैनिक कल्याण कोष एवं सहयोग झलक</h2>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight" data-lang="en">Welfare Funds & Supported Activities</h2>
+            <div class="h-1 w-12 bg-maroon-military mx-auto mt-4 rounded"></div>
+            <p class="text-sm text-slate-500 mt-4" data-lang="hi">यहाँ उन प्रमुख कल्याणकारी गतिविधियों और परिवारों की विस्तृत झलक है, जिन्हें संस्था द्वारा सफलतापूर्वक सहयोग राशि (Welfare) प्रदान की गई है।</p>
+            <p class="text-sm text-slate-500 mt-4" data-lang="en">Here is a detailed visual glimpse of the major welfare activities and families successfully supported by the association's relief funds.</p>
+        </div>
+
+        <div class="space-y-16">
+
+            <!-- SECTION 1 -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+                <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl shadow-inner shrink-0"><i class="fa-solid fa-heart"></i></div>
+                        <div>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="hi">1. सामान्य सैनिक कन्यादान गैलरी</h3>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="en">1. General Kanyadan Gallery</h3>
+                        </div>
+                    </div>
+                    <div class="bg-emerald-700 text-white font-mono font-bold text-xs px-3 py-1.5 rounded-lg shrink-0 text-center">₹11,000 Grant</div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="gureswedding1.jpeg" alt="Wedding Support 1" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="gureswedding2.jpeg" alt="Wedding Support 2" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="gureswedding3.jpeg" alt="Wedding Support 3" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="gureswedding4.jpeg" alt="Wedding Support 4" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="gureswedding5.jpeg" alt="Wedding Support 5" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="gureswedding6.jpeg" alt="Wedding Support 6" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="gureswedding7.jpeg" alt="Wedding Support 7" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                </div>
+            </div>
+
+            <!-- SECTION 2 -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-maroon-military text-amber-400 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-md">Honour Badge</div>
+                <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-red-50 text-maroon-military flex items-center justify-center text-2xl shadow-inner shrink-0"><i class="fa-solid fa-ribbon"></i></div>
+                        <div>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="hi">2. वीर नारी विशेष कन्यादान गैलरी</h3>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="en">2. Martyr Daughter Kanyadan Gallery</h3>
+                        </div>
+                    </div>
+                    <div class="bg-maroon-military text-white font-mono font-bold text-xs px-3 py-1.5 rounded-lg shrink-0 text-center">₹21,000 Tribute</div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="Wedding Event.jpeg" alt="Veer Nari Wedding" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                </div>
+            </div>
+
+            <!-- SECTION 3 -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+                <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-red-100 text-red-700 flex items-center justify-center text-2xl shadow-inner shrink-0"><i class="fa-solid fa-shield-heart"></i></div>
+                        <div>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="hi">3. शहीद परिवार आपातकालीन सहायता गैलरी</h3>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="en">3. Martyr Family Support Gallery</h3>
+                        </div>
+                    </div>
+                    <div class="bg-red-600 text-white font-mono font-bold text-xs px-3 py-1.5 rounded-lg shrink-0 text-center">₹50,000 Shield</div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="martare_3.jpg" alt="Martyr Family Support 1" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="martare1_3.jpg" alt="Martyr Family Support 2" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                </div>
+            </div>
+
+            <!-- SECTION 4 -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+                <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center text-2xl shadow-inner shrink-0"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="hi">4. मेधावी छात्र छात्रवृत्ति कोष गैलरी</h3>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="en">4. Scholarship Fund Gallery</h3>
+                        </div>
+                    </div>
+                    <div class="bg-blue-700 text-white font-mono font-bold text-xs px-3 py-1.5 rounded-lg shrink-0 text-center">₹11,000 Award</div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="Wedding Wishing Letter.jpeg" alt="Scholarship Award" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                </div>
+            </div>
+
+            <!-- SECTION 5 -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+                <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center text-2xl shadow-inner shrink-0"><i class="fa-solid fa-users-line"></i></div>
+                        <div>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="hi">5. सांस्कृतिक एवं सामाजिक कार्यक्रम गैलरी</h3>
+                            <h3 class="font-black text-xl text-slate-900" data-lang="en">5. Cultural Activities Gallery</h3>
+                        </div>
+                    </div>
+                    <div class="bg-purple-700 text-white font-mono font-bold text-xs px-3 py-1.5 rounded-lg shrink-0 text-center">Community Event</div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="holi1.jpg" alt="Cultural Event Holi 1" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="holi2.jpg" alt="Cultural Event Holi 2" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="milan.jpg" alt="Milan Samaroh" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                    <img src="raising.jpg" alt="Raising Day Event" class="w-full h-40 object-cover rounded-xl border border-slate-200 bg-slate-100 shadow-sm hover:scale-105 transition cursor-pointer">
+                </div>
+            </div>
+
+        </div> <!-- End of Vertical Wrapper -->
+
+        <!-- BANK ACCOUNT & CHEQUE UPLOAD SECTION -->
+        <div class="max-w-4xl mx-auto bg-white rounded-3xl p-6 border border-slate-200 shadow-xl grid md:grid-cols-12 gap-8 items-center mt-20">
+            <div class="md:col-span-5 flex flex-col items-center justify-center text-center space-y-4 border-b md:border-b-0 md:border-r border-slate-100 pb-6 md:pb-0">
+                <div class="w-40 h-40 border border-slate-200 rounded-xl p-1 bg-white shadow-sm">
+                    <img src="Gures QR.jpeg" alt="Welfare Bank QR Code" class="w-full h-full object-contain">
+                </div>
+                <span class="text-[11px] font-bold uppercase text-emerald-700 font-mono tracking-wider bg-emerald-50 px-3 py-1 rounded-full">Official Scan QR</span>
+                
+                <div class="text-xs text-slate-600 font-medium space-y-1.5 font-mono text-left w-full px-4">
+                    <h4 class="font-sans font-black text-slate-900 text-sm mb-2 text-center" data-lang="hi">🛡️ संघ राजकोष बैंक विवरण</h4>
+                    <h4 class="font-sans font-black text-slate-900 text-sm mb-2 text-center" data-lang="en">🛡️ Treasury Bank Credentials</h4>
+                    <div class="border-t border-slate-100 pt-2"><strong>A/C Name:</strong> Gurais Ex-Servicemen Welfare Association</div>
+                    <div><strong>Bank:</strong> AXIS BANK</div>
+                    <div><strong>A/C Number:</strong> <span class="text-emerald-700 font-bold text-sm">50100641151631</span></div>
+                    <div><strong>IFSC:</strong> <span class="text-emerald-700 font-bold">HDFC0004279</span></div>
+                </div>
+            </div>
+
+            <div class="md:col-span-7 w-full">
+                <h4 class="font-extrabold text-sm text-slate-900 uppercase mb-2 flex items-center gap-1.5" data-lang="hi">
+                    <i class="fa-solid fa-hand-holding-dollar text-emerald-800"></i> संस्था कोष में सहयोग करें (Donate)
+                </h4>
+                <h4 class="font-extrabold text-sm text-slate-900 uppercase mb-2 flex items-center gap-1.5" data-lang="en">
+                    <i class="fa-solid fa-hand-holding-dollar text-emerald-800"></i> Contribute to Welfare Fund
+                </h4>
+                <p class="text-xs text-slate-500 mb-6 leading-relaxed font-light" data-lang="hi">
+                    यदि आप संस्था के कल्याणकारी कार्यों में अपना आर्थिक योगदान देना चाहते हैं, तो बैंक में ट्रांसफर करने के बाद अपनी रसीद या चेक की फोटो यहाँ अपलोड करके कार्यकारिणी को सूचित करें।
+                </p>
+                <p class="text-xs text-slate-500 mb-6 leading-relaxed font-light" data-lang="en">
+                    If you wish to financially support the association's welfare activities, please upload your deposit receipt or cheque photo here after making the transfer to notify the command headquarters.
+                </p>
+
+                <form id="receiptForm" name="gewa-receipts-v1" method="POST" data-netlify="true" enctype="multipart/form-data" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Depositor Name (जमाकर्ता का नाम)</label>
+                        <input type="text" id="depositorName" name="depositor_name" class="w-full border border-slate-200 bg-slate-50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800" required>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Upload Photo (रसीद की फोटो चुनें)</label>
+                        <div class="border-2 border-dashed border-slate-300 rounded-lg p-5 bg-slate-50 text-center cursor-pointer hover:border-emerald-800 transition relative">
+                            <input type="file" id="chequePhoto" name="cheque_or_receipt" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*,application/pdf" required>
+                            <i class="fa-solid fa-cloud-arrow-up text-emerald-700 text-2xl mb-2"></i>
+                            <p class="text-xs font-bold text-slate-600" id="file-name-preview">Click to browse or Drag Image</p>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-3.5 rounded-xl shadow transition text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 mt-2">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Notify Headquarters via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-500 text-center py-6 border-t border-slate-900 text-[11px] font-medium tracking-wide mt-auto">
+        <p>&copy; 2026 Gurais Ex-Servicemen Welfare Association (GEWA). All Rights Reserved.</p>
+    </footer>
+
+    <!-- TRANSLATION SCRIPT -->
+    <script>
+        function toggleLanguage() {
+            const body = document.body;
+            const currentLang = body.getAttribute('data-current-lang');
+            const langBtnText = document.getElementById('langBtnText');
+            if (currentLang === 'hi') {
+                body.setAttribute('data-current-lang', 'en');
+                langBtnText.innerText = 'हिंदी में पढ़ें';
+                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'block');
+            } else {
+                body.setAttribute('data-current-lang', 'hi');
+                langBtnText.innerText = 'Read in English';
+                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'block');
+            }
+        }
+
+        // Receipt Upload Visual Update
+        const chequePhotoInput = document.getElementById('chequePhoto');
+        if(chequePhotoInput) {
+            chequePhotoInput.addEventListener('change', function(e) {
+                const fileName = e.target.files[0] ? e.target.files[0].name : "Click to browse or Drag Image";
+                document.getElementById('file-name-preview').innerText = "Selected: " + fileName;
+                document.getElementById('file-name-preview').classList.add('text-emerald-700');
+            });
+        }
+
+        // Form Submit to WhatsApp
+        const receiptForm = document.getElementById('receiptForm');
+        if(receiptForm) {
+            receiptForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const dName = document.getElementById('depositorName').value;
+                const msg = `*GEWA BANK DEPOSIT NOTIFICATION*\n----------------------------------\n• *Depositor Name*: ${dName}\n\n*Note*: I have uploaded the Cheque/Receipt photo to the website portal. Please verify account credit.`;
+                
+                const formContainer = event.target;
+                const formData = new FormData(formContainer);
+                
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString()
+                })
+                .then(() => window.open(`https://wa.me/918287744626?text=${encodeURIComponent(msg)}`, '_blank'))
+                .catch((err) => console.error("Error:", err));
+            });
+        }
+    </script>
+</body>
+</html>

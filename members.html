@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA - Executive Members</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Pro Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bg-olive-military { background-color: #2d3f29; }
+        .bg-maroon-military { background-color: #5c1324; }
+        [data-lang="en"] { display: none; }
+        .member-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between" data-current-lang="hi">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-14 rounded-lg overflow-hidden border border-amber-500 shadow-sm bg-white flex items-center justify-center shrink-0">
+                    <img src="gurslogo.jpg" alt="GEWA Logo" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-slate-900 tracking-tight leading-none">GEWA Executive Body</h1>
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-1">Regd No. S/3924/SDM/NW/2023 Distt. Delhi (03-07-2023)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLanguage()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-language text-emerald-800 text-sm"></i>
+                    <span id="langBtnText">Read in English</span>
+                </button>
+                <a href="index.html" class="bg-olive-military hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-lang="hi">मुख्य पेज पर जाएँ</span><span data-lang="en">Back to Home</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN MEMBERS AREA -->
+    <main class="max-w-6xl mx-auto px-4 py-12 w-full flex-grow">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-olive-military text-xs font-extrabold uppercase tracking-widest block mb-1">Governing Body</span>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tight" data-lang="hi">संस्था के मुख्य पदाधिकारी</h2>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tight" data-lang="en">Executive Committee Members</h2>
+            <div class="h-1 w-24 bg-olive-military mx-auto mt-4 rounded"></div>
+        </div>
+
+        <!-- TOP LEADERSHIP -->
+        <div class="flex justify-center mb-12">
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 w-full max-w-sm text-center">
+                <div class="bg-slate-100 p-6 flex justify-center border-b border-slate-200">
+                    <img src="m1.jpg" alt="President" class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md bg-slate-300">
+                </div>
+                <div class="p-6">
+                    <div class="inline-block bg-maroon-military text-white text-[10px] font-black uppercase px-3 py-1 rounded-full mb-3" data-lang="hi">अध्यक्ष (President)</div>
+                    <div class="inline-block bg-maroon-military text-white text-[10px] font-black uppercase px-3 py-1 rounded-full mb-3" data-lang="en">President</div>
+                    <h3 class="text-xl font-extrabold text-slate-900">Lt. Col. (Retd) Shri Phool Kumar Mor</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- MEMBERS GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            
+            <!-- 2 -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m2.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Vice President</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hony. Sub Maj (Retd.) Ramniwas</h3></div>
+            </div>
+
+            <!-- 3 -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m3.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Gen-Secretary</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hony. Sub Maj (Retd.) Shri Jagvir Singh</h3></div>
+            </div>
+
+            <!-- 4 -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m4.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Joint Secretary</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Sub Ramesh Singh</h3></div>
+            </div>
+
+            <!-- 5 (Updated) -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m5.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Treasurer</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Smt. Pushpa W/O Hav (Retd.) Satish Kumar</h3></div>
+            </div>
+
+            <!-- 6 -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m6.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Joint-Treasurer</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav. (Retd.) Sunil Kumar</h3></div>
+            </div>
+
+            <!-- 7 (Updated) -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m7.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Founder/Advisor</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Smt. Ritu W/O Hav (Retd.) Rajbir Malik</h3></div>
+            </div>
+
+             <!-- 8 -->
+             <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m8.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Advisor</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hony. Capt (Retd.) Parma Ram Saran</h3></div>
+            </div>
+
+            <!-- 9 -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m9.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe-Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav (Retd.) Parmod Kumar</h3></div>
+            </div>
+
+            <!-- 10 -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m10.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe-Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav (Retd) Balwan</h3></div>
+            </div>
+
+            <!-- 11 -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m11.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe. Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav. (Retd) Parveen Kumar</h3></div>
+            </div>
+
+            <!-- 12 (Deep Chand) -->
+            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
+                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m12.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
+                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe. Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav (Retd.) Deep Chand</h3></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-500 text-center py-6 border-t border-slate-900 text-[11px] font-medium tracking-wide mt-auto">
+        <p>&copy; 2026 Gurais Ex-Servicemen Welfare Association (GEWA). All Rights Reserved.</p>
+    </footer>
+
+    <!-- TRANSLATION SCRIPT -->
+    <script>
+        function toggleLanguage() {
+            const body = document.body;
+            const currentLang = body.getAttribute('data-current-lang');
+            const langBtnText = document.getElementById('langBtnText');
+            if (currentLang === 'hi') {
+                body.setAttribute('data-current-lang', 'en');
+                langBtnText.innerText = 'हिंदी में पढ़ें';
+                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'block');
+            } else {
+                body.setAttribute('data-current-lang', 'hi');
+                langBtnText.innerText = 'Read in English';
+                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'block');
+            }
+        }
+    </script>
+</body>
+</html>
