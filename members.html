@@ -1,172 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEWA - Executive Members</title>
-    <!-- Tailwind CSS Engine -->
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA - Members & Leadership Pledge</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome Pro Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Premium Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .bg-olive-military { background-color: #2d3f29; }
-        .bg-maroon-military { background-color: #5c1324; }
-        [data-lang="en"] { display: none; }
-        .member-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between" data-current-lang="hi">
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-14 rounded-lg overflow-hidden border border-amber-500 shadow-sm bg-white flex items-center justify-center shrink-0">
-                    <img src="gurslogo.jpg" alt="GEWA Logo" class="w-full h-full object-cover">
-                </div>
-                <div>
-                    <h1 class="text-lg font-extrabold text-slate-900 tracking-tight leading-none">GEWA Executive Body</h1>
-                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-1">Regd No. S/3924/SDM/NW/2023 Distt. Delhi (03-07-2023)</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <button onclick="toggleLanguage()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-sm">
-                    <i class="fa-solid fa-language text-emerald-800 text-sm"></i>
-                    <span id="langBtnText">Read in English</span>
-                </button>
-                <a href="index.html" class="bg-olive-military hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> <span data-lang="hi">मुख्य पेज पर जाएँ</span><span data-lang="en">Back to Home</span>
-                </a>
-            </div>
+    <!-- FIXED NAVIGATION MENU -->
+    <nav class="bg-white border-b border-slate-200 p-4 fixed w-full top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto flex justify-center gap-4 md:gap-8 font-bold text-[11px] md:text-xs uppercase text-slate-800 tracking-wider flex-wrap">
+            <a href="index.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-house-flag"></i> Main / History</a>
+            <a href="members.html" class="text-maroon-700 border-b-2 border-maroon-700 pb-1"><i class="fa-solid fa-users"></i> Members & Laws</a>
+            <a href="donation.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-hand-holding-heart"></i> Welfare Support</a>
+            <a href="gallery.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-images"></i> Photo Gallery</a>
         </div>
-    </header>
+    </nav>
 
-    <!-- MAIN MEMBERS AREA -->
-    <main class="max-w-6xl mx-auto px-4 py-12 w-full flex-grow">
+    <main class="flex-grow max-w-6xl mx-auto px-4 pb-12 pt-28 w-full">
         
-        <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-olive-military text-xs font-extrabold uppercase tracking-widest block mb-1">Governing Body</span>
-            <h2 class="text-4xl font-black text-slate-900 tracking-tight" data-lang="hi">संस्था के मुख्य पदाधिकारी</h2>
-            <h2 class="text-4xl font-black text-slate-900 tracking-tight" data-lang="en">Executive Committee Members</h2>
-            <div class="h-1 w-24 bg-olive-military mx-auto mt-4 rounded"></div>
-        </div>
-
-        <!-- TOP LEADERSHIP -->
-        <div class="flex justify-center mb-12">
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 w-full max-w-sm text-center">
-                <div class="bg-slate-100 p-6 flex justify-center border-b border-slate-200">
-                    <img src="m1.jpg" alt="President" class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md bg-slate-300">
-                </div>
-                <div class="p-6">
-                    <div class="inline-block bg-maroon-military text-white text-[10px] font-black uppercase px-3 py-1 rounded-full mb-3" data-lang="hi">अध्यक्ष (President)</div>
-                    <div class="inline-block bg-maroon-military text-white text-[10px] font-black uppercase px-3 py-1 rounded-full mb-3" data-lang="en">President</div>
-                    <h3 class="text-xl font-extrabold text-slate-900">Lt Col Shri Phool Kumar Mor</h3>
+        <!-- SECTION 1: LEADERSHIP PLEDGE (पवित्र संकल्प) -->
+        <div class="bg-gradient-to-br from-slate-900 to-emerald-950 text-white rounded-3xl p-8 md:p-12 mb-20 relative overflow-hidden shadow-2xl border-t-4 border-emerald-500">
+            <div class="absolute top-0 right-0 p-8 opacity-10 text-7xl"><i class="fa-solid fa-building-shield"></i></div>
+            <div class="max-w-4xl mx-auto text-center space-y-4 relative z-10">
+                <span class="text-amber-400 text-xs font-black uppercase tracking-widest block"><i class="fa-solid fa-certificate"></i> GEWA Leadership Pledge <i class="fa-solid fa-certificate"></i></span>
+                <h3 class="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight uppercase">कार्यकारिणी का पवित्र संकल्प</h3>
+                <div class="h-1 w-16 bg-amber-400 mx-auto mt-2 rounded"></div>
+                
+                <p class="text-sm sm:text-base font-medium italic text-slate-200 max-w-3xl mx-auto leading-relaxed bg-slate-950/50 p-6 rounded-2xl border border-slate-800 mt-6 shadow-inner">
+                    "हम, Gurais Ex-Servicemen Welfare Association की कार्यकारिणी, यह पवित्र संकल्प लेते हैं कि हमें सौंपे गए प्रत्येक दायित्व का निर्वहन पूर्ण निष्ठा, ईमानदारी, पारदर्शिता और निष्पक्षता के साथ करेंगे। हम 2 Guards की गौरवशाली परंपराओं, सैनिक सम्मान, आपसी भाईचारे और सेवा की भावना को आने वाली पीढ़ियों तक जीवित रखने के लिए सदैव समर्पित रहेंगे। हमारा समय, हमारा experience और हमारी क्षमता—सब कुछ गुरेज परिवार की सेवा के लिए समर्पित रहेगा।"
+                </p>
+                
+                <div class="pt-4 text-[11px] font-black uppercase text-amber-400 tracking-widest">
+                    समस्त मुख्यकार्यकारिणी • गुरेज Ex-Servicemen वेलफेयर एसोसिएशन
                 </div>
             </div>
         </div>
 
-        <!-- MEMBERS GRID (11 Members) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            
-            <!-- 2 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m2.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Vice President</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hony Capt Ramniwas</h3></div>
-            </div>
-
-            <!-- 3 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m3.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Gen-Secretary</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hony Sub Maj Shri Jagvir Singh</h3></div>
-            </div>
-
-            <!-- 4 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m4.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Joint Secretary</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hony Subedar Ramesh Singh</h3></div>
-            </div>
-
-            <!-- 5 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m5.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Treasurer</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Smt Pushpa W/O Hav Satish Kumar</h3></div>
-            </div>
-
-            <!-- 6 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m6.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Joint-Treasurer</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav Sunil Kumar Ahlawat</h3></div>
-            </div>
-
-            <!-- 7 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m7.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Founder/Advisor</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Smt Ritu W/O Hav Rajbir Malik</h3></div>
-            </div>
-
-             <!-- 8 -->
-             <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m8.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Advisor</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hony Capt Parma Ram Saran</h3></div>
-            </div>
-
-            <!-- 9 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m9.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe-Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav Parmod Kumar</h3></div>
-            </div>
-
-            <!-- 10 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m10.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe-Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav Balwan</h3></div>
-            </div>
-
-            <!-- 11 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m11.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe. Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav Parveen Kumar</h3></div>
-            </div>
-
-            <!-- 12 -->
-            <div class="member-card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition duration-300 text-center flex flex-col">
-                <div class="bg-slate-100 p-5 flex justify-center border-b border-slate-200 shrink-0"><img src="m12.jpg" alt="Member" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-slate-300"></div>
-                <div class="p-5 flex-grow flex flex-col justify-center"><div class="text-olive-military text-[10px] font-black uppercase mb-1">Exe. Member</div><h3 class="text-[13px] font-extrabold text-slate-900 leading-tight">Hav Deep Chand</h3></div>
-            </div>
-
+        <!-- SECTION 2: EXECUTIVE DIRECTORY (HIERARCHY / POST-WISE) -->
+        <div class="text-center mb-12">
+            <span class="text-maroon-700 text-xs font-extrabold uppercase tracking-widest block mb-2">Executive Directory</span>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight uppercase">संपूर्ण कार्यकारिणी सूची</h2>
+            <div class="h-1 w-14 bg-maroon-700 mx-auto mt-3 rounded"></div>
         </div>
+
+        <div class="space-y-8 mb-16 relative">
+            <!-- Background connecting line (optional visual effect) -->
+            <div class="hidden md:block absolute w-0.5 bg-slate-200 h-full left-1/2 transform -translate-x-1/2 -z-10 top-10"></div>
+
+            <!-- TIER 1: PRESIDENT (सबसे ऊपर) -->
+            <div class="flex justify-center">
+                <div class="bg-white border-t-4 border-amber-500 rounded-3xl p-6 text-center shadow-xl hover:-translate-y-2 transition duration-300 w-full max-w-sm ring-1 ring-slate-200 relative z-10">
+                    <img src="m2.jpg" alt="President" class="w-28 h-28 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-md mb-4">
+                    <p class="text-[11px] uppercase font-black tracking-widest text-amber-600 mb-1">President</p>
+                    <h3 class="text-lg font-black text-slate-900">Lt Col Phool Kumar Mor</h3>
+                </div>
+            </div>
+
+            <!-- TIER 2: VP, GEN SEC, FOUNDER -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto relative z-10">
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center shadow-lg hover:-translate-y-2 transition duration-300">
+                    <img src="m2.jpg" alt="Vice President" class="w-24 h-24 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-md mb-4">
+                    <p class="text-[10px] uppercase font-black tracking-widest text-maroon-700 mb-1">Vice President</p>
+                    <h3 class="text-sm font-bold text-slate-900">Hony Capt Ramniwas</h3>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center shadow-lg hover:-translate-y-2 transition duration-300">
+                    <img src="Gewa.jpeg" alt="General Secretary" class="w-24 h-24 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-md mb-4">
+                    <p class="text-[10px] uppercase font-black tracking-widest text-red-700 mb-1">General Secretary</p>
+                    <h3 class="text-sm font-bold text-slate-900">H/Sub Maj Jagvir Singh</h3>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center shadow-lg hover:-translate-y-2 transition duration-300">
+                    <img src="m2.jpg" alt="Founder" class="w-24 h-24 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-md mb-4">
+                    <p class="text-[10px] uppercase font-black tracking-widest text-emerald-700 mb-1">Founder / Advisor</p>
+                    <h3 class="text-sm font-bold text-slate-900">Smt Ritu</h3>
+                </div>
+            </div>
+
+            <!-- TIER 3: JOINT SEC, TREASURER, JOINT TREASURER, ADVISOR -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
+                <div class="bg-white border border-slate-200 rounded-3xl p-5 text-center shadow-md hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Joint Secretary" class="w-20 h-20 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-sm mb-3">
+                    <p class="text-[9px] uppercase font-black tracking-widest text-slate-500 mb-1">Joint Secretary</p>
+                    <h3 class="text-xs font-bold text-slate-900">Hony Subedar Ramesh Singh</h3>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-5 text-center shadow-md hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Treasurer" class="w-20 h-20 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-sm mb-3">
+                    <p class="text-[9px] uppercase font-black tracking-widest text-slate-500 mb-1">Treasurer</p>
+                    <h3 class="text-xs font-bold text-slate-900">Smt Pushpa</h3>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-5 text-center shadow-md hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Joint-Treasurer" class="w-20 h-20 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-sm mb-3">
+                    <p class="text-[9px] uppercase font-black tracking-widest text-slate-500 mb-1">Joint-Treasurer</p>
+                    <h3 class="text-xs font-bold text-slate-900">Hav Sunil K. Ahlawat</h3>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-5 text-center shadow-md hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Advisor" class="w-20 h-20 mx-auto rounded-full object-cover border-4 border-slate-100 shadow-sm mb-3">
+                    <p class="text-[9px] uppercase font-black tracking-widest text-slate-500 mb-1">Advisor</p>
+                    <h3 class="text-xs font-bold text-slate-900">Hony Capt Parma Ram</h3>
+                </div>
+            </div>
+
+            <!-- TIER 4: EXECUTIVE MEMBERS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-4 text-center shadow-sm hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Exec Member" class="w-16 h-16 mx-auto rounded-full object-cover border-4 border-white shadow-sm mb-2">
+                    <p class="text-[8px] uppercase font-black tracking-widest text-slate-400 mb-1">Executive Member</p>
+                    <h3 class="text-xs font-bold text-slate-800">Hav Parmod Kumar</h3>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-4 text-center shadow-sm hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Exec Member" class="w-16 h-16 mx-auto rounded-full object-cover border-4 border-white shadow-sm mb-2">
+                    <p class="text-[8px] uppercase font-black tracking-widest text-slate-400 mb-1">Executive Member</p>
+                    <h3 class="text-xs font-bold text-slate-800">Hav Balwan</h3>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-4 text-center shadow-sm hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Exec Member" class="w-16 h-16 mx-auto rounded-full object-cover border-4 border-white shadow-sm mb-2">
+                    <p class="text-[8px] uppercase font-black tracking-widest text-slate-400 mb-1">Executive Member</p>
+                    <h3 class="text-xs font-bold text-slate-800">Hav Parveen Kumar</h3>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-4 text-center shadow-sm hover:-translate-y-1 transition duration-300">
+                    <img src="m2.jpg" alt="Exec Member" class="w-16 h-16 mx-auto rounded-full object-cover border-4 border-white shadow-sm mb-2">
+                    <p class="text-[8px] uppercase font-black tracking-widest text-slate-400 mb-1">Executive Member</p>
+                    <h3 class="text-xs font-bold text-slate-800">Hav Deep Chand</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: RULES & LAWS -->
+        <div class="bg-white p-8 md:p-10 rounded-3xl border border-slate-200 shadow-xl mb-8">
+            <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-emerald-700 pl-4">संस्था के नियम एवं विधान (Rules & Laws)</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-full flex items-center justify-center shrink-0 font-black">1</div>
+                    <p class="text-sm text-slate-600 font-medium"><strong>पारदर्शिता (Transparency):</strong> संस्था का कल्याण कोष पूरी तरह से पारदर्शी होगा और इसका उपयोग केवल निर्धारित कल्याणकारी कार्यों के लिए ही किया जाएगा।</p>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-full flex items-center justify-center shrink-0 font-black">2</div>
+                    <p class="text-sm text-slate-600 font-medium"><strong>प्राथमिकता (Priority):</strong> वीर नारियों (शहीदों की पत्नियों) और कमजोर पूर्व सैनिकों के परिवारों को हर प्रकार की सहायता में प्रथम प्राथमिकता दी जाएगी।</p>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-full flex items-center justify-center shrink-0 font-black">3</div>
+                    <p class="text-sm text-slate-600 font-medium"><strong>निःस्वार्थ सेवा:</strong> कार्यकारिणी का कोई भी सदस्य संस्था के फंड का उपयोग निजी कार्यों के लिए नहीं कर सकता। सभी सदस्य निःस्वार्थ वॉलंटियर के रूप में कार्य करेंगे।</p>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-full flex items-center justify-center shrink-0 font-black">4</div>
+                    <p class="text-sm text-slate-600 font-medium"><strong>सदस्यता (Membership):</strong> कोई भी पूर्व सैनिक या समाज का प्रतिष्ठित नागरिक, जो संस्था के नियमों का पालन करने की शपथ लेता है, संस्था का सदस्य बन सकता है।</p>
+                </div>
+            </div>
+        </div>
+
     </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-slate-950 text-slate-500 text-center py-6 border-t border-slate-900 text-[11px] font-medium tracking-wide mt-auto">
-        <p>&copy; 2026 Gurais Ex-Servicemen Welfare Association (GEWA). All Rights Reserved.</p>
-    </footer>
-
-    <!-- TRANSLATION SCRIPT -->
-    <script>
-        function toggleLanguage() {
-            const body = document.body;
-            const currentLang = body.getAttribute('data-current-lang');
-            const langBtnText = document.getElementById('langBtnText');
-            if (currentLang === 'hi') {
-                body.setAttribute('data-current-lang', 'en');
-                langBtnText.innerText = 'हिंदी में पढ़ें';
-                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'block');
-            } else {
-                body.setAttribute('data-current-lang', 'hi');
-                langBtnText.innerText = 'Read in English';
-                document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'block');
-            }
-        }
-    </script>
+    <footer class="bg-slate-950 text-slate-500 text-center py-6 text-[11px] font-bold tracking-widest uppercase">&copy; 2026 GEWA - Official Portal</footer>
 </body>
 </html>
