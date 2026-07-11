@@ -17,11 +17,6 @@
         .bg-olive-military { background-color: #2d3f29; }
         .bg-maroon-military { background-color: #5c1324; }
         .border-maroon { border-color: #5c1324; }
-        .hero-bg {
-            background: linear-gradient(to bottom, rgba(10, 31, 64, 0.78), rgba(6, 23, 47, 0.95)), url('https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-        }
         [data-lang="en"] { display: none; }
     </style>
 </head>
@@ -93,9 +88,7 @@
                 <div class="flex flex-wrap gap-4">
                     <a href="#home" class="hover:text-amber-400 transition">Home</a>
                     <a href="#leadership-messages" class="hover:text-amber-400 transition">Messages</a>
-                    
                     <a href="members.html" class="hover:text-amber-400 transition"><i class="fa-solid fa-users mr-1"></i> Members</a>
-                    
                     <a href="donation.html" class="text-amber-400 font-extrabold hover:text-white transition"><i class="fa-solid fa-hand-holding-dollar mr-1"></i> Donation & Welfare</a>
                     <a href="#live-impact" class="hover:text-amber-400 transition">Impact</a>
                     <a href="#about-gewa" class="hover:text-amber-400 transition">About</a>
@@ -121,44 +114,55 @@
             <a href="#heritage" class="block text-slate-700 hover:text-emerald-800">Our Heritage</a>
             <a href="#hall-of-honour" class="block text-slate-700 hover:text-emerald-800">Hall of Honour</a>
             <a href="#welfare" class="block text-slate-700 hover:text-emerald-800">Welfare Activities</a>
-            <a href="#bank-account" class="block text-slate-700 hover:text-emerald-800">Bank Details</a>
             <a href="#social-responsibility" class="block text-slate-700 hover:text-emerald-800">Social Responsibility</a>
             <a href="#volunteer" class="block text-slate-700 hover:text-emerald-800">Volunteer Mission</a>
             <a href="#success-stories" class="block text-slate-700 hover:text-emerald-800">Success Stories</a>
             <a href="gallery.html" class="block text-slate-700 hover:text-emerald-800"><i class="fa-solid fa-images mr-1"></i> Go to Gallery Page</a>
-            
             <a href="members.html" class="block text-slate-700 hover:text-emerald-800"><i class="fa-solid fa-users mr-1"></i> Go to Members Page</a>
-            
             <a href="donation.html" class="block text-emerald-800 font-extrabold"><i class="fa-solid fa-hand-holding-dollar mr-1"></i> Donation & Welfare</a>
             <a href="#contact" class="block text-slate-700 hover:text-emerald-800">Contact Us</a>
             <a href="#emergency-help" class="block text-red-700">Emergency Help Desk</a>
         </div>
     </header>
 
-    <section id="home" class="hero-bg min-h-[85vh] py-20 flex items-center justify-center text-center text-white px-4 relative">
-        <div class="max-w-5xl space-y-6">
-            <div class="inline-flex items-center gap-2 bg-slate-950/40 border border-white/20 backdrop-blur-md px-4 py-2 rounded-full text-xs font-bold tracking-widest text-amber-400 uppercase">
-                🇮🇳 "सेवा वर्दी में भी... सेवा सेवानिवृत्ति के बाद भी।"
+    <section id="home" class="relative min-h-[85vh] py-20 flex items-center justify-center text-center text-white px-4 overflow-hidden bg-slate-900">
+        
+        <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-70">
+            <source src="Screen Recording 2026-07-11 164551.mp4" type="video/mp4">
+        </video>
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/60 to-slate-950/95 z-10"></div>
+
+        <div class="max-w-5xl space-y-5 relative z-20">
+            
+            <div class="inline-flex items-center gap-2 bg-slate-950/60 border border-white/20 backdrop-blur-md px-4 py-2 rounded-full text-xs sm:text-sm font-bold tracking-widest text-amber-400 uppercase shadow-lg">
+                <span data-lang="hi">🇮🇳 "सेवा वर्दी में भी... सेवा सेवानिवृत्ति के बाद भी।"</span>
+                <span data-lang="en">🇮🇳 "Service in Uniform... Service Beyond Uniform."</span>
             </div>
             
-            <h2 class="text-3xl sm:text-6xl font-black tracking-tight leading-tight drop-shadow-md" data-lang="hi">गुरेज भूतपूर्व सैनिक कल्याण संघ</h2>
-            <h2 class="text-3xl sm:text-6xl font-black tracking-tight leading-tight drop-shadow-md" data-lang="en">Gurais Ex-Servicemen Welfare Association</h2>
-            <p class="text-base sm:text-xl font-medium text-slate-200 max-w-2xl mx-auto tracking-wide drop-shadow">
+            <h2 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-tight drop-shadow-2xl" data-lang="hi">गुरेज भूतपूर्व सैनिक कल्याण संघ</h2>
+            <h2 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-tight drop-shadow-2xl" data-lang="en">Gurais Ex-Servicemen Welfare Association</h2>
+            
+            <h3 class="text-xl sm:text-3xl md:text-4xl font-extrabold text-emerald-400 tracking-wide mt-2 drop-shadow-lg italic">
+                "Serving Those Who Once Served the Nation."
+            </h3>
+
+            <p class="text-sm sm:text-lg font-medium text-slate-200 max-w-2xl mx-auto tracking-wide drop-shadow-lg pt-2">
                 The Sacred Digital Home of the 2 Guards Veteran Family. Reflecting Dignity, Discipline, and Eternal Regimental Brotherhood.
             </p>
 
-            <div class="pt-6 flex flex-wrap justify-center gap-4 text-xs uppercase tracking-wider font-bold">
-                <a href="members.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
+            <div class="pt-8 flex flex-wrap justify-center gap-4 text-xs uppercase tracking-wider font-bold">
+                <a href="members.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl shadow-lg hover:shadow-blue-600/50 transition-all flex items-center gap-2">
                     <i class="fa-solid fa-users text-sm"></i> Executive Members
                 </a>
                 
-                <a href="donation.html" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-6 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
-                    <i class="fa-solid fa-hand-holding-dollar text-sm"></i> Donation & Welfare Support
+                <a href="donation.html" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-6 py-3.5 rounded-xl shadow-lg hover:shadow-amber-500/50 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-hand-holding-dollar text-sm"></i> Donation & Welfare
                 </a>
-                <a href="gallery.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-6 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
-                    <i class="fa-solid fa-images text-sm"></i> View Photo Gallery
+                <a href="gallery.html" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur-sm border border-slate-500 text-white px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-images text-sm"></i> Photo Gallery
                 </a>
-                <a href="#volunteer" class="bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-3.5 rounded-xl shadow-lg transition">Join GEWA Network</a>
+                <a href="#volunteer" class="bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-3.5 rounded-xl shadow-lg hover:shadow-emerald-700/50 transition-all">Join GEWA Network</a>
             </div>
         </div>
     </section>
@@ -236,7 +240,7 @@
                             <blockquote class="font-bold text-emerald-800 bg-emerald-50/70 p-3 rounded-xl border-l-4 border-emerald-700 italic shadow-inner">
                                 "An elite dream... to bind our brave Gurais families in a bond of dignity, affection, and unyielding protection for generations to come."
                             </blockquote>
-                            <p class="font-bold text-slate-900 border-b border-slate-100 pb-1">2 Guards (1 Grenadiers)To the respected Gurais family, venerable Veer Naris, and the maternal power, warm greetings 🙏🙏</p>
+                            <p class="font-bold text-slate-900 border-b border-slate-100 pb-1">2 Guards (1 Grenadiers) To the respected Gurais family, venerable Veer Naris, and the maternal power, warm greetings 🙏🙏</p>
                             <p>The foundation of GEWA was laid not merely as an administrative organization, but with the sacred purpose of providing a secure, prosperous, and soulful platform for the valiant warriors of **2 Guards (1 Grenadiers)**, our respected Veer Naris, and their future generations. This digital portal is the living face of that unbreakable resolve.</p>
                             <p>Our mandate is crystal clear—whenever the auspicious wedding bells ring for a brother-in-arms' daughter, whenever a mountain of tragedy falls upon a household, or when our youth project their academic brilliance on the national map; your **GEWA family** will be the very first line of support and defense, standing tall with utmost honor.</p>
                             <p>As part of a proud military household, I pledge as a founding pillar to remain dedicated 24/7 to protecting the rights and social security of our mothers and sisters. Backed by our core command, this platform will remain an elite legacy of trust and regimental solidarity.</p>
@@ -332,7 +336,7 @@
                         
                         <div data-lang="hi" class="text-xs text-slate-500 space-y-1.5 leading-relaxed font-medium">
                             <p class="font-bold text-slate-700">2 Guards (1 Grenadiers)प्रिय वीर साथियों, प्रबुद्ध वेटरन्स एवं आदरणीय माताओं-बहनों,</p>
-                            <p>सह-कोषाध्यक्ष के रूप में मेरा मुख्य दायित्व संस्था की वित्तीय व्यवस्था को सुदृढ़, त्रुटिहीन, व्यावहारिक और पूर्णतः पारदर्शी बनाए रखने में हमारी कोषाध्यक्ष और मुख्य कार्यकारिणी का पूर्ण सहयोग करना है। हमारा यह संयुक्त कोष हमारे सदस्यों की गाढ़ी कमाई का अंश है, अतः इसके एक-एक रुपये के उपयोग में सैनिक शुचिता का पालन अनिवार्य है।</p>
+                            <p>सह-कोषाध्यक्ष के रूप में मेरा मुख्य दायित्व संस्था की वित्तीय व्यवस्था को सुदृढ़, त्रुटिहीन, व्यावहारिक और पूर्णतः पारदर्शी बनाए रखने में हमारी कोषाध्यक्ष और मुख्य कार्यकारिणी का पूर्ण सहयोग करना है। हमारा यह संयुक्त कोष हमारे सदस्यों की गाढ़ी कमाई का अंश है, अतः इसके एक-एक रुपये के उपयोग में सैनिक शुचिता का पालन अनिवार्य है。</p>
                             <p>हमारा सामूहिक और दृढ़ लक्ष्य यह सुनिश्चित करना है कि बेटियों के लिए कन्यादान अनुदान राशि (₹11,000 / ₹21,000), मेधावी बच्चों के लिए छात्रवृत्ति पुरस्कार, अथवा किसी सैनिक परिवार पर आए अनपेक्षित आपातकालीन संकटों के समय राहत राशि का आवंटन बिना किसी प्रशासनिक जटिलता के सीधे और समय पर पहुँच सके। वित्तीय शुचिता और त्वरित सेवा ही हमारा मूल मंत्र है।</p>
                         </div>
 
