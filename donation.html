@@ -10,8 +10,8 @@
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-    <!-- NAVIGATION MENU -->
-    <nav class="bg-white border-b border-slate-200 p-4 sticky top-0 z-50 shadow-sm">
+    <!-- FIXED NAVIGATION MENU -->
+    <nav class="bg-white border-b border-slate-200 p-4 fixed w-full top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-center gap-4 md:gap-8 font-bold text-[11px] md:text-xs uppercase text-slate-800 tracking-wider flex-wrap">
             <a href="index.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-house-flag"></i> Main / History</a>
             <a href="members.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-users"></i> Members & Laws</a>
@@ -20,7 +20,8 @@
         </div>
     </nav>
 
-    <main class="flex-grow max-w-6xl mx-auto px-4 py-12 w-full">
+    <!-- pt-24 जोड़ा गया ताकि हेडर के नीचे कंटेंट न छिपे -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 pb-12 pt-24 w-full">
         
         <div class="text-center mb-12">
             <h1 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Our Key Initiatives & Welfare</h1>
@@ -28,17 +29,23 @@
             <p class="text-slate-500 mt-4 font-medium max-w-2xl mx-auto">समाज और पर्यावरण की भलाई के लिए GEWA द्वारा उठाए गए प्रमुख कदम एवं झलकियाँ।</p>
         </div>
 
-        <!-- 1. BLOOD DONATION SECTION -->
-        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-lg border-l-8 border-l-red-600 mb-12 flex flex-col md:flex-row items-center gap-8 hover:shadow-xl transition duration-300">
-            <div class="w-20 h-20 md:w-24 md:h-24 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-4xl shrink-0 shadow-inner">
-                <i class="fa-solid fa-droplet"></i>
+        <!-- 1. BLOOD DONATION SECTION (UPDATED WITH PHOTO) -->
+        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-lg border-l-8 border-l-red-600 mb-12 hover:shadow-xl transition duration-300">
+            <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
+                <div class="w-20 h-20 md:w-24 md:h-24 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-4xl shrink-0 shadow-inner">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+                <div class="flex-grow text-center md:text-left">
+                    <h3 class="text-2xl font-black text-slate-900 mb-2">Blood Donation (रक्तदान महादान)</h3>
+                    <p class="text-slate-600 font-medium mb-4 leading-relaxed">
+                        GEWA समय-समय पर रक्तदान शिविर आयोजित करता है। आप हमारे ब्लड डोनर डेटाबेस से जुड़कर आपात स्थिति में किसी जरूरतमंद की जान बचाने में हमारी मदद कर सकते हैं।
+                    </p>
+                    <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition"><i class="fa-solid fa-heart-pulse mr-2"></i> Join Donor List</a>
+                </div>
             </div>
-            <div class="flex-grow text-center md:text-left">
-                <h3 class="text-2xl font-black text-slate-900 mb-2">Blood Donation (रक्तदान महादान)</h3>
-                <p class="text-slate-600 font-medium mb-4 leading-relaxed">
-                    GEWA समय-समय पर रक्तदान शिविर आयोजित करता है। आप हमारे ब्लड डोनर डेटाबेस से जुड़कर आपात स्थिति में किसी जरूरतमंद की जान बचाने में हमारी मदद कर सकते हैं।
-                </p>
-                <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition"><i class="fa-solid fa-heart-pulse mr-2"></i> Join Donor List</a>
+            <!-- Blood Donation Photo Added Here -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <img src="blood1.jpeg" alt="Blood Donation Camp" class="w-full h-48 md:h-56 object-cover rounded-2xl shadow-md hover:scale-105 transition duration-300">
             </div>
         </div>
 
@@ -66,7 +73,7 @@
             </div>
         </div>
 
-        <!-- 3. KANYADAN & VEER NARI GALLERY (UPDATED) -->
+        <!-- 3. KANYADAN & VEER NARI GALLERY -->
         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-lg mb-12">
             <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-emerald-700 pl-4">कन्यादान सहयोग गैलरी (Kanyadan Support)</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
@@ -78,6 +85,20 @@
                 <img src="gureswedding6.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="gureswedding7.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="gureswedding8.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding9.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding10.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding11.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding12.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding13.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding14.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding15.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding16.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding17.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding18.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding19.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding20.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding21.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
+                <img src="gureswedding22.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
             </div>
             
             <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-red-700 pl-4 mt-8">वीर नारी कन्यादान (Veer Nari Support)</h2>
@@ -88,16 +109,16 @@
 
         <!-- 4. MARTYR FAMILY & CULTURAL GALLERY -->
         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-lg mb-12">
-            <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-blue-700 pl-4">शहीद परिवार एवं छात्रवृत्ति (Martyr Family & Scholarship)</h2>
+            <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-blue-700 pl-4">शहीद परिवार एवं छात्रवृत्ति (Martyr Family )</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <img src="martare_3.jpg" class="w-full h-40 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="martare1_3.jpg" class="w-full h-40 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 
-                <img src="Wedding Wishing Letter.jpeg" class="w-full h-40 object-cover rounded-xl shadow-sm hover:scale-105 transition">
             </div>
 
             <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-purple-700 pl-4 mt-8">सांस्कृतिक एवं सामाजिक (Cultural & Social Activities)</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <img src="GuresMembers.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="welfare1.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="welfare2.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="holi1.jpg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
@@ -123,7 +144,7 @@
                     <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition"><i class="fa-solid fa-book-open-reader mr-2"></i> Apply / Support</a>
                 </div>
             </div>
-            <!-- Scholarship Image Added Here -->
+            <!-- Scholarship Image -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <img src="schlor1.jpg" alt="Student Scholarship" class="w-full h-48 md:h-56 object-cover rounded-2xl shadow-md hover:scale-105 transition duration-300">
             </div>
@@ -141,11 +162,11 @@
                     </li>
                     <li class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="w-12 h-12 bg-amber-100 text-amber-700 flex items-center justify-center rounded-full text-xl shadow-inner shrink-0"><i class="fa-solid fa-scale-balanced"></i></div>
-                        <div><p class="font-black text-slate-900">Adv Jitendra Kumar</p><p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Legal Advisor</p></div>
+                        <div><p class="font-black text-slate-900">Adv Harikesh</p><p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Legal Advisor</p></div>
                     </li>
                     <li class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="w-12 h-12 bg-purple-100 text-purple-700 flex items-center justify-center rounded-full text-xl shadow-inner shrink-0"><i class="fa-solid fa-newspaper"></i></div>
-                        <div><p class="font-black text-slate-900">Naresh Sharma</p><p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Official News Reporter</p></div>
+                        <div><p class="font-black text-slate-900">Reporter Name Here</p><p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Official News Reporter</p></div>
                     </li>
                 </ul>
             </div>
@@ -159,7 +180,7 @@
             </div>
         </div>
 
-        <!-- 7. BANK DETAILS & QR SECTION (AT THE BOTTOM) -->
+        <!-- 7. BANK DETAILS & QR SECTION -->
         <div class="bg-white p-8 md:p-12 rounded-3xl border border-slate-200 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-500 via-emerald-500 to-blue-500"></div>
             
