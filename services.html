@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA - Services & Schemes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- FIXED NAVIGATION MENU -->
+    <nav class="bg-white border-b border-slate-200 p-4 fixed w-full top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto flex justify-center gap-4 md:gap-8 font-bold text-[11px] md:text-xs uppercase text-slate-800 tracking-wider flex-wrap">
+            <a href="index.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-house-flag"></i> Main / History</a>
+            <a href="members.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-users"></i> Members & Laws</a>
+            <a href="donation.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-hand-holding-heart"></i> Welfare</a>
+            <a href="services.html" class="text-maroon-700 border-b-2 border-maroon-700 pb-1"><i class="fa-solid fa-file-shield"></i> Services</a>
+            <a href="gallery.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-images"></i> Gallery</a>
+        </div>
+    </nav>
+
+    <!-- pt-24 जोड़ा गया ताकि हेडर के नीचे कंटेंट न छिपे -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 pb-12 pt-24 w-full">
+        
+        <div class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Veteran Services & Schemes</h1>
+            <div class="h-1 w-20 bg-amber-500 mx-auto mt-4 rounded"></div>
+            <p class="text-slate-500 mt-4 font-medium max-w-2xl mx-auto">पूर्व सैनिकों और उनके परिवारों के लिए आवश्यक बैंकिंग निर्देश एवं सरकारी कल्याणकारी योजनाएं।</p>
+        </div>
+
+        <!-- 1. DSP TO DPA CONVERSION IMAGE SECTION -->
+        <div class="bg-white p-6 md:p-10 rounded-3xl border border-slate-200 shadow-xl mb-16">
+            <div class="flex items-center gap-3 mb-6 border-b-2 border-red-600 pb-3 inline-flex">
+                <i class="fa-solid fa-triangle-exclamation text-red-600 text-2xl animate-pulse"></i>
+                <h2 class="text-2xl font-black text-slate-900 uppercase tracking-wide">अत्यंत महत्वपूर्ण सूचना: DSP से DPA खाता</h2>
+            </div>
+            <p class="text-slate-600 font-medium mb-6">सभी सेवारत एवं सेवानिवृत्त सैनिकों, पूर्व सैनिकों तथा उनके परिवारों के लिए बैंकिंग और पेंशन से जुड़ी सबसे बड़ी भूल और उससे बचने के उपाय:</p>
+            
+            <!-- Uploaded Photo -->
+            <div class="rounded-2xl overflow-hidden shadow-md border-4 border-slate-100">
+                <img src="Services1.jpeg" alt="DSP to DPA Account Conversion Guide" class="w-full h-auto object-contain hover:scale-[1.02] transition duration-500">
+            </div>
+        </div>
+
+        <!-- 2. GOVERNMENT SCHEMES & PDF VAULT -->
+        <div class="mb-12">
+            <div class="text-center mb-10">
+                <span class="text-blue-700 text-xs font-extrabold uppercase tracking-widest block mb-2"><i class="fa-solid fa-building-flag"></i> Govt. of Haryana - Antyodaya Saral</span>
+                <h2 class="text-3xl font-black text-slate-900 uppercase">Sainik Welfare Schemes Vault</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                
+                <!-- SCHEME 1: 100% Disabled (No Children) -->
+                <div class="bg-white border-t-4 border-amber-500 rounded-2xl p-6 shadow-md hover:shadow-xl transition flex flex-col justify-between">
+                    <div>
+                        <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-1 rounded uppercase tracking-wider">Scheme PDF</span>
+                        <h3 class="text-lg font-black text-slate-900 mt-4 mb-2">Additional Pension to 100%-Disabled ESM having no children</h3>
+                        
+                        <div class="space-y-3 mt-4 text-xs text-slate-600 font-medium">
+                            <p><strong class="text-slate-900">Eligibility:</strong> 100% Disabled Ex-servicemen having no children.</p>
+                            <p><strong class="text-slate-900">Benefits Provided:</strong> Rs 100/- per month irrespective of rank till death.</p>
+                            <p><strong class="text-slate-900">RTS Time Limit:</strong> 60 days.</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <a href="Disabled_ESM_NoChildren.pdf" target="_blank" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-file-pdf text-red-400"></i> View Document Rules
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SCHEME 2: 100% Disabled (With Children) -->
+                <div class="bg-white border-t-4 border-emerald-600 rounded-2xl p-6 shadow-xl lg:-mt-4 lg:mb-4 relative ring-1 ring-slate-200 flex flex-col justify-between">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-1 rounded uppercase tracking-wider">Scheme PDF</span>
+                        <h3 class="text-lg font-black text-slate-900 mt-4 mb-2">अतिरिक्त पैंशन 100 प्रतिशत दिव्यांग भूतपूर्व सैनिक जिसके बच्चे हो</h3>
+                        
+                        <div class="space-y-3 mt-4 text-xs text-slate-600 font-medium">
+                            <p><strong class="text-slate-900">पात्रता:</strong> 100% निशक्त भूतपूर्व सैनिक के केवल 3 बच्चों तक (20 वर्ष की आयु तक / अविवाहित/ बेरोजगार) ।</p>
+                            <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                                <p class="font-bold text-slate-900 mb-1 border-b border-slate-200 pb-1">उपलब्ध लाभ:</p>
+                                <ul class="space-y-1">
+                                    <li><i class="fa-solid fa-angle-right text-emerald-600"></i> अन्य रैंक: 100 रुपये/माह (अधिकतम 300)</li>
+                                    <li><i class="fa-solid fa-angle-right text-emerald-600"></i> JCO: 150 रुपये/माह (अधिकतम 450)</li>
+                                    <li><i class="fa-solid fa-angle-right text-emerald-600"></i> अधिकारी: 200 रुपये/माह (अधिकतम 600)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <a href="Disabled_ESM_WithChildren.pdf" target="_blank" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-file-pdf text-white"></i> View Document Rules
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SCHEME 3: Blind ESM -->
+                <div class="bg-white border-t-4 border-blue-600 rounded-2xl p-6 shadow-md hover:shadow-xl transition flex flex-col justify-between">
+                    <div>
+                        <span class="bg-blue-100 text-blue-800 text-[9px] font-black px-2 py-1 rounded uppercase tracking-wider">Scheme PDF</span>
+                        <h3 class="text-lg font-black text-slate-900 mt-4 mb-2">Financial Assistance to Blind ESM (Scheme)</h3>
+                        
+                        <div class="space-y-3 mt-4 text-xs text-slate-600 font-medium">
+                            <p><strong class="text-slate-900">Eligibility:</strong> Blind Ex-servicemen (100% Blind). (Must submit Life & Income Cert. every November).</p>
+                            <p><strong class="text-slate-900">Benefits Provided:</strong> Rs.3000/- per month with annual increase of Rs.400/- w.e.f. 1.11.2017.</p>
+                            <p><strong class="text-slate-900">Required:</strong> NOC from District Social Welfare Dept (not receiving other financial assist.).</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <a href="Blind_ESM_Scheme.pdf" target="_blank" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-file-pdf text-red-400"></i> View Document Rules
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- HELPLINE SECTION -->
+            <div class="mt-12 max-w-3xl mx-auto flex flex-col md:flex-row gap-6">
+                <!-- Haryana Govt Helpline -->
+                <div class="flex-1 bg-blue-50 border border-blue-200 p-4 rounded-2xl text-center">
+                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">Haryana Govt (Antyodaya-Saral)</p>
+                    <p class="text-sm font-black text-slate-800"><i class="fa-solid fa-headset"></i> 0172-3968400</p>
+                    <p class="text-xs text-slate-600 mt-1"><i class="fa-solid fa-envelope"></i> saral.haryana@gov.in</p>
+                </div>
+                
+                <!-- GEWA Official Helpline -->
+                <div class="flex-1 bg-red-50 border border-red-200 p-4 rounded-2xl text-center shadow-sm">
+                    <p class="text-[10px] font-black text-red-600 uppercase tracking-widest mb-1">GEWA Assistance Desk</p>
+                    <p class="text-sm font-black text-red-800 font-mono"><i class="fa-solid fa-phone-volume"></i> +91 8287744626</p>
+                    <p class="text-xs text-red-700 mt-1 font-medium"><i class="fa-solid fa-envelope"></i> 2gesmwa@gmail.com</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer class="bg-slate-950 text-slate-500 text-center py-6 text-[11px] font-bold tracking-widest uppercase">&copy; 2026 GEWA - Official Portal</footer>
+</body>
+</html>
