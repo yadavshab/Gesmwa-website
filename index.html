@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <style>
+    <style type="text/tailwindcss">
+        @variant dark (&:where(.dark, .dark *));
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         html { scroll-behavior: smooth; }
         .bg-olive-dark { background-color: #1e291b; }
@@ -20,7 +21,7 @@
         [data-lang="en"] { display: none; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased" data-current-lang="hi">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-300 antialiased transition-colors duration-300" data-current-lang="hi">
 
     <!-- COMPLETE FIXED HEADER WRAPPER -->
     <div class="sticky top-0 z-50 w-full flex flex-col shadow-lg">
@@ -33,7 +34,13 @@
                 <span data-lang="en"><strong>Emergency:</strong> Widow Support • Hospital • DSP Help</span>
             </div>
             
-            <div class="flex gap-3 items-center">
+            <div class="flex gap-2 sm:gap-3 items-center mt-1 sm:mt-0">
+                <!-- DARK MODE TOGGLE BUTTON -->
+                <button onclick="toggleDarkMode()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-2 py-1 rounded text-[9px] uppercase font-bold tracking-wider transition cursor-pointer flex items-center gap-1" title="Toggle Dark Mode">
+                    <i id="darkModeIcon" class="fa-solid fa-moon text-amber-400 text-xs"></i>
+                </button>
+
+                <!-- LANGUAGE TOGGLE BUTTON -->
                 <button onclick="toggleLanguage()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-2 py-1 rounded text-[9px] uppercase font-bold tracking-wider transition cursor-pointer flex items-center gap-1">
                     <i class="fa-solid fa-language text-amber-400 text-xs"></i>
                     <span id="langBtnText">English</span>
@@ -43,57 +50,57 @@
             </div>
         </div>
 
-        <!-- HEADER LOGO SECTION (Fixed for Mobile & Desktop - All 3 Logos in One Line) -->
-        <header class="bg-white border-b border-slate-200 relative">
+        <!-- HEADER LOGO SECTION -->
+        <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 relative transition-colors duration-300">
             <div class="max-w-7xl mx-auto px-2 md:px-4 py-2 md:py-3 flex items-center justify-between">
                 
                 <!-- LEFT: GEWA LOGO & TEXT -->
                 <div class="flex items-center gap-2 md:gap-3 overflow-hidden">
-                    <div class="w-11 h-11 md:w-16 md:h-16 rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white flex items-center justify-center shrink-0">
+                    <div class="w-11 h-11 md:w-16 md:h-16 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800 flex items-center justify-center shrink-0">
                         <img src="Gewa.jpeg" alt="GEWA Logo" class="w-full h-full object-cover">
                     </div>
                     <div class="flex flex-col justify-center min-w-0">
                         <div class="flex items-center gap-1.5">
-                            <h1 class="text-sm md:text-xl font-extrabold text-slate-900 tracking-tight leading-none truncate">GEWA</h1>
+                            <h1 class="text-sm md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-none truncate">GEWA</h1>
                             <span class="text-[6px] md:text-[9px] bg-emerald-700 text-white font-bold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0" data-lang="hi">आधिकारिक</span>
                             <span class="text-[6px] md:text-[9px] bg-emerald-700 text-white font-bold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0" data-lang="en">Official</span>
                         </div>
-                        <p class="text-[7px] md:text-[10px] text-slate-600 font-bold tracking-tight mt-0.5 uppercase truncate" data-lang="hi">गुरेज भूतपूर्व सैनिक कल्याण संघ</p>
-                        <p class="text-[7px] md:text-[10px] text-slate-600 font-bold tracking-tight mt-0.5 uppercase truncate" data-lang="en">Gurais Ex-Servicemen Welfare Association</p>
-                        <p class="text-[7px] md:text-[9px] text-slate-400 font-medium italic hidden sm:block truncate">Regd No. S/3924/SDM/NW/2023 Distt. Delhi</p>
+                        <p class="text-[7px] md:text-[10px] text-slate-600 dark:text-slate-400 font-bold tracking-tight mt-0.5 uppercase truncate" data-lang="hi">गुरेज भूतपूर्व सैनिक कल्याण संघ</p>
+                        <p class="text-[7px] md:text-[10px] text-slate-600 dark:text-slate-400 font-bold tracking-tight mt-0.5 uppercase truncate" data-lang="en">Gurais Ex-Servicemen Welfare Association</p>
+                        <p class="text-[7px] md:text-[9px] text-slate-400 dark:text-slate-500 font-medium italic hidden sm:block truncate">Regd No. S/3924/SDM/NW/2023 Distt. Delhi</p>
                     </div>
                 </div>
                 
                 <!-- RIGHT: OTHER LOGOS & MENU BTN -->
                 <div class="flex items-center gap-1.5 md:gap-4 shrink-0">
                     <!-- Gurs Logo -->
-                    <div class="w-7 h-7 md:w-16 md:h-16 rounded-lg md:rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white flex items-center justify-center shrink-0">
+                    <div class="w-7 h-7 md:w-16 md:h-16 rounded-lg md:rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800 flex items-center justify-center shrink-0">
                         <img src="gurslogo.jpg" alt="Gurs Logo" class="w-full h-full object-contain p-0.5 md:p-1">
                     </div>
 
-                    <!-- Desktop Slogan (Hidden on mobile) -->
+                    <!-- Desktop Slogan -->
                     <div class="hidden md:block text-right px-1">
-                        <span class="text-xs font-extrabold tracking-widest text-emerald-800 uppercase block" data-lang="hi">"एक यूनिट • एक परिवार • एक संकल्प"</span>
-                        <span class="text-xs font-extrabold tracking-widest text-emerald-800 uppercase block" data-lang="en">"One Unit • One Family • One Resolve"</span>
-                        <span class="text-[9px] font-bold text-slate-400 tracking-wider uppercase block mt-0.5">2 Guards(1 Grenadiers) Veteran Organ</span>
+                        <span class="text-xs font-extrabold tracking-widest text-emerald-800 dark:text-emerald-400 uppercase block" data-lang="hi">"एक यूनिट • एक परिवार • एक संकल्प"</span>
+                        <span class="text-xs font-extrabold tracking-widest text-emerald-800 dark:text-emerald-400 uppercase block" data-lang="en">"One Unit • One Family • One Resolve"</span>
+                        <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 tracking-wider uppercase block mt-0.5">2 Guards(1 Grenadiers) Veteran Organ</span>
                     </div>
 
                     <!-- Grenadiers Logo -->
-                    <div class="w-7 h-7 md:w-16 md:h-16 rounded-lg md:rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white flex items-center justify-center shrink-0">
+                    <div class="w-7 h-7 md:w-16 md:h-16 rounded-lg md:rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800 flex items-center justify-center shrink-0">
                         <img src="Grenadiers.png" alt="Grenadiers Logo" class="w-full h-full object-contain p-0.5 md:p-1">
                     </div>
 
                     <!-- Mobile Menu Toggle Button -->
-                    <button id="menu-btn" class="lg:hidden text-xl text-slate-800 focus:outline-none pl-1">
+                    <button id="menu-btn" class="lg:hidden text-xl text-slate-800 dark:text-white focus:outline-none pl-1">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Mobile Slogan Strip (Visible only on mobile) -->
-            <div class="md:hidden bg-slate-100 border-t border-slate-200 py-1 text-center">
-                <span class="text-[8px] font-extrabold tracking-widest text-emerald-800 uppercase block" data-lang="hi">"एक यूनिट • एक परिवार • एक संकल्प"</span>
-                <span class="text-[8px] font-extrabold tracking-widest text-emerald-800 uppercase block" data-lang="en">"One Unit • One Family • One Resolve"</span>
+            <!-- Mobile Slogan Strip -->
+            <div class="md:hidden bg-slate-100 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-1 text-center transition-colors">
+                <span class="text-[8px] font-extrabold tracking-widest text-emerald-800 dark:text-emerald-400 uppercase block" data-lang="hi">"एक यूनिट • एक परिवार • एक संकल्प"</span>
+                <span class="text-[8px] font-extrabold tracking-widest text-emerald-800 dark:text-emerald-400 uppercase block" data-lang="en">"One Unit • One Family • One Resolve"</span>
             </div>
         </header>
 
@@ -107,7 +114,7 @@
                     <a href="services.html" class="hover:text-amber-400 transition">Services</a>
                     <a href="gallery.html" class="hover:text-amber-400 transition">Gallery</a>
                     
-                    <span class="text-slate-400 mx-1">|</span>
+                    <span class="text-slate-400 dark:text-slate-500 mx-1">|</span>
                     
                     <a href="#leadership-messages" class="hover:text-amber-400 transition">Messages</a>
                     <a href="#live-impact" class="hover:text-amber-400 transition">Impact</a>
@@ -126,28 +133,28 @@
         </nav>
 
         <!-- MOBILE MENU -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-2.5 shadow-xl font-bold text-xs absolute w-full top-full left-0">
-            <a href="#home" class="block text-slate-700 hover:text-emerald-800"><i class="fa-solid fa-house-flag mr-1"></i> Main / History</a>
-            <a href="members.html" class="block text-slate-700 hover:text-emerald-800"><i class="fa-solid fa-users mr-1"></i> Members & Laws</a>
-            <a href="donation.html" class="block text-slate-700 hover:text-emerald-800"><i class="fa-solid fa-hand-holding-heart mr-1"></i> Welfare</a>
-            <a href="services.html" class="block text-slate-700 hover:text-emerald-800"><i class="fa-solid fa-file-shield mr-1"></i> Services</a>
-            <a href="gallery.html" class="block text-slate-700 hover:text-emerald-800"><i class="fa-solid fa-images mr-1"></i> Gallery</a>
+        <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-4 space-y-2.5 shadow-xl font-bold text-xs absolute w-full top-full left-0 transition-colors">
+            <a href="#home" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400"><i class="fa-solid fa-house-flag mr-1"></i> Main / History</a>
+            <a href="members.html" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400"><i class="fa-solid fa-users mr-1"></i> Members & Laws</a>
+            <a href="donation.html" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400"><i class="fa-solid fa-hand-holding-heart mr-1"></i> Welfare</a>
+            <a href="services.html" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400"><i class="fa-solid fa-file-shield mr-1"></i> Services</a>
+            <a href="gallery.html" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400"><i class="fa-solid fa-images mr-1"></i> Gallery</a>
             
-            <div class="border-t border-slate-100 my-2"></div>
+            <div class="border-t border-slate-100 dark:border-slate-800 my-2"></div>
             
-            <a href="#leadership-messages" class="block text-slate-700 hover:text-emerald-800">Messages</a>
-            <a href="#live-impact" class="block text-slate-700 hover:text-emerald-800">Impact</a>
-            <a href="#about-gewa" class="block text-slate-700 hover:text-emerald-800">About</a>
-            <a href="#heritage" class="block text-slate-700 hover:text-emerald-800">Heritage</a>
-            <a href="#leadership-pledge" class="block text-slate-700 hover:text-emerald-800">Pledge</a>
-            <a href="#hall-of-honour" class="block text-slate-700 hover:text-emerald-800">Honour</a>
-            <a href="#welfare" class="block text-slate-700 hover:text-emerald-800">Programs</a>
-            <a href="#social-responsibility" class="block text-slate-700 hover:text-emerald-800">Social</a>
-            <a href="#volunteer" class="block text-slate-700 hover:text-emerald-800">Volunteer</a>
-            <a href="#news-events" class="block text-slate-700 hover:text-emerald-800">News</a>
-            <a href="#knowledge-centre" class="block text-slate-700 hover:text-emerald-800">Knowledge</a>
-            <a href="#contact" class="block text-slate-700 hover:text-emerald-800">Contact Us</a>
-            <a href="#emergency-help" class="block text-red-700 font-extrabold mt-2">Emergency Help Desk</a>
+            <a href="#leadership-messages" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Messages</a>
+            <a href="#live-impact" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Impact</a>
+            <a href="#about-gewa" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">About</a>
+            <a href="#heritage" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Heritage</a>
+            <a href="#leadership-pledge" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Pledge</a>
+            <a href="#hall-of-honour" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Honour</a>
+            <a href="#welfare" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Programs</a>
+            <a href="#social-responsibility" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Social</a>
+            <a href="#volunteer" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Volunteer</a>
+            <a href="#news-events" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">News</a>
+            <a href="#knowledge-centre" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Knowledge</a>
+            <a href="#contact" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400">Contact Us</a>
+            <a href="#emergency-help" class="block text-red-600 dark:text-red-400 font-extrabold mt-2">Emergency Help Desk</a>
         </div>
     </div>
 
@@ -163,7 +170,6 @@
         <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/60 to-slate-950/95 z-10"></div>
 
         <div class="max-w-5xl space-y-5 relative z-20">
-            
             <div class="inline-flex items-center gap-2 bg-slate-950/60 border border-white/20 backdrop-blur-md px-4 py-2 rounded-full text-xs sm:text-sm font-bold tracking-widest text-amber-400 uppercase shadow-lg">
                 <span data-lang="hi">🇮🇳 "सेवा वर्दी में भी... सेवा सेवानिवृत्ति के बाद भी।"</span>
                 <span data-lang="en">🇮🇳 "Service in Uniform... Service Beyond Uniform."</span>
@@ -200,123 +206,126 @@
         </div>
     </section>
 
-    <!-- LEADERSHIP MESSAGES (Restored to Full Content) -->
-    <section id="leadership-messages" class="py-20 bg-slate-100 border-b border-slate-200 scroll-mt-16">
+    <!-- LEADERSHIP MESSAGES -->
+    <section id="leadership-messages" class="py-20 bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-emerald-800 text-xs font-extrabold uppercase tracking-widest block mb-2">Ecosystem Core Command</span>
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight" data-lang="hi">मुख्य कार्यकारिणी संदेश</h2>
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight" data-lang="en">Leadership Messages</h2>
-                <div class="h-1 w-14 bg-emerald-800 mx-auto mt-3 rounded"></div>
+                <span class="text-emerald-800 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-widest block mb-2">Ecosystem Core Command</span>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight" data-lang="hi">मुख्य कार्यकारिणी संदेश</h2>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight" data-lang="en">Leadership Messages</h2>
+                <div class="h-1 w-14 bg-emerald-800 dark:bg-emerald-500 mx-auto mt-3 rounded"></div>
             </div>
 
             <div class="grid lg:grid-cols-3 gap-8 items-start">
                 
-                <div class="bg-white border-t-4 border-amber-500 rounded-2xl p-6 shadow-md flex flex-col justify-between h-full">
+                <!-- Card 1 -->
+                <div class="bg-white dark:bg-slate-800 border-t-4 border-amber-500 rounded-2xl p-6 shadow-md flex flex-col justify-between h-full transition-colors">
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-                            <div class="w-12 h-12 rounded-full border border-slate-200 overflow-hidden shrink-0 bg-white p-0.5">
+                        <div class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-3">
+                            <div class="w-12 h-12 rounded-full border border-slate-200 dark:border-slate-600 overflow-hidden shrink-0 bg-white p-0.5">
                                 <img src="Gewa.jpeg" alt="Gewa Logo" class="w-full h-full object-cover rounded-full">
                             </div>
                             <div>
-                                <h3 class="font-extrabold text-base text-slate-900 leading-none">Lt Col P. K. Mor(Retd.) </h3>
-                                <p class="text-[10px] text-slate-500 font-bold uppercase mt-1">President, GEWA</p>
+                                <h3 class="font-extrabold text-base text-slate-900 dark:text-white leading-none">Lt Col P. K. Mor(Retd.)</h3>
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-1">President, GEWA</p>
                             </div>
                         </div>
                         
-                        <div data-lang="hi" class="space-y-3 text-xs text-slate-600 leading-relaxed font-medium">
-                            <blockquote class="font-bold text-amber-600 bg-amber-50/50 p-2.5 rounded-lg border-l-2 border-amber-500 italic">
+                        <div data-lang="hi" class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                            <blockquote class="font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 p-2.5 rounded-lg border-l-2 border-amber-500 italic">
                                 "पलटन से सेवानिवृत्ति हमारे रक्षक धर्म की समाप्ति नहीं, बल्कि समाज के प्रति एक नए रणनीतिक कर्तव्य का उदय है।"
                             </blockquote>
-                            <p class="font-bold text-slate-800">2 Guards (1 Grenadiers)समस्त पराक्रमी वीर सैनिकों, राष्ट्रभक्त वेटरन्स एवं देवतुल्य परिवारों को मेरा सादर जय हिंद,</p>
-                            <p>GEWA के गौरवमयी अध्यक्ष पद का दायित्व संभालना मेरे लिए मात्र एक सामान्य प्रशासनिक सांगठनिक कार्य नहीं, बल्कि **2 Guards (1 Grenadiers)** की उस महान, अदम्य और अनुशासित विरासत को अक्षुण्ण रखने का एक पवित्र संकल्प है, जिसे हमने अपने लहू से सींचा है। हमारी सैन्य प्रतिबद्धता और कर्तव्यपरायणता वर्दी उतारने के बाद धुंधली नहीं पड़ती, अपितु समाज के प्रति और अधिक प्रगाढ़, व्यापक एवं संवेदनशील हो जाती है。</p>
+                            <p class="font-bold text-slate-800 dark:text-slate-200">2 Guards (1 Grenadiers)समस्त पराक्रमी वीर सैनिकों, राष्ट्रभक्त वेटरन्स एवं देवतुल्य परिवारों को मेरा सादर जय हिंद,</p>
+                            <p>GEWA के गौरवमयी अध्यक्ष पद का दायित्व संभालना मेरे लिए मात्र एक सामान्य प्रशासनिक सांगठनिक कार्य नहीं, बल्कि **2 Guards (1 Grenadiers)** की उस महान, अदम्य और अनुशासित विरासत को अक्षुण्ण रखने का एक पवित्र संकल्प है, जिसे हमने अपने लहू से सींचा है।</p>
                             <p>संस्था के अध्यक्ष के रूप में मैं आपको पूर्ण आश्वस्त करता हूँ कि हमारी इस पवित्र सभा का प्रत्येक नीतिगत निर्णय पूर्ण निष्पक्षता, पारदर्शिता, सर्वोच्च सैन्य मर्यादा और नियमों के कड़े दायरे में ही लिया जाएगा। आज के इस दौर में जहाँ प्रशासनिक और वित्तीय विषमताएं पूर्व सैनिकों के समक्ष चुनौतियां खड़ी करती हैं, वहाँ GEWA आपके अधिकारों के संरक्षण हेतु एक अभेद्य कवच के रूप में मुस्तैद रहेगा।</p>
                             <p>चाहे हमारी वंदनीय वीर नारियों के अधिकारों की सुरक्षा हो, वेटरन्स की पेंशन विसंगतियों का निवारण हो, DSP खातों के स्मार्ट क्रेडेंशियल्स का समन्वय हो या हमारे बच्चों के लिए शैक्षणिक मार्गदर्शन की स्थापना—हम हर मोर्चे पर प्रथम पंक्ति में खड़े मिलेंगे। आइए, हम सब एकजुट होकर अनुशासित समाज की इस साझी कमान को मजबूत बनाएं और मर्यादा का नया कीर्तिमान स्थापित करें।</p>
                         </div>
-
-                        <div data-lang="en" class="space-y-3 text-xs text-slate-600 leading-relaxed font-medium">
-                            <blockquote class="font-bold text-amber-600 bg-amber-50/50 p-2.5 rounded-lg border-l-2 border-amber-500 italic">
+                        
+                        <div data-lang="en" class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                            <blockquote class="font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 p-2.5 rounded-lg border-l-2 border-amber-500 italic">
                                 "Retirement from active service is not the end of a soldier's duty; it is the beginning of a new strategic responsibility towards society."
                             </blockquote>
-                            <p class="font-bold text-slate-800">2 Guards (1 Grenadiers)Jai Hind to all brave soldiers, patriotic veterans, and respected families,</p>
-                            <p>To assume the prestigious responsibility of President of GEWA is not merely an administrative task for me, but a sacred commitment to uphold the glorious, indomitable, and disciplined legacy of **2 Guards (1 Grenadiers)**. Our military commitment does not fade after hanging up the uniform; rather, it grows stronger toward society.</p>
+                            <p class="font-bold text-slate-800 dark:text-slate-200">2 Guards (1 Grenadiers)Jai Hind to all brave soldiers, patriotic veterans, and respected families,</p>
+                            <p>To assume the prestigious responsibility of President of GEWA is not merely an administrative task for me, but a sacred commitment to uphold the glorious, indomitable, and disciplined legacy of **2 Guards (1 Grenadiers)**.</p>
                             <p>As the President, I assure you that every policy decision of our association will be taken within the bounds of absolute impartiality, transparency, and supreme military dignity. Whether protecting the rights of our revered Veer Naris or resolving pension anomalies—we will always stand on the front lines.</p>
                         </div>
                     </div>
-                    <div class="pt-2 border-t border-slate-100 mt-4 text-center text-xs font-black text-amber-600 uppercase tracking-widest bg-amber-50/50 py-1 rounded-md">
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-4 text-center text-xs font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest bg-amber-50 dark:bg-amber-900/20 py-1 rounded-md">
                         "पहला हमेशा पहला"
                     </div>
                 </div>
 
-                <div class="bg-white border-t-4 border-emerald-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between h-full lg:scale-[1.03] relative z-10 ring-1 ring-emerald-800/10">
+                <!-- Card 2 -->
+                <div class="bg-white dark:bg-slate-800 border-t-4 border-emerald-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between h-full lg:scale-[1.03] relative z-10 ring-1 ring-emerald-800/10 dark:ring-emerald-400/20 transition-colors">
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-                            <div class="w-12 h-12 rounded-full border-2 border-emerald-700 overflow-hidden shrink-0 bg-white p-0.5 shadow-sm">
+                        <div class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-3">
+                            <div class="w-12 h-12 rounded-full border-2 border-emerald-700 dark:border-emerald-500 overflow-hidden shrink-0 bg-white p-0.5 shadow-sm">
                                 <img src="Gewa.jpeg" alt="Gewa Logo" class="w-full h-full object-cover rounded-full">
                             </div>
                             <div>
-                                <h3 class="font-extrabold text-base text-slate-900 tracking-tight leading-none">Mrs. Ritu </h3>
-                                <p class="text-[9px] text-white font-extrabold bg-gradient-to-r from-emerald-800 to-emerald-600 px-2 py-0.5 rounded-md uppercase tracking-wider mt-1 inline-block">W/O Hav Rajvir Malik (Retd.)• Founder, GEWA</p>
+                                <h3 class="font-extrabold text-base text-slate-900 dark:text-white tracking-tight leading-none">Mrs. Ritu </h3>
+                                <p class="text-[9px] text-white font-extrabold bg-gradient-to-r from-emerald-800 to-emerald-600 px-2 py-0.5 rounded-md uppercase tracking-wider mt-1 inline-block">W/O Hav Rajvir Malik (Retd.) • Founder, GEWA</p>
                             </div>
                         </div>
                         
-                        <div data-lang="hi" class="space-y-3 text-xs text-slate-600 leading-relaxed font-medium">
-                            <blockquote class="font-bold text-emerald-800 bg-emerald-50/70 p-3 rounded-xl border-l-4 border-emerald-700 italic shadow-inner">
+                        <div data-lang="hi" class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                            <blockquote class="font-bold text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 p-3 rounded-xl border-l-4 border-emerald-700 italic shadow-inner">
                                 "एक उत्कृष्ट स्वप्न... जो युगों-युगों तक हमारे वीर गुरेज परिवारों को गरिमा, स्नेह और अटूट संरक्षण के सूत्र में पिरोए रखे।"
                             </blockquote>
-                            <p class="font-bold text-slate-900 border-b border-slate-100 pb-1">2 Guards (1 Grenadiers) के संपूर्ण आदरणीय एवं स्नेही गुरेज परिवार तथा ममतामयी मातृशक्ति, सादर प्रणाम 🙏🙏</p>
+                            <p class="font-bold text-slate-900 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-1">2 Guards (1 Grenadiers) के संपूर्ण आदरणीय एवं स्नेही गुरेज परिवार तथा ममतामयी मातृशक्ति, सादर प्रणाम 🙏🙏</p>
                             <p>GEWA की आधारशिला केवल एक प्रशासनिक संगठन के रूप में नहीं, बल्कि **2 Guards (1 Grenadiers)** के पराक्रमी योद्धाओं, हमारी सम्मानीय वीर नारियों और उनके भावी वंशजों को एक सुरक्षित, समृद्ध और आत्मीय मंच प्रदान करने के पवित्र उद्देश्य से रखी गई है। यह डिजिटल मंच उसी अभेद्य संकल्प का एक जीवंत चेहरा है।</p>
                             <p>हमारा संकल्प अत्यंत स्पष्ट और सर्वोच्च है—जब भी हमारे किसी वीर गुरेज साथी के आँगन में बेटी के पावन विवाह की शहनाई गूंजे, जब किसी परिवार पर अचानक दुखों या विपत्तियों का कोई पहाड़ टूटे, जब किसी घर में गंभीर अस्वस्थता का संकट आए, या जब हमारी युवा पीढ़ी किसी बड़ी परीक्षा या राष्ट्रीय स्तर पर अपनी मेधा का परचम लहराए; तब संपूर्ण शक्ति और सम्मान के साथ सबसे पहले उनका **GEWA परिवार** सुरक्षा ढाल बनकर खड़ा हो।</p>
                             <p>एक गौरवान्वित सैनिक परिवार के हिस्से के रूप में, मैं संस्था के संस्थापक स्तंभ के तौर पर यह अटल वचन देती हूँ कि मैं हमारी माताओं-बहनों के अधिकारों, उनकी सामाजिक सुरक्षा और बच्चों के संस्कारों की रक्षा के लिए काफ़ी विस्तार से चौबीसों घंटे समर्पित रहूँगी। संपूर्ण मुख्य कार्यकारिणी के मार्गदर्शन में हमारा निरंतर प्रयास रहेगा कि यह संस्था आने वाले दशकों तक विश्वास, शालीनता और सैनिक मर्यादा की एक ऐसी सर्वोत्कृष्ट विरासत (Premium Legacy) बने जिस पर हमारी पलटन का हर एक सदस्य गर्व कर सके। आपके निस्वार्थ प्रेम, आत्मीय एकता और सांगठनिक सहयोग से हम इस मिशन को सफलता के उच्चतम शिखर तक पहुँचाएंगे।</p>
                         </div>
-
-                        <div data-lang="en" class="space-y-3 text-xs text-slate-600 leading-relaxed font-medium">
-                            <blockquote class="font-bold text-emerald-800 bg-emerald-50/70 p-3 rounded-xl border-l-4 border-emerald-700 italic shadow-inner">
+                        
+                        <div data-lang="en" class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                            <blockquote class="font-bold text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 p-3 rounded-xl border-l-4 border-emerald-700 italic shadow-inner">
                                 "An elite dream... to bind our brave Gurais families in a bond of dignity, affection, and unyielding protection for generations to come."
                             </blockquote>
-                            <p class="font-bold text-slate-900 border-b border-slate-100 pb-1">To the respected Gurais family, venerable Veer Naris, and the maternal power, warm greetings 🙏🙏</p>
+                            <p class="font-bold text-slate-900 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-1">To the respected Gurais family, venerable Veer Naris, and the maternal power, warm greetings 🙏🙏</p>
                             <p>The foundation of GEWA was laid not merely as an administrative organization, but with the sacred purpose of providing a secure, prosperous, and soulful platform for the valiant warriors of **2 Guards (1 Grenadiers)**, our respected Veer Naris, and their future generations. This digital portal is the living face of that unbreakable resolve.</p>
                             <p>Our mandate is crystal clear—whenever the auspicious wedding bells ring for a brother-in-arms' daughter, whenever a mountain of tragedy falls upon a household, or when our youth project their academic brilliance on the national map; your **GEWA family** will be the very first line of support and defense, standing tall with utmost honor.</p>
                             <p>As part of a proud military household, I pledge as a founding pillar to remain dedicated 24/7 to protecting the rights and social security of our mothers and sisters. Backed by our core command, this platform will remain an elite legacy of trust and regimental solidarity.</p>
                         </div>
                     </div>
-                    <div class="pt-2 border-t border-slate-100 mt-4 text-center text-xs font-black text-emerald-800 uppercase tracking-widest bg-emerald-50/30 py-1 rounded-md">
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-4 text-center text-xs font-black text-emerald-800 dark:text-emerald-400 uppercase tracking-widest bg-emerald-50 dark:bg-emerald-900/20 py-1 rounded-md">
                         "पहला हमेशा पहला"
                     </div>
                 </div>
 
-                <div class="bg-white border-t-4 border-red-700 rounded-2xl p-6 shadow-md flex flex-col justify-between h-full">
+                <!-- Card 3 -->
+                <div class="bg-white dark:bg-slate-800 border-t-4 border-red-700 rounded-2xl p-6 shadow-md flex flex-col justify-between h-full transition-colors">
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
-                            <div class="w-12 h-12 rounded-full border border-slate-200 overflow-hidden shrink-0 bg-white p-0.5">
+                        <div class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-3">
+                            <div class="w-12 h-12 rounded-full border border-slate-200 dark:border-slate-600 overflow-hidden shrink-0 bg-white p-0.5">
                                 <img src="Gewa.jpeg" alt="Gewa Logo" class="w-full h-full object-cover rounded-full">
                             </div>
                             <div>
-                                <h3 class="font-extrabold text-base text-slate-900 leading-none">H/Sub Maj Jagbir Singh Gahlot(Retd.)</h3>
-                                <p class="text-[10px] text-slate-500 font-bold uppercase mt-1">General Secretary, GEWA</p>
+                                <h3 class="font-extrabold text-base text-slate-900 dark:text-white leading-none">H/Sub Maj Jagbir Singh Gahlot(Retd.)</h3>
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-1">General Secretary, GEWA</p>
                             </div>
                         </div>
                         
-                        <div data-lang="hi" class="space-y-3 text-xs text-slate-600 leading-relaxed font-medium">
-                            <blockquote class="text-xs font-bold text-red-700 bg-red-50 p-2.5 rounded-lg border-l-2 border-red-700 italic">
+                        <div data-lang="hi" class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                            <blockquote class="text-xs font-bold text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 p-2.5 rounded-lg border-l-2 border-red-700 italic">
                                 "संगठन की वास्तविक शक्ति इसके सदस्यों के आपसी विश्वास, अटूट सैन्य अनुशासन और निस्वार्थ ग्राउंड एक्शन में निहित होती है।"
                             </blockquote>
-                            <p class="font-bold text-slate-800">2 Guards (1 Grenadiers)प्रिय साथियों एवं समस्त सम्मानित सदस्यों,</p>
+                            <p class="font-bold text-slate-800 dark:text-slate-200">2 Guards (1 Grenadiers)प्रिय साथियों एवं समस्त सम्मानित सदस्यों,</p>
                             <p>महासचिव के रूप में मेरा यह प्राथमिक और नैतिक दायित्व है कि पलटन के उसी कड़े अनुशासन, त्वरित निर्णय क्षमता और ऑन-ग्राउंड मुस्तैदी को हम अपने सामाजिक और कल्याणकारी कार्यों में अक्षरशः लागू करें। हमारे लिए हर एक सदस्य का संदेश और उसकी समस्या सर्वोच्च प्राथमिकता है।</p>
                             <p>GEWA की इस सांगठनिक कमान के अंतर्गत हमारा निरंतर प्रयास है कि देश के किसी भी सुदूर कोने में बैठे हमारे **2 Guards (1 Grenadiers)** के वेटरन भाई को जोड़ा जा सके और संवाद की गति को तीव्र रखा जाए। चाहे वह हमारी पर्यावरण रक्षक 'वृक्ष मित्र' योजना हो, रक्तदान के त्वरित डेटाबेस का संचालन हो, ज़िला स्तर पर पूर्व सैनिक बैठकों का समन्वय हो, या हमारे किसी साथी के आकस्मिक दुःखद निधन पर पलटन के पूर्ण मान-सम्मान के साथ अंतिम विदाई और कड़े सम्मान की व्यवस्था करना हो—हमारी कार्यकारिणी का हर सिपाही 24 घंटे मुस्तैद खड़ा है।</p>
                             <p>आप सभी के सहयोग और विश्वास से ही यह कारवां मजबूत हो रहा है। मेरी आप सभी से सविनय आग्रह है कि स्वयं भी सक्रिय रहें और संगठन को नई बुलंदियों तक ले जाने में अपना महत्वपूर्ण योगदान दें।</p>
                         </div>
-
-                        <div data-lang="en" class="space-y-3 text-xs text-slate-600 leading-relaxed font-medium">
-                            <blockquote class="text-xs font-bold text-red-700 bg-red-50 p-2.5 rounded-lg border-l-2 border-red-700 italic">
+                        
+                        <div data-lang="en" class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                            <blockquote class="text-xs font-bold text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 p-2.5 rounded-lg border-l-2 border-red-700 italic">
                                 "The true strength of an organization lies in the mutual trust of its members, unyielding military discipline, and selfless ground execution."
                             </blockquote>
-                            <p class="font-bold text-slate-800">2 Guards (1 Grenadiers)Dear comrades and respected members,</p>
+                            <p class="font-bold text-slate-800 dark:text-slate-200">2 Guards (1 Grenadiers)Dear comrades and respected members,</p>
                             <p>As the General Secretary, it is my absolute ethical responsibility to enforce the exact same high standard of military discipline and swift execution into our welfare activities that we practiced in our active-duty units. For us, every member's query is our immediate mission command.</p>
                             <p>Under this organizational shield, we continuously strive to bridge the gap and integrate every single veteran brother of **2 Guards (1 Grenadiers)** across the nation. Whether executing emergency relief, coordinating district meets, or ensuring a highly dignified regimental funeral protocol with final guard of honor for our departed brothers—our executive line stands ready 24/7.</p>
                         </div>
                     </div>
-                    <div class="pt-2 border-t border-slate-100 mt-4 text-center text-xs font-black text-red-700 uppercase tracking-widest bg-red-50 py-1 rounded-md">
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-4 text-center text-xs font-black text-red-700 dark:text-red-400 uppercase tracking-widest bg-red-50 dark:bg-red-900/20 py-1 rounded-md">
                         "पहला हमेशा पहला"
                     </div>
                 </div>
@@ -326,62 +335,64 @@
             <!-- TREASURERS SECTION -->
             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-8">
                 
-                <div class="bg-white border-l-4 border-emerald-600 rounded-xl p-5 shadow-xl flex flex-col justify-between ring-1 ring-slate-100 relative overflow-hidden">
+                <!-- Card 4 -->
+                <div class="bg-white dark:bg-slate-800 border-l-4 border-emerald-600 rounded-xl p-5 shadow-xl flex flex-col justify-between ring-1 ring-slate-100 dark:ring-slate-700 relative overflow-hidden transition-colors">
                     <div class="space-y-3">
-                        <div class="flex items-center gap-3 border-b border-slate-100 pb-2">
+                        <div class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-2">
                             <div class="w-10 h-10 rounded-full border-2 border-emerald-600 overflow-hidden shrink-0 bg-white p-0.5 shadow-sm">
                                 <img src="Gewa.jpeg" alt="Gewa Logo" class="w-full h-full object-cover rounded-full">
                             </div>
                             <div>
-                                <h4 class="font-bold text-sm text-slate-900 leading-none">Mrs. Pushpa</h4>
+                                <h4 class="font-bold text-sm text-slate-900 dark:text-white leading-none">Mrs. Pushpa</h4>
                                 <p class="text-[9px] text-white font-extrabold bg-emerald-700 px-2 py-0.5 rounded uppercase tracking-wider mt-1 inline-block">W/O Hav Satish Kumar (Retd.)• Treasurer, GEWA</p>
                             </div>
                         </div>
-                        <p class="text-[11px] font-bold text-emerald-800 bg-emerald-50/50 p-1.5 rounded border border-emerald-100 italic">"वित्तीय शुचिता, पूर्ण पारदर्शिता और अत्यंत सूक्ष्म ऑडिट व्यवस्था ही हमारे सैनिक कल्याण कोष की सर्वोपरि मर्यादा है।"</p>
+                        <p class="text-[11px] font-bold text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 p-1.5 rounded border border-emerald-100 dark:border-emerald-800 italic">"वित्तीय शुचिता, पूर्ण पारदर्शिता और अत्यंत सूक्ष्म ऑडिट व्यवस्था ही हमारे सैनिक कल्याण कोष की सर्वोपरि मर्यादा है।"</p>
                         
-                        <div data-lang="hi" class="text-xs text-slate-600 space-y-2 tracking-wide leading-relaxed font-medium">
-                            <p class="font-bold text-slate-950 border-b border-slate-100 pb-0.5">2 Guards (1 Grenadiers) के समस्त आदरणीय वेटरन्स, सम्माननीय मातृशक्ति एवं प्रिय बच्चों,</p>
+                        <div data-lang="hi" class="text-xs text-slate-600 dark:text-slate-300 space-y-2 tracking-wide leading-relaxed font-medium">
+                            <p class="font-bold text-slate-950 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-0.5">2 Guards (1 Grenadiers) के समस्त आदरणीय वेटरन्स, सम्माननीय मातृशक्ति एवं प्रिय बच्चों,</p>
                             <p>GEWA के राजकोष में प्राप्त होने वाला प्रत्येक योगदान केवल एक सामान्य वित्तीय अंशदान नहीं है, बल्कि वह हमारे किसी वीर सैनिक भाई की गाढ़ी कमाई और उसके परिवार के परम विश्वास का एक पवित्र प्रतीक है।</p>
                             <p>कोषाध्यक्ष के इस अत्यंत उत्तरदायी और गरिमामयी पद पर रहते हुए, मैं यह दृढ़ संकल्प व्यक्त करती हूँ कि हमारी संस्था के इस सैनिक कल्याण कोष के एक-एक पैसे का प्रबंधन पूर्ण ईमानदारी, अत्यंत सूक्ष्म लेखा-जोखा (Micro-Audited Clarity) और उच्चतम पारदर्शिता के साथ सार्वजनिक पटल पर रखा जाएगा। मुख्य कार्यकारिणी के सामूहिक परामर्श और GEWA की कड़ाई से बनाई गई संवैधानिक नियमावली के अंतर्गत, राजकोष के प्रत्येक संसाधन को सीधे सही, लक्षित और अत्यंत जरूरतमंद परिवारों तक समयबद्ध सीमा के भीतर पहुँचाना ही मेरी सर्वोच्च और गैर-समझौतावादी प्राथमिकता है। आपका यह निष्कलंक विश्वास ही हमारी सबसे बड़ी सामर्थ्य है।</p>
                         </div>
-
-                        <div data-lang="en" class="text-xs text-slate-600 space-y-2 tracking-wide leading-relaxed font-medium">
-                            <p class="font-bold text-slate-950 border-b border-slate-100 pb-0.5">2 Guards (1 Grenadiers) To all respected veterans, honorable families, and children of 2 Guards,</p>
+                        
+                        <div data-lang="en" class="text-xs text-slate-600 dark:text-slate-300 space-y-2 tracking-wide leading-relaxed font-medium">
+                            <p class="font-bold text-slate-950 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-0.5">2 Guards (1 Grenadiers) To all respected veterans, honorable families, and children of 2 Guards,</p>
                             <p>Every single contribution received by the treasury of GEWA is not just liquid currency; it is a sacred token of hard-earned military labor and deep institutional trust deposited by a soldier's family.</p>
                             <p>Holding this deeply responsible office of Treasurer, I pledge that every rupee inside this welfare fund will be balanced with micro-audited clarity and displayed with high-visibility financial accountability. Directing resources straight to vulnerable and verified families without corporate friction remains my absolute non-negotiable target. Your clean trust is our true foundational strength.</p>
                         </div>
                     </div>
-                    <div class="pt-2 border-t border-slate-100 mt-3 text-center text-xs font-black text-emerald-800 uppercase tracking-widest bg-emerald-50/30 py-1 rounded-md">
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-3 text-center text-xs font-black text-emerald-800 dark:text-emerald-400 uppercase tracking-widest bg-emerald-50 dark:bg-emerald-900/20 py-1 rounded-md">
                         "पहला हमेशा पहला"
                     </div>
                 </div>
 
-                <div class="bg-white border-l-4 border-slate-700 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+                <!-- Card 5 -->
+                <div class="bg-white dark:bg-slate-800 border-l-4 border-slate-700 dark:border-slate-500 rounded-xl p-5 shadow-sm flex flex-col justify-between transition-colors">
                     <div class="space-y-3">
-                        <div class="flex items-center gap-3 border-b border-slate-100 pb-2">
-                            <div class="w-10 h-10 rounded-full border border-slate-200 overflow-hidden shrink-0 bg-white p-0.5">
+                        <div class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 pb-2">
+                            <div class="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-600 overflow-hidden shrink-0 bg-white p-0.5">
                                 <img src="Gewa.jpeg" alt="Gewa Logo" class="w-full h-full object-cover rounded-full">
                             </div>
                             <div>
-                                <h4 class="font-bold text-sm text-slate-900 leading-none">Hav Sunil Kumar Ahlawat(Retd.)</h4>
-                                <p class="text-[9px] text-slate-400 font-bold uppercase mt-0.5">Co-Treasurer, GEWA</p>
+                                <h4 class="font-bold text-sm text-slate-900 dark:text-white leading-none">Hav Sunil Kumar Ahlawat(Retd.)</h4>
+                                <p class="text-[9px] text-slate-400 dark:text-slate-300 font-bold uppercase mt-0.5">Co-Treasurer, GEWA</p>
                             </div>
                         </div>
-                        <p class="text-[11px] font-bold text-slate-700">"पारदर्शी वित्तीय प्रबंधन और कड़ा आर्थिक अनुशासन ही किसी भी कल्याणकारी सामाजिक व्यवस्था की अखंडता का वास्तविक आधार होता है।"</p>
+                        <p class="text-[11px] font-bold text-slate-700 dark:text-slate-300">"पारदर्शी वित्तीय प्रबंधन और कड़ा आर्थिक अनुशासन ही किसी भी कल्याणकारी सामाजिक व्यवस्था की अखंडता का वास्तविक आधार होता है।"</p>
                         
-                        <div data-lang="hi" class="text-xs text-slate-500 space-y-1.5 leading-relaxed font-medium">
-                            <p class="font-bold text-slate-700">2 Guards (1 Grenadiers)प्रिय वीर साथियों, प्रबुद्ध वेटरन्स एवं आदरणीय माताओं-बहनों,</p>
+                        <div data-lang="hi" class="text-xs text-slate-500 dark:text-slate-400 space-y-1.5 leading-relaxed font-medium">
+                            <p class="font-bold text-slate-700 dark:text-slate-200">2 Guards (1 Grenadiers)प्रिय वीर साथियों, प्रबुद्ध वेटरन्स एवं आदरणीय माताओं-बहनों,</p>
                             <p>सह-कोषाध्यक्ष के रूप में मेरा मुख्य दायित्व संस्था की वित्तीय व्यवस्था को सुदृढ़, त्रुटिहीन, व्यावहारिक और पूर्णतः पारदर्शी बनाए रखने में हमारी कोषाध्यक्ष और मुख्य कार्यकारिणी का पूर्ण सहयोग करना है। हमारा यह संयुक्त कोष हमारे सदस्यों की गाढ़ी कमाई का अंश है, अतः इसके एक-एक रुपये के उपयोग में सैनिक शुचिता का पालन अनिवार्य है。</p>
                             <p>हमारा सामूहिक और दृढ़ लक्ष्य यह सुनिश्चित करना है कि बेटियों के लिए कन्यादान अनुदान राशि (₹11,000 / ₹21,000), मेधावी बच्चों के लिए छात्रवृत्ति पुरस्कार, अथवा किसी सैनिक परिवार पर आए अनपेक्षित आपातकालीन संकटों के समय राहत राशि का आवंटन बिना किसी प्रशासनिक जटिलता के सीधे और समय पर पहुँच सके। वित्तीय शुचिता और त्वरित सेवा ही हमारा मूल मंत्र है।</p>
                         </div>
-
-                        <div data-lang="en" class="text-xs text-slate-500 space-y-1.5 leading-relaxed font-medium">
-                            <p class="font-bold text-slate-700">2 Guards (1 Grenadiers)Dear brave comrades, wise veterans, and family lines,</p>
+                        
+                        <div data-lang="en" class="text-xs text-slate-500 dark:text-slate-400 space-y-1.5 leading-relaxed font-medium">
+                            <p class="font-bold text-slate-700 dark:text-slate-200">2 Guards (1 Grenadiers)Dear brave comrades, wise veterans, and family lines,</p>
                             <p>As the Co-Treasurer, my ultimate mission parameters dictate providing seamless assistance to preserve an absolute ironclad fiscal discipline. This consolidated fund is backed by real grit; therefore, allocating each transaction demands precise regimental oversight.</p>
                             <p>Our combined operational target is to ensure that daughter wedding grants, academic excellence rewards, or rapid crisis mitigations are executed instantly. Eliminating bottleneck delays to dispatch liquid support during critical windows is our code.</p>
                         </div>
                     </div>
-                    <div class="pt-2 border-t border-slate-100 mt-3 text-center text-xs font-black text-slate-700 uppercase tracking-widest bg-slate-100 py-1 rounded-md">
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-3 text-center text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest bg-slate-100 dark:bg-slate-700/50 py-1 rounded-md transition-colors">
                         "पहला हमेशा पहला"
                     </div>
                 </div>
@@ -391,65 +402,67 @@
         </div>
     </section>
 
-    <section id="live-impact" class="py-12 bg-white border-b border-slate-200 scroll-mt-16">
+    <!-- IMPACT SECTION -->
+    <section id="live-impact" class="py-12 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto px-4">
-            <h3 class="text-center text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-8">Live Impact Status (वास्तविक प्रभाव स्थिति)</h3>
+            <h3 class="text-center text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-8">Live Impact Status (वास्तविक प्रभाव स्थिति)</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center">
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                    <div class="text-2xl font-black text-emerald-800">500+</div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="text-2xl font-black text-emerald-800 dark:text-emerald-400">500+</div>
                     <div class="text-[10px] font-bold text-slate-500 uppercase mt-1">Registered Members</div>
                 </div>
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                    <div class="text-2xl font-black text-emerald-800">120+</div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="text-2xl font-black text-emerald-800 dark:text-emerald-400">120+</div>
                     <div class="text-[10px] font-bold text-slate-500 uppercase mt-1">Families Supported</div>
                 </div>
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                    <div class="text-2xl font-black text-maroon-military">₹11,000+</div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="text-2xl font-black text-maroon-military dark:text-red-400">₹11,000+</div>
                     <div class="text-[10px] font-bold text-slate-500 uppercase mt-1">Marriage Blessings Scale</div>
                 </div>
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                    <div class="text-2xl font-black text-red-600">₹50,000</div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="text-2xl font-black text-red-600 dark:text-red-400">₹50,000</div>
                     <div class="text-[10px] font-bold text-slate-500 uppercase mt-1">Martyr Family Support Tier</div>
                 </div>
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                    <div class="text-2xl font-black text-emerald-800">5 Lakhs+</div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="text-2xl font-black text-emerald-800 dark:text-emerald-400">5 Lakhs+</div>
                     <div class="text-[10px] font-bold text-slate-500 uppercase mt-1">Welfare Corpus Fund</div>
                 </div>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mt-4">
-                <div class="p-3 bg-slate-50/60 rounded-xl border border-slate-100 text-xs font-bold text-slate-600"><i class="fa-solid fa-droplet text-red-500 mr-1.5"></i> Blood Donors Registered</div>
-                <div class="p-3 bg-slate-50/60 rounded-xl border border-slate-100 text-xs font-bold text-slate-600"><i class="fa-solid fa-tree text-emerald-600 mr-1.5"></i> Tree Mitra 🌳 Mission</div>
-                <div class="p-3 bg-slate-50/60 rounded-xl border border-slate-100 text-xs font-bold text-slate-700 mr-1.5"><i class="fa-solid fa-user-shield"></i> Active Volunteers</div>
-                <div class="p-3 bg-slate-50/60 rounded-xl border border-slate-100 text-xs font-bold text-slate-600"><i class="fa-solid fa-award text-amber-500 mr-1.5"></i> Student Achievement Awards</div>
+                <div class="p-3 bg-slate-50/60 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300"><i class="fa-solid fa-droplet text-red-500 mr-1.5"></i> Blood Donors Registered</div>
+                <div class="p-3 bg-slate-50/60 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300"><i class="fa-solid fa-tree text-emerald-600 mr-1.5"></i> Tree Mitra 🌳 Mission</div>
+                <div class="p-3 bg-slate-50/60 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 mr-1.5"><i class="fa-solid fa-user-shield"></i> Active Volunteers</div>
+                <div class="p-3 bg-slate-50/60 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300"><i class="fa-solid fa-award text-amber-500 mr-1.5"></i> Student Achievement Awards</div>
             </div>
         </div>
     </section>
 
+    <!-- ABOUT SECTION -->
     <section id="about-gewa" class="py-20 px-4 max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 scroll-mt-16">
         <div class="lg:col-span-7 space-y-6">
-            <span class="text-maroon-military text-xs font-extrabold uppercase tracking-widest block">About the Association (संस्था परिचय)</span>
-            <h2 class="text-3xl font-black text-slate-900 tracking-tight leading-none">The Architecture of GEWA</h2>
-            <p class="text-sm text-slate-600 leading-relaxed font-light">
+            <span class="text-maroon-military dark:text-red-400 text-xs font-extrabold uppercase tracking-widest block">About the Association (संस्था परिचय)</span>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-none">The Architecture of GEWA</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-light">
                 Gurais Ex-Servicemen Welfare Association (GEWA) stands as an elite institutional framework committed to ensuring absolute welfare, operational stability, and regimental pride for the veterans and families of the 2 Guards unit.
             </p>
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 text-xs font-mono text-slate-600 space-y-1 shadow-sm">
-                <div><strong>Registration Title:</strong> Gurais Ex-Servicemen Welfare Association</div>
-                <div><strong>Authority:</strong> Registrar of Societies, Distt. Delhi</div>
-                <div><strong>Registration Number:</strong> S-E/1519/Distt. Delhi/2023</div>
-                <div><strong>Legal Status:</strong> Valid Certified Indian Non-Profit Veteran Organ</div>
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-xs font-mono text-slate-600 dark:text-slate-300 space-y-1 shadow-sm transition-colors">
+                <div><strong class="dark:text-white">Registration Title:</strong> Gurais Ex-Servicemen Welfare Association</div>
+                <div><strong class="dark:text-white">Authority:</strong> Registrar of Societies, Distt. Delhi</div>
+                <div><strong class="dark:text-white">Registration Number:</strong> S-E/1519/Distt. Delhi/2023</div>
+                <div><strong class="dark:text-white">Legal Status:</strong> Valid Certified Indian Non-Profit Veteran Organ</div>
             </div>
             <div class="grid sm:grid-cols-2 gap-4 text-xs">
-                <div class="bg-white p-5 rounded-xl border border-slate-200">
-                    <h4 class="font-extrabold text-slate-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-eye text-emerald-700"></i> Vision</h4>
-                    <p class="text-slate-500 leading-relaxed font-light">To guarantee an honorable, secure, and unified ecosystem for all verified kin and brothers-in-arms.</p>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 transition-colors">
+                    <h4 class="font-extrabold text-slate-900 dark:text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-eye text-emerald-700 dark:text-emerald-400"></i> Vision</h4>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed font-light">To guarantee an honorable, secure, and unified ecosystem for all verified kin and brothers-in-arms.</p>
                 </div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200">
-                    <h4 class="font-extrabold text-slate-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-700"></i> Mission</h4>
-                    <p class="text-slate-500 leading-relaxed font-light">Administering zero-delay support across pension audits, educational aid, and swift financial shield mobilization.</p>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 transition-colors">
+                    <h4 class="font-extrabold text-slate-900 dark:text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-700 dark:text-emerald-400"></i> Mission</h4>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed font-light">Administering zero-delay support across pension audits, educational aid, and swift financial shield mobilization.</p>
                 </div>
             </div>
         </div>
-        <div class="lg:col-span-5 bg-olive-dark text-white p-6 rounded-3xl border border-slate-800 flex flex-col justify-between shadow-xl">
+        <div class="lg:col-span-5 bg-olive-dark text-white p-6 rounded-3xl border border-slate-800 dark:border-slate-700 flex flex-col justify-between shadow-xl">
             <h3 class="font-bold text-sm tracking-wide text-amber-400 border-b border-slate-800 pb-2"><i class="fa-solid fa-file-shield"></i> Constitutional Objectives</h3>
             <ul class="text-xs space-y-3 my-4 text-slate-300 font-light leading-relaxed">
                 <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i> <span>Preservation of regimental bond values and operations continuity data.</span></li>
@@ -460,6 +473,7 @@
         </div>
     </section>
 
+    <!-- HERITAGE SECTION -->
     <section id="heritage" class="py-24 bg-slate-900 text-white px-4 scroll-mt-16">
         <div class="max-w-7xl mx-auto space-y-4 text-center">
             <span class="text-amber-400 text-xs font-bold uppercase tracking-widest block">Our Heritage (हमारा इतिहास)</span>
@@ -475,6 +489,7 @@
         </div>
     </section>
 
+    <!-- PLEDGE SECTION -->
     <section id="leadership-pledge" class="py-16 bg-gradient-to-br from-slate-900 to-emerald-950 text-white px-4 border-t-4 border-emerald-600 relative overflow-hidden shadow-xl scroll-mt-16">
         <div class="absolute top-0 right-0 p-8 opacity-5 text-7xl"><i class="fa-solid fa-building-shield"></i></div>
         <div class="max-w-4xl mx-auto text-center space-y-4">
@@ -490,6 +505,7 @@
         </div>
     </section>
 
+    <!-- WALL OF GRATITUDE -->
     <section id="wall-of-gratitude" class="py-16 bg-slate-950 text-white px-4 text-center scroll-mt-16">
         <span class="text-amber-400 text-xs font-extrabold uppercase tracking-widest block mb-1">Wall of Gratitude (कृतज्ञता फलक)</span>
         <h3 class="text-2xl font-black text-slate-200 tracking-tight">Honor Roll of Core Supporters</h3>
@@ -519,149 +535,153 @@
         </div>
     </section>
 
-    <section id="hall-of-honour" class="py-20 bg-white border-b border-slate-200 scroll-mt-16">
+    <!-- HALL OF HONOUR -->
+    <section id="hall-of-honour" class="py-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <span class="text-maroon-military text-xs font-extrabold uppercase tracking-widest block mb-2">Hall of Honour (सम्मान कक्ष)</span>
-            <h2 class="text-3xl font-black text-slate-900 tracking-tight">The Guardians of Sovereignty</h2>
+            <span class="text-maroon-military dark:text-red-400 text-xs font-extrabold uppercase tracking-widest block mb-2">Hall of Honour (सम्मान कक्ष)</span>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">The Guardians of Sovereignty</h2>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 text-left">
-                <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                    <h3 class="font-extrabold text-red-700 text-sm uppercase tracking-wide"><i class="fa-solid fa-ribbon"></i> Martyrs Registry</h3>
-                    <p class="text-xs text-slate-500 mt-1 font-light">The complete archive roster of unit legends who laid down their lives for Bharat Mata.</p>
+                <div class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-2xl transition-colors">
+                    <h3 class="font-extrabold text-red-700 dark:text-red-400 text-sm uppercase tracking-wide"><i class="fa-solid fa-ribbon"></i> Martyrs Registry</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-light">The complete archive roster of unit legends who laid down their lives for Bharat Mata.</p>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                    <h3 class="font-extrabold text-slate-900 text-sm uppercase tracking-wide"><i class="fa-solid fa-shield-heart"></i> Veer Naris Registry</h3>
-                    <p class="text-xs text-slate-500 mt-1 font-light">Centralized coordination framework ensuring immediate household relief for families of martyrs.</p>
+                <div class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-2xl transition-colors">
+                    <h3 class="font-extrabold text-slate-900 dark:text-white text-sm uppercase tracking-wide"><i class="fa-solid fa-shield-heart"></i> Veer Naris Registry</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-light">Centralized coordination framework ensuring immediate household relief for families of martyrs.</p>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                    <h3 class="font-extrabold text-amber-600 text-sm uppercase tracking-wide"><i class="fa-solid fa-award"></i> Gallantry Winners</h3>
-                    <p class="text-xs text-slate-500 mt-1 font-light">Roster recording Param Vir Chakra, Maha Vir Chakra, Vir Chakra, and Sena Medal recipients.</p>
+                <div class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-2xl transition-colors">
+                    <h3 class="font-extrabold text-amber-600 dark:text-amber-400 text-sm uppercase tracking-wide"><i class="fa-solid fa-award"></i> Gallantry Winners</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-light">Roster recording Param Vir Chakra, Maha Vir Chakra, Vir Chakra, and Sena Medal recipients.</p>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                    <h3 class="font-extrabold text-slate-900 text-sm uppercase tracking-wide"><i class="fa-solid fa-user-tie"></i> Distinguished Veterans</h3>
-                    <p class="text-xs text-slate-500 mt-1 font-light">Roster of Former Commanding Officers, Subedar Majors, and unit pillars across India.</p>
+                <div class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-2xl transition-colors">
+                    <h3 class="font-extrabold text-slate-900 dark:text-white text-sm uppercase tracking-wide"><i class="fa-solid fa-user-tie"></i> Distinguished Veterans</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-light">Roster of Former Commanding Officers, Subedar Majors, and unit pillars across India.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- WELFARE SECTION -->
     <section id="welfare" class="py-24 px-4 max-w-7xl mx-auto scroll-mt-16">
         <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-emerald-800 text-xs font-extrabold uppercase tracking-widest block mb-2">Institutional Deploys</span>
-            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Active Welfare Programs</h2>
+            <span class="text-emerald-800 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-widest block mb-2">Institutional Deploys</span>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Active Welfare Programs</h2>
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between">
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between transition-colors">
                 <div class="space-y-2">
-                    <h3 class="font-bold text-base text-slate-900 flex items-center gap-2"><i class="fa-solid fa-heart text-amber-500"></i> Marriage Blessing Grant</h3>
-                    <p class="text-slate-500 font-light">Dignified financial gift disbursed toward the wedding ceremonies of dependants of resource-constrained unit veterans.</p>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-heart text-amber-500"></i> Marriage Blessing Grant</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Dignified financial gift disbursed toward the wedding ceremonies of dependants of resource-constrained unit veterans.</p>
                 </div>
-                <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[11px] font-bold">
-                    <span class="text-slate-400">Assistance Amount</span>
-                    <span class="text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">₹11,000 Scaled</span>
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-[11px] font-bold">
+                    <span class="text-slate-400 dark:text-slate-500">Assistance Amount</span>
+                    <span class="text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded">₹11,000 Scaled</span>
                 </div>
             </div>
 
-            <div class="bg-white border border-maroon p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-maroon-military text-amber-400 text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-bl">Honor Support</div>
+            <div class="bg-white dark:bg-slate-800 border border-maroon dark:border-red-500 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between relative overflow-hidden transition-colors">
+                <div class="absolute top-0 right-0 bg-maroon-military dark:bg-red-800 text-amber-400 text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-bl">Honor Support</div>
                 <div class="space-y-2">
-                    <h3 class="font-bold text-base text-slate-900 flex items-center gap-2"><i class="fa-solid fa-ring text-maroon-military"></i> Martyr Daughter Wedding</h3>
-                    <p class="text-slate-500 font-light">Allocated to celebrate and support the matrimonial ceremonies of daughters of our immortal unit martyrs.</p>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-ring text-maroon-military dark:text-red-400"></i> Martyr Daughter Wedding</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Allocated to celebrate and support the matrimonial ceremonies of daughters of our immortal unit martyrs.</p>
                 </div>
-                <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[11px] font-bold">
-                    <span class="text-slate-400">Assistance Amount</span>
-                    <span class="text-maroon-military bg-red-50 px-2 py-0.5 rounded">₹21,000 Shield</span>
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-[11px] font-bold">
+                    <span class="text-slate-400 dark:text-slate-500">Assistance Amount</span>
+                    <span class="text-maroon-military dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-2 py-0.5 rounded">₹21,000 Shield</span>
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between">
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between transition-colors">
                 <div class="space-y-2">
-                    <h3 class="font-bold text-base text-slate-900 flex items-center gap-2"><i class="fa-solid fa-shield-heart text-red-600"></i> Martyr Family Support</h3>
-                    <p class="text-slate-500 font-light">Immediate financial emergency assistance deployed to support families during unforeseen household health crises markers.</p>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-shield-heart text-red-600 dark:text-red-400"></i> Martyr Family Support</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Immediate financial emergency assistance deployed to support families during unforeseen household health crises markers.</p>
                 </div>
-                <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[11px] font-bold">
-                    <span class="text-slate-400">Immediate Allocation</span>
-                    <span class="text-red-600 bg-red-50 px-2 py-0.5 rounded">₹50,000 Liquid</span>
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-[11px] font-bold">
+                    <span class="text-slate-400 dark:text-slate-500">Immediate Allocation</span>
+                    <span class="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-2 py-0.5 rounded">₹50,000 Liquid</span>
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between">
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between transition-colors">
                 <div class="space-y-2">
-                    <h3 class="font-bold text-base text-slate-900 flex items-center gap-2"><i class="fa-solid fa-building-columns text-slate-800"></i> Military Honour Support</h3>
-                    <p class="text-slate-500 font-light">Coordinating complete funeral protocol layout: Guard of Honour coordination, floral tributes, family tracking coordination, and refreshment/lunch arrangement.</p>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-building-columns text-slate-800 dark:text-slate-200"></i> Military Honour Support</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Coordinating complete funeral protocol layout: Guard of Honour coordination, floral tributes, family tracking coordination, and refreshment/lunch arrangement.</p>
                 </div>
-                <span class="text-[9px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-bold uppercase tracking-wider self-start">Protocol Bound</span>
+                <span class="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-2 py-0.5 rounded font-bold uppercase tracking-wider self-start">Protocol Bound</span>
             </div>
 
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between">
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between transition-colors">
                 <div class="space-y-2">
-                    <h3 class="font-bold text-base text-slate-900 flex items-center gap-2"><i class="fa-solid fa-user-graduate text-emerald-800"></i> Student Achievement</h3>
-                    <p class="text-slate-500 font-light">Honoring younger dependants who secure exemplary national selection markers or high percentages in competitive exams.</p>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-user-graduate text-emerald-800 dark:text-emerald-400"></i> Student Achievement</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Honoring younger dependants who secure exemplary national selection markers or high percentages in competitive exams.</p>
                 </div>
-                <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[11px] font-bold">
-                    <span class="text-slate-400">Grade-I Award Scale</span>
-                    <span class="text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">₹11,000 Grant</span>
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-[11px] font-bold">
+                    <span class="text-slate-400 dark:text-slate-500">Grade-I Award Scale</span>
+                    <span class="text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded">₹11,000 Grant</span>
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between">
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-2xl shadow-sm space-y-3 flex flex-col justify-between transition-colors">
                 <div class="space-y-2">
-                    <h3 class="font-bold text-base text-slate-900 flex items-center gap-2"><i class="fa-solid fa-file-invoice text-slate-800"></i> Family Welfare Guidance</h3>
-                    <p class="text-slate-500 font-light">Expert administrative workflow clearing: AGI Claims, DSP Account setups, Pension audits, bank claims, and loan files.</p>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-file-invoice text-slate-800 dark:text-slate-200"></i> Family Welfare Guidance</h3>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Expert administrative workflow clearing: AGI Claims, DSP Account setups, Pension audits, bank claims, and loan files.</p>
                 </div>
-                <span class="text-[9px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-bold uppercase tracking-wider self-start">Information Hub</span>
+                <span class="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-2 py-0.5 rounded font-bold uppercase tracking-wider self-start">Information Hub</span>
             </div>
         </div>
     </section>
 
-    <section id="social-responsibility" class="py-16 bg-slate-100 border-y border-slate-200 px-4 scroll-mt-16">
+    <!-- SOCIAL RESPONSIBILITY -->
+    <section id="social-responsibility" class="py-16 bg-slate-100 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 px-4 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto">
-            <h3 class="text-center text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-10">Social Responsibility (सामाजिक उत्तरदायित्व)</h3>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs text-slate-700">
-                <div class="bg-white p-5 rounded-xl border border-slate-200/60 shadow-sm"><h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-droplet text-red-500"></i> Blood Donation</h4>Organizing regional donation repositories and urgent donor rosters.</div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200/60 shadow-sm"><h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-tree text-emerald-600"></i> Tree Mitra Mission 🌳</h4>Annual environment campaigns executing mass tree plantations across districts.</div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200/60 shadow-sm"><h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-kit-medical text-blue-600"></i> Disaster & Medical Camps</h4>Deploying rapid coordination networks for flood relief and health awareness camps.</div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200/60 shadow-sm"><h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-users-line text-slate-700"></i> Community Service</h4>Enforcing disciplined citizen initiatives and local public support assets.</div>
+            <h3 class="text-center text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-10">Social Responsibility (सामाजिक उत्तरदायित्व)</h3>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs text-slate-700 dark:text-slate-300">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200/60 dark:border-slate-700 shadow-sm transition-colors"><h4 class="font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-droplet text-red-500"></i> Blood Donation</h4>Organizing regional donation repositories and urgent donor rosters.</div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200/60 dark:border-slate-700 shadow-sm transition-colors"><h4 class="font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-tree text-emerald-600"></i> Tree Mitra Mission 🌳</h4>Annual environment campaigns executing mass tree plantations across districts.</div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200/60 dark:border-slate-700 shadow-sm transition-colors"><h4 class="font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-kit-medical text-blue-600"></i> Disaster & Medical Camps</h4>Deploying rapid coordination networks for flood relief and health awareness camps.</div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200/60 dark:border-slate-700 shadow-sm transition-colors"><h4 class="font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-users-line text-slate-700 dark:text-slate-400"></i> Community Service</h4>Enforcing disciplined citizen initiatives and local public support assets.</div>
             </div>
         </div>
     </section>
 
+    <!-- VOLUNTEER FORM SECTION -->
     <section id="volunteer" class="py-20 px-4 max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center scroll-mt-16">
         <div class="lg:col-span-4 space-y-4">
-            <span class="bg-emerald-200 text-emerald-900 text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider inline-block">Join the Alliance</span>
-            <h2 class="text-3xl font-black text-slate-950 tracking-tight leading-none" data-lang="hi">स्वयंसेवक मिशन</h2>
-            <h2 class="text-3xl font-black text-slate-950 tracking-tight leading-none" data-lang="en">The Volunteer Mission</h2>
-            <p class="text-sm text-slate-600 font-light leading-relaxed">
+            <span class="bg-emerald-200 dark:bg-emerald-900/50 text-emerald-900 dark:text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider inline-block">Join the Alliance</span>
+            <h2 class="text-3xl font-black text-slate-950 dark:text-white tracking-tight leading-none" data-lang="hi">स्वयंसेवक मिशन</h2>
+            <h2 class="text-3xl font-black text-slate-950 dark:text-white tracking-tight leading-none" data-lang="en">The Volunteer Mission</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-300 font-light leading-relaxed">
                 Step forward to support our veteran families. GEWA coordinates professional alliances across diverse domains to provide pro-bono support networks.
             </p>
-            <div class="flex flex-wrap gap-2 text-[10px] font-bold text-slate-600">
-                <span class="bg-white px-2 py-1 rounded-md border border-slate-200"><i class="fa-solid fa-user-doctor text-red-500 mr-1"></i> Doctor</span>
-                <span class="bg-white px-2 py-1 rounded-md border border-slate-200"><i class="fa-solid fa-scale-balanced text-blue-500 mr-1"></i> Advocate</span>
-                <span class="bg-white px-2 py-1 rounded-md border border-slate-200"><i class="fa-solid fa-graduation-cap text-emerald-600 mr-1"></i> Teacher / CDS Mentor</span>
-                <span class="bg-white px-2 py-1 rounded-md border border-slate-200"><i class="fa-solid fa-laptop-code text-slate-700 mr-1"></i> IT Specialist</span>
-                <span class="bg-white px-2 py-1 rounded-md border border-slate-200"><i class="fa-solid fa-medal text-amber-600 mr-1"></i> Veteran Member</span>
+            <div class="flex flex-wrap gap-2 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                <span class="bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-user-doctor text-red-500 mr-1"></i> Doctor</span>
+                <span class="bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-scale-balanced text-blue-500 mr-1"></i> Advocate</span>
+                <span class="bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-graduation-cap text-emerald-600 mr-1"></i> Teacher / CDS Mentor</span>
+                <span class="bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-laptop-code text-slate-700 dark:text-slate-400 mr-1"></i> IT Specialist</span>
+                <span class="bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-medal text-amber-600 mr-1"></i> Veteran Member</span>
             </div>
         </div>
         
-        <div class="lg:col-span-8 bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-slate-200">
-            <div class="border-b border-slate-100 pb-3 mb-5 flex justify-between items-center">
-                <h4 class="font-extrabold text-sm text-slate-900 tracking-tight uppercase flex items-center gap-2">
-                    <i class="fa-solid fa-id-card text-emerald-800"></i> GEWA Registration Desk (केंद्रीय पंजीकरण फॉर्म)
+        <div class="lg:col-span-8 bg-white dark:bg-slate-800 p-6 md:p-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 transition-colors">
+            <div class="border-b border-slate-100 dark:border-slate-700 pb-3 mb-5 flex justify-between items-center">
+                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white tracking-tight uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-id-card text-emerald-800 dark:text-emerald-400"></i> GEWA Registration Desk (केंद्रीय पंजीकरण फॉर्म)
                 </h4>
-                <span class="text-[9px] bg-slate-100 text-slate-400 font-mono px-2 py-0.5 rounded uppercase">Format: Mil-Core v2</span>
+                <span class="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-300 font-mono px-2 py-0.5 rounded uppercase">Format: Mil-Core v2</span>
             </div>
             
             <form id="volunteerForm" name="gewa-volunteers-v1" method="POST" data-netlify="true" class="space-y-4 text-xs">
                 
                 <div class="grid sm:grid-cols-3 gap-4">
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">Full Name (पूरा नाम)</label>
-                        <input type="text" id="volunteerName" name="name" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition font-medium" placeholder="e.g., Mayank Yadav" required>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name (पूरा नाम)</label>
+                        <input type="text" id="volunteerName" name="name" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition font-medium" placeholder="e.g., Mayank Yadav" required>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">Service Status (सेवा स्थिति)</label>
-                        <select id="volunteerServiceStatus" name="service_status" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition text-slate-600 font-medium cursor-pointer" required>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Service Status (सेवा स्थिति)</label>
+                        <select id="volunteerServiceStatus" name="service_status" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition font-medium cursor-pointer" required>
                             <option value="" disabled selected>Select status...</option>
                             <option value="Retired (सेवानिवृत्त पूर्व सैनिक)">Retired (सेवानिवृत्त पूर्व सैनिक)</option>
                             <option value="Serving (वर्तमान कार्यरत सैनिक)">Serving (वर्तमान कार्यरत सैनिक)</option>
@@ -669,125 +689,129 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">Army No. / Rank / Profession</label>
-                        <input type="text" id="volunteerMilDetails" name="military_details" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition font-medium" placeholder="e.g., JC-345678X H/Capt" required>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Army No. / Rank / Profession</label>
+                        <input type="text" id="volunteerMilDetails" name="military_details" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition font-medium" placeholder="e.g., JC-345678X H/Capt" required>
                     </div>
                 </div>
 
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">Mobile Number (मोबाइल नंबर)</label>
-                        <input type="tel" id="volunteerPhone" name="phone" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition font-mono font-medium" placeholder="+91..." required>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mobile Number (मोबाइल नंबर)</label>
+                        <input type="tel" id="volunteerPhone" name="phone" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition font-mono font-medium" placeholder="+91..." required>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">Email Address (ईमेल पता)</label>
-                        <input type="email" id="volunteerEmail" name="email" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition font-medium" placeholder="name@domain.com" required>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Email Address (ईमेल पता)</label>
+                        <input type="email" id="volunteerEmail" name="email" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition font-medium" placeholder="name@domain.com" required>
                     </div>
                 </div>
 
                 <div class="grid sm:grid-cols-3 gap-4">
                     <div class="sm:col-span-2">
-                        <label class="block font-bold text-slate-700 mb-1">Full Permanent Address (स्थायी पता)</label>
-                        <input type="text" id="volunteerAddress" name="permanent_address" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition font-medium" placeholder="House No, Village/Sector, Tehsil..." required>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Permanent Address (स्थायी पता)</label>
+                        <input type="text" id="volunteerAddress" name="permanent_address" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition font-medium" placeholder="House No, Village/Sector, Tehsil..." required>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">District & State (ज़िला और राज्य)</label>
-                        <input type="text" id="volunteerLocation" name="location" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition font-medium" placeholder="e.g., Rohini, Delhi" required>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">District & State (ज़िला और राज्य)</label>
+                        <input type="text" id="volunteerLocation" name="location" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition font-medium" placeholder="e.g., Rohini, Delhi" required>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">Area of Support / Core Remarks (सहयोग क्षेत्र / विशेष संदेश)</label>
-                    <textarea id="volunteerMessage" name="message" rows="3" class="w-full border border-slate-200 bg-slate-50/50 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition resize-none font-medium" placeholder="Write any specific regimental detail or expertise..." required></textarea>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Area of Support / Core Remarks (सहयोग क्षेत्र / विशेष संदेश)</label>
+                    <textarea id="volunteerMessage" name="message" rows="3" class="w-full border border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white dark:focus:bg-slate-950 transition resize-none font-medium" placeholder="Write any specific regimental detail or expertise..." required></textarea>
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3.5 rounded-xl shadow shadow-emerald-900/20 transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow shadow-emerald-900/20 transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
                     <i class="fa-brands fa-whatsapp text-sm"></i> Authenticate & Submit to HQ
                 </button>
             </form>
         </div>
     </section>
 
-    <section id="success-stories" class="py-20 bg-slate-50 border-t border-slate-200 px-4 scroll-mt-16">
+    <!-- SUCCESS STORIES -->
+    <section id="success-stories" class="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 px-4 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto">
-            <h3 class="text-center text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-10">Success Stories (सफलता की कहानियां)</h3>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs text-slate-600 font-light leading-relaxed">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-900 text-sm mb-1">Marriage Blessing Disbursal</h4>Disbursed emergency welfare marriage funds to verified veteran families, completing coordination records.</div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-900 text-sm mb-1">DSP Account Benefit Recovered</h4>Resolved bank processing delays, securing full DSP smart account benefits for a veteran's household.</div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm"><h4 class="font-bold text-slate-900 text-sm mb-1">Academic Milestone</h4>Disbursed Grade-I Student Achievement Award tracking parameters backing outstanding selection milestones.</div>
+            <h3 class="text-center text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-10">Success Stories (सफलता की कहानियां)</h3>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs text-slate-600 dark:text-slate-300 font-light leading-relaxed">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors"><h4 class="font-bold text-slate-900 dark:text-white text-sm mb-1">Marriage Blessing Disbursal</h4>Disbursed emergency welfare marriage funds to verified veteran families, completing coordination records.</div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors"><h4 class="font-bold text-slate-900 dark:text-white text-sm mb-1">DSP Account Benefit Recovered</h4>Resolved bank processing delays, securing full DSP smart account benefits for a veteran's household.</div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors"><h4 class="font-bold text-slate-900 dark:text-white text-sm mb-1">Academic Milestone</h4>Disbursed Grade-I Student Achievement Award tracking parameters backing outstanding selection milestones.</div>
             </div>
         </div>
     </section>
 
-    <section id="news-events" class="py-16 bg-slate-50 border-b border-slate-200 px-4 scroll-mt-16">
+    <!-- NEWS EVENTS -->
+    <section id="news-events" class="py-16 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-4 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto text-xs">
-            <h3 class="text-center text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-8">News & Latest Activities (समाचार एवं कार्यक्रम)</h3>
+            <h3 class="text-center text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-8">News & Latest Activities (समाचार एवं कार्यक्रम)</h3>
             <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-2">
-                    <span class="text-amber-600 font-bold uppercase tracking-wider text-[9px] block">Upcoming Assembly</span>
-                    <h4 class="font-bold text-slate-900 text-sm">Gurais Day Memorial Rally Planning</h4>
-                    <p class="text-slate-500 font-light">Coordination maps layout across administrative blocks to schedule final dates and logistics rosters.</p>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 transition-colors">
+                    <span class="text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider text-[9px] block">Upcoming Assembly</span>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">Gurais Day Memorial Rally Planning</h4>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Coordination maps layout across administrative blocks to schedule final dates and logistics rosters.</p>
                 </div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-2">
-                    <span class="text-emerald-700 font-bold uppercase tracking-wider text-[9px] block">Latest Field Activity</span>
-                    <h4 class="font-bold text-slate-900 text-sm">Tree Mitra Reforestation Camp Completed</h4>
-                    <p class="text-slate-500 font-light">Enforced district environment protocols, completing plantation targets with local volunteer tracking.</p>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 transition-colors">
+                    <span class="text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-wider text-[9px] block">Latest Field Activity</span>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">Tree Mitra Reforestation Camp Completed</h4>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Enforced district environment protocols, completing plantation targets with local volunteer tracking.</p>
                 </div>
-                <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-2">
-                    <span class="text-slate-500 font-bold uppercase tracking-wider text-[9px] block">Press Clearance</span>
-                    <h4 class="font-bold text-slate-900 text-sm">Regional Press Roster Notification</h4>
-                    <p class="text-slate-500 font-light">Published audited reports and transparency balance charts to ensure continuous institutional validation.</p>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 transition-colors">
+                    <span class="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[9px] block">Press Clearance</span>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">Regional Press Roster Notification</h4>
+                    <p class="text-slate-500 dark:text-slate-400 font-light">Published audited reports and transparency balance charts to ensure continuous institutional validation.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- KNOWLEDGE CENTRE -->
     <section id="knowledge-centre" class="py-20 px-4 max-w-4xl mx-auto scroll-mt-16">
         <div class="text-center mb-12">
-            <span class="text-emerald-800 text-xs font-extrabold uppercase tracking-widest block mb-1">Knowledge Centre (ज्ञान केंद्र)</span>
-            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Downloads & Guidelines Vault</h2>
+            <span class="text-emerald-800 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-widest block mb-1">Knowledge Centre (ज्ञान केंद्र)</span>
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Downloads & Guidelines Vault</h2>
         </div>
         
-        <div class="space-y-3 text-xs font-bold text-slate-800">
+        <div class="space-y-3 text-xs font-bold text-slate-800 dark:text-slate-200">
             <div class="bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/30 p-4 rounded-xl flex items-center justify-between gap-4 shadow-sm hover:bg-amber-500/5 transition">
-                <div class="flex items-center gap-3"><i class="fa-solid fa-file-pdf text-red-600 text-lg"></i> <div><h4 class="text-slate-900 font-extrabold">Our Former Commanding Officers - Our Legacy</h4><p class="text-[10px] font-light text-slate-400 mt-0.5">Format: Official Compiled PDF Document • Full Lineage Archive (1947 - Present)</p></div></div>
+                <div class="flex items-center gap-3"><i class="fa-solid fa-file-pdf text-red-600 dark:text-red-400 text-lg"></i> <div><h4 class="text-slate-900 dark:text-white font-extrabold">Our Former Commanding Officers - Our Legacy</h4><p class="text-[10px] font-light text-slate-400 dark:text-slate-500 mt-0.5">Format: Official Compiled PDF Document • Full Lineage Archive (1947 - Present)</p></div></div>
                 <a href="ALL CO_121451.pdf" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-[10px] px-3 py-1.5 rounded shadow shrink-0 flex items-center gap-1"><i class="fa-solid fa-file-arrow-down"></i> Download PDF</a>
             </div>
-            <div class="bg-white border border-slate-200 p-4 rounded-xl flex items-center justify-between gap-4 shadow-sm hover:bg-slate-50 transition">
-                <div class="flex items-center gap-3"><i class="fa-solid fa-file-pdf text-red-600 text-lg"></i> <div><h4>GEWA Official Membership Registration Form</h4><p class="text-[10px] font-light text-slate-400 mt-0.5">Format: Printable PDF • Official Membership Entry Form</p></div></div>
+            <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex items-center justify-between gap-4 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
+                <div class="flex items-center gap-3"><i class="fa-solid fa-file-pdf text-red-600 dark:text-red-400 text-lg"></i> <div><h4 class="dark:text-white">GEWA Official Membership Registration Form</h4><p class="text-[10px] font-light text-slate-400 dark:text-slate-500 mt-0.5">Format: Printable PDF • Official Membership Entry Form</p></div></div>
                 <a href="#" class="bg-olive-military text-white text-[10px] px-3 py-1.5 rounded shadow shrink-0"><i class="fa-solid fa-download"></i> Download</a>
             </div>
         </div>
     </section>
 
-    <section id="transparency" class="py-20 bg-slate-100 border-y border-slate-200 px-4 scroll-mt-16">
+    <!-- TRANSPARENCY SECTION -->
+    <section id="transparency" class="py-20 bg-slate-100 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 px-4 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-start">
             <div class="lg:col-span-6 space-y-6">
-                <span class="text-maroon-military text-xs font-extrabold uppercase tracking-widest block">Audit Protocols (वित्तीय पारदर्शिता)</span>
-                <h2 class="text-3xl font-black text-slate-950 tracking-tight leading-none">Absolute Fiscal Transparency Always</h2>
-                <p class="text-sm text-slate-600 leading-relaxed font-light">
+                <span class="text-maroon-military dark:text-red-400 text-xs font-extrabold uppercase tracking-widest block">Audit Protocols (वित्तीय पारदर्शिता)</span>
+                <h2 class="text-3xl font-black text-slate-950 dark:text-white tracking-tight leading-none">Absolute Fiscal Transparency Always</h2>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-light">
                     Every coin managed within the welfare fund pool maps straight to public logs. Monthly financial sheets, annual audit reports, and executive committee resolutions are tracked here to preserve absolute organizational clarity.
                 </p>
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 flex items-center gap-4 shadow-sm">
-                    <div class="w-24 h-24 bg-white border border-slate-200 rounded-lg p-1 shrink-0">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center gap-4 shadow-sm transition-colors">
+                    <div class="w-24 h-24 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-1 shrink-0">
                         <img src="Gures QR.jpeg" alt="Gurais Bank Fund QR Standee" class="w-full h-full object-contain">
                     </div>
-                    <div class="text-[11px] text-slate-500 font-mono space-y-0.5">
-                        <h4 class="font-bold text-slate-900 text-xs font-sans">Welfare Fund Matrix Coordinates</h4>
-                        <div><strong>Bank Name:</strong> Axis Bank Ltd</div>
-                        <div><strong>Branch Layout:</strong> Sector 23 Extension Rohini, Delhi</div>
-                        <div><strong>Account Identifier:</strong> 923010055446720</div>
-                        <div><strong>IFSC System Code:</strong> UTIB0002667</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono space-y-0.5">
+                        <h4 class="font-bold text-slate-900 dark:text-white text-xs font-sans">Welfare Fund Matrix Coordinates</h4>
+                        <div><strong class="dark:text-white">Bank Name:</strong> Axis Bank Ltd</div>
+                        <div><strong class="dark:text-white">Branch Layout:</strong> Sector 23 Extension Rohini, Delhi</div>
+                        <div><strong class="dark:text-white">Account Identifier:</strong> 923010055446720</div>
+                        <div><strong class="dark:text-white">IFSC System Code:</strong> UTIB0002667</div>
                     </div>
                 </div>
             </div>
-            <div class="lg:col-span-6 bg-white p-6 rounded-3xl border border-slate-200 shadow-md flex flex-col justify-center items-center text-center space-y-4 h-full my-auto">
-                <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl"><i class="fa-solid fa-money-check-dollar"></i></div>
-                <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Physical Contribution Instruments</h4>
-                <p class="text-xs text-slate-500 font-light max-w-sm">
+            <div class="lg:col-span-6 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md flex flex-col justify-center items-center text-center space-y-4 h-full my-auto transition-colors">
+                <div class="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-money-check-dollar"></i></div>
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wide">Physical Contribution Instruments</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-light max-w-sm">
                     Verified cheque layout guides, passbook circular metrics, and transaction receipt documentation parameters have been completely managed on the media logs page.
                 </p>
-                <a href="gallery.html#transparency-section" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs uppercase px-5 py-3 rounded-xl shadow transition">
+                <a href="gallery.html#transparency-section" class="bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-bold text-xs uppercase px-5 py-3 rounded-xl shadow transition">
                     <i class="fa-solid fa-money-check"></i> View Verification Cheque Book Ledger
                 </a>
             </div>
@@ -802,50 +826,51 @@
         </div>
     </section>
 
-    <section id="contact" class="py-20 bg-white px-4 border-t border-slate-200 scroll-mt-16">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 text-xs text-slate-600 font-light">
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-20 bg-white dark:bg-slate-950 px-4 border-t border-slate-200 dark:border-slate-800 scroll-mt-16 transition-colors">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 text-xs text-slate-600 dark:text-slate-300 font-light">
             
             <div class="lg:col-span-6 space-y-4">
-                <span class="text-maroon-military font-bold uppercase tracking-widest block">Contact Matrix (संपर्क सूत्र)</span>
-                <h3 class="text-2xl font-black text-slate-900 tracking-tight">Headquarters Coordinates</h3>
+                <span class="text-maroon-military dark:text-red-400 font-bold uppercase tracking-widest block">Contact Matrix (संपर्क सूत्र)</span>
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Headquarters Coordinates</h3>
                 <p class="leading-relaxed">Register physical communication orders or documentation review packets straight to the verified central registry office layout coordinates below:</p>
-                <ul class="space-y-3 pt-2 text-slate-800 font-bold tracking-wide">
+                <ul class="space-y-3 pt-2 text-slate-800 dark:text-slate-200 font-bold tracking-wide">
                     <li class="flex items-start gap-2.5">
                         <i class="fa-solid fa-location-dot text-amber-500 mt-0.5 text-sm shrink-0"></i> 
                         <span>H.no 10 First floor ,pooth kalan,Sector 23 Extention Rohini ,Delhi</span>
                     </li>
                     <li class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-phone text-emerald-700 text-sm shrink-0"></i> 
+                        <i class="fa-solid fa-phone text-emerald-700 dark:text-emerald-400 text-sm shrink-0"></i> 
                         <a href="tel:+918287744626" class="hover:underline font-mono">+91 8287744626</a>
                     </li>
                     <li class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-envelope text-red-600 text-sm shrink-0"></i> 
+                        <i class="fa-solid fa-envelope text-red-600 dark:text-red-400 text-sm shrink-0"></i> 
                         <a href="mailto:2gesmwa@gmail.com" class="hover:underline font-mono">2gesmwa@gmail.com</a>
                     </li>
                 </ul>
             </div>
             
             <div class="lg:col-span-6 space-y-4">
-                <h4 class="font-extrabold text-slate-900 text-sm uppercase tracking-wide">Ecosystem Social Connection Channels (सोशल मीडिया लिंक्स)</h4>
+                <h4 class="font-extrabold text-slate-900 dark:text-white text-sm uppercase tracking-wide">Ecosystem Social Connection Channels (सोशल मीडिया लिंक्स)</h4>
                 <p class="leading-relaxed">Follow verified official release announcements, event notifications, and collective visual media logs handles across global hubs:</p>
                 
                 <div class="flex gap-4 text-3xl pt-2">
-                    <a href="https://wa.me/918287744626" target="_blank" class="text-green-500 hover:text-green-600 transition drop-shadow-sm" title="WhatsApp Direct Contact">
+                    <a href="https://wa.me/918287744626" target="_blank" class="text-green-500 hover:text-green-400 transition drop-shadow-sm" title="WhatsApp Direct Contact">
                         <i class="fa-brands fa-whatsapp"></i>
                     </a>
-                    <a href="https://facebook.com" target="_blank" class="text-blue-600 hover:text-blue-800 transition drop-shadow-sm" title="Facebook Page">
+                    <a href="https://facebook.com" target="_blank" class="text-blue-600 hover:text-blue-400 transition drop-shadow-sm" title="Facebook Page">
                         <i class="fa-brands fa-facebook"></i>
                     </a>
-                    <a href="https://youtube.com" target="_blank" class="text-red-600 hover:text-red-700 transition drop-shadow-sm" title="YouTube Archive Handles">
+                    <a href="https://youtube.com" target="_blank" class="text-red-600 hover:text-red-400 transition drop-shadow-sm" title="YouTube Archive Handles">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
-                    <a href="https://www.instagram.com/gesmwa.in" target="_blank" class="text-pink-600 hover:text-pink-700 transition drop-shadow-sm" title="Instagram Visual Ledger">
+                    <a href="https://www.instagram.com/gesmwa.in" target="_blank" class="text-pink-600 hover:text-pink-400 transition drop-shadow-sm" title="Instagram Visual Ledger">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
                 </div>
                 
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mt-4 text-[10px] text-slate-400 leading-tight">
-                    <strong>Digital Map Hub:</strong> Rohini Sector Framework Verification Active. Authorized to dispatch real-time administrative navigation mapping vectors.
+                <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mt-4 text-[10px] text-slate-400 dark:text-slate-500 leading-tight transition-colors">
+                    <strong class="dark:text-slate-400">Digital Map Hub:</strong> Rohini Sector Framework Verification Active. Authorized to dispatch real-time administrative navigation mapping vectors.
                 </div>
             </div>
 
@@ -860,6 +885,34 @@
     </footer>
 
     <script>
+        // Theme (Dark Mode) Toggle Logic
+        function toggleDarkMode() {
+            const htmlElement = document.documentElement;
+            htmlElement.classList.toggle('dark');
+            const isDark = htmlElement.classList.contains('dark');
+            
+            // Save preference to localStorage
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            // Update Icon
+            const icon = document.getElementById('darkModeIcon');
+            if(icon) {
+                icon.className = isDark ? 'fa-solid fa-sun text-amber-400 text-xs' : 'fa-solid fa-moon text-amber-400 text-xs';
+            }
+        }
+
+        // Initialize Theme on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                const icon = document.getElementById('darkModeIcon');
+                if(icon) icon.className = 'fa-solid fa-sun text-amber-400 text-xs';
+            }
+        });
+
         // Mobile Toggle Menu Logic
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -878,12 +931,12 @@
             
             if (currentLang === 'hi') {
                 body.setAttribute('data-current-lang', 'en');
-                langBtnText.innerText = 'हिंदी में पढ़ें';
+                langBtnText.innerText = 'हिंदी';
                 document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'none');
                 document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'block');
             } else {
                 body.setAttribute('data-current-lang', 'hi');
-                langBtnText.innerText = 'Read in English';
+                langBtnText.innerText = 'English';
                 document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = 'none');
                 document.querySelectorAll('[data-lang="hi"]').forEach(el => el.style.display = 'block');
             }
