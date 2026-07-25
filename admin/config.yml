@@ -1,0 +1,30 @@
+backend:
+  name: github
+  repo: yadavshab/Gesmwa-website
+  branch: main # (अगर आपके गिटहब पर ब्रांच का नाम 'master' है, तो इसे 'master' कर दें)
+
+# तस्वीरें कहाँ सेव होंगी
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+# यहाँ हम वो चीजें बनाते हैं जिन्हें आप बिना कोड के एडिट करना चाहते हैं
+collections:
+  # 1. सर्विसेज या न्यूज़ अपडेट करने के लिए
+  - name: "updates"
+    label: "Latest Updates & News"
+    folder: "content/updates"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Details", name: "body", widget: "markdown" }
+
+  # 2. गैलरी में नई फोटो डालने के लिए
+  - name: "gallery"
+    label: "Photo Gallery"
+    folder: "content/gallery"
+    create: true
+    fields:
+      - { label: "Photo Name", name: "title", widget: "string" }
+      - { label: "Upload Photo", name: "image", widget: "image" }
