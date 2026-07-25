@@ -1,6 +1,6 @@
 backend:
 name: github
-repo: YADAVSHAB/GESMWA website
+repo: YADAVSHAB/gesmwa-website
 branch: main
 
 media_folder: "assets/images"
