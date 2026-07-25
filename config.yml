@@ -1,0 +1,31 @@
+backend:
+name: github
+repo: YADAVSHAB/GESMWA website
+branch: main
+
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+collections:
+
+name: "pages"
+label: "Pages"
+files:
+
+file: "index.html"
+label: "Home Page"
+name: "index"
+fields:
+
+{label: "Title", name: "title", widget: "string"}
+
+{label: "Body", name: "body", widget: "markdown"}
+
+file: "services.html"
+label: "Services Page"
+name: "services"
+fields:
+
+{label: "Title", name: "title", widget: "string"}
+
+{label: "Body", name: "body", widget: "markdown"}
