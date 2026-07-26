@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Gewa Admin Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 50px; background-color: #f4f4f9; }
+        .box { background: white; padding: 20px; border-radius: 10px; max-width: 500px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>📝 नया आर्टिकल लिखें</h2>
+        
+        <input type="text" id="title" placeholder="आर्टिकल का टाइटल (Title)" />
+        <textarea id="content" rows="5" placeholder="यहाँ अपने आर्टिकल की पूरी जानकारी लिखें..."></textarea>
+        
+        <button onclick="saveArticle()">आर्टिकल पब्लिश करें</button>
+    </div>
+
+    <script>
+        // यह फंक्शन आपके सर्वर (API) को डेटा भेजेगा
+        async function saveArticle() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            if(!title || !content) {
+                alert("कृपया टाइटल और कंटेंट दोनों भरें!");
+                return;
+            }
+
+            // आपके बैकएंड सर्वर (पोर्ट 5000) पर डेटा भेजना
+            const response = await fetch('http://localhost:5000/api/articles', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: title, content: content })
+            });
+
+            const data = await response.json();
+            alert(data.message || "🎉 आर्टिकल सफलतापूर्वक सेव हो गया!");
+            
+            // फॉर्म को वापस खाली कर देना
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+        }
+    </script>
+
+</body>
+</html>
