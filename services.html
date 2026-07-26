@@ -42,6 +42,22 @@
             <p class="text-slate-500 mt-4 font-medium max-w-2xl mx-auto">पूर्व सैनिकों और उनके परिवारों के लिए आवश्यक बैंकिंग निर्देश, ECHS नीतियां एवं महत्वपूर्ण मार्गदर्शन।</p>
         </div>
 
+        <!-- ============================================================== -->
+        <!-- LIVE DATABASE NEWS / UPDATES SECTION (यह हमने नया जोड़ा है) -->
+        <!-- ============================================================== -->
+        <div class="bg-white p-6 md:p-10 rounded-3xl border border-slate-200 shadow-xl mb-12 border-t-4 border-t-emerald-600">
+            <div class="flex items-center gap-3 mb-6 border-b-2 border-emerald-600 pb-3 inline-flex">
+                <i class="fa-solid fa-bullhorn text-emerald-600 text-3xl animate-bounce"></i>
+                <h2 class="text-2xl font-black text-slate-900 uppercase tracking-wide">Live Updates & News</h2>
+            </div>
+            
+            <!-- यहाँ जादुई तरीके से डेटाबेस से न्यूज़ आएगी -->
+            <div id="articles-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <p class="text-center col-span-3 text-slate-500 font-bold animate-pulse">डेटाबेस से ताज़ा जानकारी लोड हो रही है...</p>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+
         <!-- 1. KSB MBBS/BDS DEFENCE QUOTA (NEW SECTION) -->
         <div class="bg-white p-6 md:p-10 rounded-3xl border border-slate-200 shadow-xl mb-12">
             <div class="flex items-center gap-3 mb-6 border-b-2 border-indigo-600 pb-3 inline-flex">
@@ -123,7 +139,7 @@
                 <i class="fa-solid fa-truck-medical text-blue-600 text-2xl"></i>
                 <h2 class="text-2xl font-black text-slate-900 uppercase tracking-wide">ECHS Referral Policy Update</h2>
             </div>
-            <p class="text-slate-600 font-medium mb-6">ECHS लाभार्थियों के लिए रेफरल नीति (Referral Policy) में किए गए नए और महत्वपूर्ण बदलाव (Old Policy vs New Policy):</p>
+            <p class="text-slate-600 font-medium mb-6">ECHS लाभार्थियों के लिए रेफरल नीति (Referral Policy) में किए ভেদ नए और महत्वपूर्ण बदलाव (Old Policy vs New Policy):</p>
             
             <div class="rounded-2xl overflow-hidden shadow-md border-4 border-slate-100 bg-slate-50">
                 <img src="services3.jpeg" alt="ECHS Referral Policy Update Chart" class="w-full h-auto object-contain hover:scale-[1.02] transition duration-500">
@@ -452,5 +468,47 @@
 
     </main>
     <footer class="bg-slate-950 text-slate-500 text-center py-6 text-[11px] font-bold tracking-widest uppercase">&copy; 2026 GEWA - Official Portal</footer>
+
+    <!-- ============================================================== -->
+    <!-- डेटाबेस से जोड़ने वाली स्क्रिप्ट (यह हमने नई जोड़ी है) -->
+    <!-- ============================================================== -->
+    <script>
+        async function fetchArticles() {
+            try {
+                const response = await fetch('http://localhost:5000/api/articles');
+                const articles = await response.json();
+                
+                const container = document.getElementById('articles-container');
+                container.innerHTML = ''; 
+
+                if (articles.length === 0) {
+                    container.innerHTML = '<p class="text-center col-span-3 text-slate-500 font-bold">अभी तक कोई लाइव जानकारी पब्लिश नहीं की गई है।</p>';
+                    return;
+                }
+
+                articles.forEach(article => {
+                    const date = new Date(article.createdAt).toLocaleDateString('hi-IN', {
+                        day: '2-digit', month: 'short', year: 'numeric'
+                    });
+                    
+                    const articleHTML = `
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                            <div>
+                                <span class="text-emerald-700 font-bold uppercase tracking-wider text-[10px] block mb-2"><i class="fa-solid fa-clock"></i> ${date}</span>
+                                <h4 class="font-black text-slate-900 text-base mb-2">${article.title}</h4>
+                                <p class="text-slate-600 font-medium text-sm leading-relaxed">${article.content}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += articleHTML;
+                });
+            } catch (error) {
+                document.getElementById('articles-container').innerHTML = '<p class="text-red-500 text-center col-span-3 font-bold">डेटा लोड करने में नेटवर्क समस्या आई! कृपया सर्वर चेक करें।</p>';
+            }
+        }
+
+        fetchArticles();
+    </script>
+    <!-- ============================================================== -->
 </body>
 </html>
