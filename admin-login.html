@@ -98,7 +98,6 @@
             box-shadow: 0 0 8px #22c55e;
         }
 
-        /* Tabs Switcher */
         .auth-tabs {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -301,7 +300,6 @@
             </div>
         </div>
 
-        <!-- Authentication Mode Tabs -->
         <div class="auth-tabs">
             <button type="button" class="tab-btn active" onclick="switchTab('username')">Username</button>
             <button type="button" class="tab-btn" onclick="switchTab('mobile-pass')">Mobile & Pass</button>
@@ -309,25 +307,23 @@
         </div>
 
         <form id="loginForm">
-            <!-- Option 1: Username & Password -->
             <div id="tab-username" class="tab-content active">
                 <div class="form-group">
                     <label class="form-label" for="usernameInput">Username</label>
                     <div class="input-wrapper">
                         <svg class="input-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        <input type="text" id="usernameInput" class="input-field" placeholder="Enter username">
+                        <input type="text" id="usernameInput" class="input-field" placeholder="Enter username" value="mayank">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="passwordInput1">Password</label>
                     <div class="input-wrapper">
                         <svg class="input-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        <input type="password" id="passwordInput1" class="input-field" placeholder="Enter password">
+                        <input type="password" id="passwordInput1" class="input-field" placeholder="Enter password" value="adminpassword123">
                     </div>
                 </div>
             </div>
 
-            <!-- Option 2: Mobile Number & Password -->
             <div id="tab-mobile-pass" class="tab-content">
                 <div class="form-group">
                     <label class="form-label" for="mobileInput1">Mobile Number</label>
@@ -345,7 +341,6 @@
                 </div>
             </div>
 
-            <!-- Option 3: Mobile Number & OTP -->
             <div id="tab-mobile-otp" class="tab-content">
                 <div class="form-group">
                     <label class="form-label" for="mobileInput2">Mobile Number</label>
@@ -378,6 +373,11 @@
 </div>
 
 <script>
+    // Auto-wake Render backend as soon as the login page loads
+    window.addEventListener('DOMContentLoaded', () => {
+        fetch('https://gewa-backend.onrender.com/api/articles', { method: 'GET' }).catch(() => {});
+    });
+
     let currentMode = 'username';
 
     function switchTab(mode) {
@@ -430,11 +430,6 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: identifier, password: secret })
             });
-            
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Backend server is waking up. Please retry in 15 seconds.");
-            }
 
             const data = await response.json();
 
