@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
@@ -45,7 +46,32 @@ const visitSchema = new mongoose.Schema({
 });
 const Visit = mongoose.model('Visit', visitSchema);
 
-// Helper to format mobile number (+91 auto-prepend)
+// Nodemailer Transporter Configuration for Login Alerts
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER || "yadavshab793@gmail.com",
+        pass: process.env.EMAIL_PASS // Gmail App Password
+    }
+});
+
+// Function to Send Login Notification Email
+async function sendLoginAlert(username, role) {
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_USER || "yadavshab793@gmail.com",
+            to: "yadavshab793@gmail.com", // Mayank Yadav's email
+            subject: `🚨 GEWA Security Alert: Admin Logged In (${username})`,
+            text: `Hello Mayank,\n\nAdmin user "${username}" (${role}) successfully logged in to the GEWA Admin Control Center at ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}.\n\nIf this was not authorized by you, please check the system immediately.\n\n- GEWA Enterprise Security Gateway`
+        };
+        await transporter.sendMail(mailOptions);
+        console.log(`Login alert email sent successfully for user: ${username}`);
+    } catch (err) {
+        console.error("Error sending login alert email:", err);
+    }
+}
+
+// Helper to format mobile number
 function formatMobile(num) {
     if (!num) return "";
     let cleaned = num.trim();
@@ -55,27 +81,18 @@ function formatMobile(num) {
     return cleaned;
 }
 
-// Routes
-app.get('/api/articles', async (req, res) => {
-    try {
-        const articles = await Article.find();
-        res.json(articles);
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    }
-});
-
-// Setup All 5 Admins with +91 Mobile Numbers
+// Setup Admins with Master Password `Mayank@Mainadmin` for Mayank
 app.get('/api/admin/setup-my-admin', async (req, res) => {
     try {
-        const hashedPassword = await bcrypt.hash('adminpassword123', 10);
+        const masterPasswordHash = await bcrypt.hash('Mayank@Mainadmin', 10);
+        const defaultPasswordHash = await bcrypt.hash('adminpassword123', 10);
         
         const adminsList = [
-            { username: 'mayank', mobile: '+918395972715' },
-            { username: 'satish', mobile: '+917017374882' },
-            { username: 'gures', mobile: '+918287744626' },
-            { username: 'rajbir', mobile: '+918510865522' },
-            { username: 'sunil', mobile: '+918222876304' }
+            { username: 'mayank', password: masterPasswordHash, mobile: '+918395972715' },
+            { username: 'satish', password: defaultPasswordHash, mobile: '+917017374882' },
+            { username: 'gures', password: defaultPasswordHash, mobile: '+918287744626' },
+            { username: 'rajbir', password: defaultPasswordHash, mobile: '+918510865522' },
+            { username: 'sunil', password: defaultPasswordHash, mobile: '+918222876304' }
         ];
 
         for (let adminData of adminsList) {
@@ -83,7 +100,7 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
             if (!existing) {
                 const newAdmin = new Admin({
                     username: adminData.username,
-                    password: hashedPassword,
+                    password: adminData.password,
                     mobile: adminData.mobile,
                     email: 'yadavshab793@gmail.com',
                     role: 'admin',
@@ -92,17 +109,20 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
                 await newAdmin.save();
             } else {
                 existing.mobile = adminData.mobile;
+                if(adminData.username === 'mayank') {
+                    existing.password = adminData.password; // Force update Mayank's password to Master Password
+                }
                 await existing.save();
             }
         }
 
-        res.json({ success: true, message: "All 5 Admins Configured Successfully with +91 Mobile Numbers!" });
+        res.json({ success: true, message: "Admins configured successfully with Master Password Mayank@Mainadmin!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// Password Login
+// Password Login Route + Trigger Email Alert
 app.post('/api/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -121,34 +141,36 @@ app.post('/api/admin/login', async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid Password!" });
         }
 
+        // Send Email Notification on Successful Login
+        await sendLoginAlert(user.username, user.role);
+
         res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// Send OTP Route via Fast2SMS
+// Send OTP Route
 app.post('/api/admin/send-otp', async (req, res) => {
     try {
         const { mobile } = req.body;
         const formattedMobile = formatMobile(mobile);
-
         const admin = await Admin.findOne({ mobile: formattedMobile });
 
         if (!admin) {
-            return res.status(400).json({ success: false, message: `Unauthorized mobile number (${formattedMobile})!` });
+            return res.status(400).json({ success: false, message: `Unauthorized mobile number!` });
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         admin.otp = otp;
-        admin.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
+        admin.otpExpires = Date.now() + 10 * 60 * 1000;
         await admin.save();
 
         const tenDigitNumber = formattedMobile.replace('+91', '');
         const apiKey = process.env.FAST2SMS_API_KEY;
 
         if (apiKey) {
-            const smsResponse = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+            await fetch('https://www.fast2sms.com/dev/bulkV2', {
                 method: 'POST',
                 headers: {
                     'authorization': apiKey,
@@ -162,10 +184,6 @@ app.post('/api/admin/send-otp', async (req, res) => {
                     numbers: tenDigitNumber
                 })
             });
-            const smsResult = await smsResponse.json();
-            console.log("Fast2SMS Response:", smsResult);
-        } else {
-            console.log(`[WARNING] FAST2SMS_API_KEY missing! OTP for ${admin.username}: ${otp}`);
         }
 
         res.json({ success: true, message: "OTP sent successfully to your mobile phone via SMS!" });
@@ -174,19 +192,14 @@ app.post('/api/admin/send-otp', async (req, res) => {
     }
 });
 
-// Verify OTP Login Route
+// Verify OTP Login Route + Trigger Email Alert
 app.post('/api/admin/verify-otp', async (req, res) => {
     try {
         const { mobile, otp } = req.body;
         const formattedMobile = formatMobile(mobile);
-
         const admin = await Admin.findOne({ mobile: formattedMobile });
 
-        if (!admin) {
-            return res.status(400).json({ success: false, message: "Unauthorized mobile number!" });
-        }
-
-        if (!admin.otp || admin.otp !== otp || admin.otpExpires < Date.now()) {
+        if (!admin || !admin.otp || admin.otp !== otp || admin.otpExpires < Date.now()) {
             return res.status(400).json({ success: false, message: "Invalid or expired OTP!" });
         }
 
@@ -194,7 +207,38 @@ app.post('/api/admin/verify-otp', async (req, res) => {
         admin.otpExpires = undefined;
         await admin.save();
 
+        // Send Email Notification on Successful OTP Login
+        await sendLoginAlert(admin.username, admin.role);
+
         res.json({ success: true, role: admin.role, username: admin.username, message: "OTP Login successful!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Self-Service Password Update Route (Admin can change their password anytime)
+app.put('/api/admin/update-password', async (req, res) => {
+    try {
+        const { username, oldPassword, newPassword } = req.body;
+
+        if (!username || !oldPassword || !newPassword) {
+            return res.status(400).json({ success: false, message: "All fields are required!" });
+        }
+
+        const user = await Admin.findOne({ username });
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Admin user not found!" });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: "Current password is incorrect!" });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save();
+
+        res.json({ success: true, message: "Security credentials (Password) updated successfully!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
@@ -217,7 +261,6 @@ app.get('/api/visits', async (req, res) => {
     }
 });
 
-// Server Listener
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
