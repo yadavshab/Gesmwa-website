@@ -26,7 +26,7 @@
         <form class="space-y-4">
             <div class="relative">
                 <i class="fa-solid fa-user-shield absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="adminId" placeholder="Admin ID" class="w-full bg-slate-100/50 border border-slate-200 text-slate-900 text-sm rounded-xl block pl-11 p-4 font-bold outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                <input type="text" id="adminId" placeholder="Admin ID / Username" class="w-full bg-slate-100/50 border border-slate-200 text-slate-900 text-sm rounded-xl block pl-11 p-4 font-bold outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
             </div>
             
             <div class="relative">
@@ -62,30 +62,37 @@
     </div>
 
     <script>
+        // 👉 यहाँ आप जितने चाहें उतने नए एडमिन और उनके पासवर्ड जोड़ सकते हैं
+        const allowedAdmins = {
+            "admin": "Mayank,(2715)",        // मुख्य एडमिन
+            "rajbir": "Rajbir@2026",   // आपका दूसरा पासवर्ड
+            "sunil": "Sunil@2026"    
+            "satish": "Satish@2026"        // किसी और दोस्त या पार्टनर के लिए
+        };
+
         document.getElementById('loginBtn').addEventListener('click', function(e) {
             e.preventDefault();
             
-            const adminIdValue = document.getElementById('adminId').value.trim();
-            const passwordValue = document.getElementById('adminPwd').value.trim();
+            const adminIdValue = document.getElementById('adminId'].value.trim();
+            const passwordValue = document.getElementById('adminPwd'].value.trim();
             const currentTime = new Date().toLocaleString(); 
-            
-            // आपकी ईमेल आईडी सेट कर दी गई है
             const yourEmail = "yadavshab793@gmail.com"; 
 
             const btn = document.getElementById('loginBtn');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
 
-            if(adminIdValue === "admin" && passwordValue === "gewa@2026") {
-                // सही होने पर सेशन की डिजिटल चाबी देना
+            // चेक करना कि क्या यह आईडी और पासवर्ड हमारी लिस्ट में सही है या नहीं
+            if(allowedAdmins[adminIdValue] && allowedAdmins[adminIdValue] === passwordValue) {
+                
                 sessionStorage.setItem("adminLoggedIn", "true");
                 
                 fetch(`https://formsubmit.co/ajax/${yourEmail}`, {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
-                        Subject: "🚨 SUCCESS: GEWA Admin Login",
-                        Message: "A successful login just happened on your GEWA Admin Portal.",
+                        Subject: "🚨 SUCCESS: Admin Login (" + adminIdValue + ")",
+                        Message: "User '" + adminIdValue + "' successfully logged into GEWA Admin Portal.",
                         Time: currentTime
                     })
                 }).then(() => {
@@ -100,8 +107,8 @@
                     method: "POST",
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
-                        Subject: "⚠️ FAILED: Wrong Admin Login Attempt",
-                        Message: "Someone tried to login but failed.",
+                        Subject: "⚠️ FAILED: Wrong Login Attempt",
+                        Message: "Someone tried to login with incorrect credentials.",
                         Attempted_ID: adminIdValue,
                         Attempted_Password: passwordValue,
                         Time: currentTime
