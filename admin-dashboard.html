@@ -328,23 +328,23 @@
             document.getElementById('totalVisitsCount').innerText = totalVisits > 0 ? totalVisits.toLocaleString() : "1";
         });
 
-        // Password Update Form Submission
+        // Password Update Form Submission (Connected to Live Render Backend)
         const pwdForm = document.getElementById('passwordUpdateForm');
         if(pwdForm) {
             pwdForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const oldPassword = document.getElementById('oldPassword').value;
                 const newPassword = document.getElementById('newPassword').value;
-                const username = sessionStorage.getItem("username");
+                const username = sessionStorage.getItem("username") || "mayank";
 
                 try {
-                    const res = await fetch('https://gewa-backend.onrender.com/api/admin/update-password', {
+                    const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/update-password', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, oldPassword, newPassword })
                     });
                     const data = await res.json();
-                    alert(data.message);
+                    alert(data.message || (data.success ? "Password updated successfully!" : "Failed to update password"));
                     if(data.success) {
                         pwdForm.reset();
                     }
