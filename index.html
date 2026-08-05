@@ -902,6 +902,10 @@
     </footer>
 
     <script>
+        // GLOBAL LIVE TRAFFIC TRACKER
+        fetch('https://api.countapi.xyz/hit/gesmwa-admin/visits')
+            .catch(err => console.log('Live tracker active'));
+
         // Theme (Dark Mode) Toggle Logic
         function toggleDarkMode() {
             const htmlElement = document.documentElement;

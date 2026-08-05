@@ -26,6 +26,7 @@
             <a href="index.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-house-flag"></i> Main / History</a>
             <a href="members.html" class="text-maroon-700 border-b-2 border-maroon-700 pb-1"><i class="fa-solid fa-users"></i> Members & Laws</a>
             <a href="donation.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-hand-holding-heart"></i> Welfare Support</a>
+            <a href="services.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-file-shield"></i> Services</a>
             <a href="gallery.html" class="hover:text-maroon-700 transition"><i class="fa-solid fa-images"></i> Photo Gallery</a>
         </div>
     </nav>
@@ -163,5 +164,13 @@
 
     </main>
     <footer class="bg-slate-950 text-slate-500 text-center py-6 text-[11px] font-bold tracking-widest uppercase">&copy; 2026 GEWA - Official Portal</footer>
+
+    <!-- GLOBAL LIVE TRAFFIC TRACKER SCRIPT -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('https://api.countapi.xyz/hit/gesmwa-admin/visits')
+                .catch(err => console.log('Live tracker active'));
+        });
+    </script>
 </body>
 </html>

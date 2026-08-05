@@ -169,8 +169,12 @@
         <p>&copy; 2026 Gurais Ex-Servicemen Welfare Association (GEWA). All Rights Reserved.</p>
     </footer>
 
-    <!-- TRANSLATION SCRIPT -->
+    <!-- TRANSLATION & LIVE TRACKER SCRIPT -->
     <script>
+        // GLOBAL LIVE TRAFFIC TRACKER
+        fetch('https://api.countapi.xyz/hit/gesmwa-admin/visits')
+            .catch(err => console.log('Live tracker active'));
+
         function toggleLanguage() {
             const body = document.body;
             const currentLang = body.getAttribute('data-current-lang');
