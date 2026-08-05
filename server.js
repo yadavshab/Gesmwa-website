@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
@@ -20,15 +19,6 @@ if (MONGO_URI) {
 } else {
     console.log("Warning: MONGO_URI is missing in environment variables!");
 }
-
-// Nodemailer Setup
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
-        pass: process.env.EMAIL_PASS || ''
-    }
-});
 
 // Schemas & Models
 const adminSchema = new mongoose.Schema({
@@ -54,6 +44,16 @@ const visitSchema = new mongoose.Schema({
     count: { type: Number, default: 0 }
 });
 const Visit = mongoose.model('Visit', visitSchema);
+
+// Helper to format mobile number (+91 auto-prepend)
+function formatMobile(num) {
+    if (!num) return "";
+    let cleaned = num.trim();
+    if (!cleaned.startsWith('+')) {
+        cleaned = cleaned.length === 10 ? '+91' + cleaned : '+' + cleaned;
+    }
+    return cleaned;
+}
 
 // Routes
 app.get('/api/articles', async (req, res) => {
@@ -127,14 +127,16 @@ app.post('/api/admin/login', async (req, res) => {
     }
 });
 
-// Send OTP Route (Restricted to any of the 5 Authorized Admin Mobiles)
+// Send OTP Route via Fast2SMS (Sends real SMS to mobile phone)
 app.post('/api/admin/send-otp', async (req, res) => {
     try {
         const { mobile } = req.body;
-        const admin = await Admin.findOne({ mobile });
+        const formattedMobile = formatMobile(mobile);
+
+        const admin = await Admin.findOne({ mobile: formattedMobile });
 
         if (!admin) {
-            return res.status(400).json({ success: false, message: "Unauthorized mobile number! Only authorized admins can request OTP." });
+            return res.status(400).json({ success: false, message: `Unauthorized mobile number (${formattedMobile})!` });
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -142,15 +144,32 @@ app.post('/api/admin/send-otp', async (req, res) => {
         admin.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
         await admin.save();
 
-        // Send OTP to registered admin email
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
-            to: admin.email,
-            subject: 'GEWA Secure Admin Login OTP',
-            text: `Your verification OTP for admin (${admin.username}) is: ${otp}. Valid for 10 minutes.`
-        });
+        // Send Real SMS via Fast2SMS API
+        const tenDigitNumber = formattedMobile.replace('+91', '');
+        const apiKey = process.env.FAST2SMS_API_KEY;
 
-        res.json({ success: true, message: "OTP sent successfully to authorized admin contact!" });
+        if (apiKey) {
+            const smsResponse = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+                method: 'POST',
+                headers: {
+                    'authorization': apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    route: 'q',
+                    message: `Your GEWA Admin OTP is ${otp}. Valid for 10 minutes.`,
+                    language: 'english',
+                    flash: 0,
+                    numbers: tenDigitNumber
+                })
+            });
+            const smsResult = await smsResponse.json();
+            console.log("Fast2SMS Response:", smsResult);
+        } else {
+            console.log(`[WARNING] FAST2SMS_API_KEY missing! OTP for ${admin.username}: ${otp}`);
+        }
+
+        res.json({ success: true, message: "OTP sent successfully to your mobile phone via SMS!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
@@ -160,7 +179,9 @@ app.post('/api/admin/send-otp', async (req, res) => {
 app.post('/api/admin/verify-otp', async (req, res) => {
     try {
         const { mobile, otp } = req.body;
-        const admin = await Admin.findOne({ mobile });
+        const formattedMobile = formatMobile(mobile);
+
+        const admin = await Admin.findOne({ mobile: formattedMobile });
 
         if (!admin) {
             return res.status(400).json({ success: false, message: "Unauthorized mobile number!" });
