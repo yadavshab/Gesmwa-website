@@ -172,8 +172,10 @@
     <!-- TRANSLATION & LIVE TRACKER SCRIPT -->
     <script>
         // GLOBAL LIVE TRAFFIC TRACKER
-        fetch('https://api.countapi.xyz/hit/gesmwa-admin/visits')
-            .catch(err => console.log('Live tracker active'));
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up')
+                .catch(err => console.log('Live tracker active'));
+        });
 
         function toggleLanguage() {
             const body = document.body;

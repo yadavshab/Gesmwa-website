@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <!-- SECURITY LOCK: बिना लॉगिन के कोई अंदर नहीं आ सकता -->
+    <!-- SECURITY LOCK -->
     <script>
         if (sessionStorage.getItem("adminLoggedIn") !== "true") {
             alert("Security Alert: Direct access is strictly prohibited!");
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
-    <!-- Chart.js for Beautiful Graphs -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -43,22 +43,25 @@
         </div>
         
         <nav class="flex-grow px-4 space-y-1.5 text-sm font-bold">
-            <a href="#analytics-section" class="flex items-center gap-3 bg-blue-600/10 text-blue-400 border border-blue-600/20 px-4 py-3.5 rounded-xl transition">
-                <i class="fa-solid fa-chart-line w-5"></i> Live Analytics
-            </a>
-            <a href="#volunteers-section" class="flex items-center gap-3 hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition">
-                <i class="fa-solid fa-users w-5"></i> Volunteers DB
-            </a>
-            <a href="#welfare-section" class="flex items-center gap-3 hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition">
-                <i class="fa-solid fa-hand-holding-dollar w-5"></i> Welfare Funds
-            </a>
-            <a href="#settings-section" class="flex items-center gap-3 hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition">
-                <i class="fa-solid fa-shield-halved w-5"></i> Security Settings
-            </a>
+            <button onclick="toggleSection('analytics-content')" class="w-full flex items-center justify-between bg-blue-600/10 text-blue-400 border border-blue-600/20 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5"></i> Live Analytics</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button onclick="toggleSection('volunteers-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-users w-5"></i> Volunteers DB</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button onclick="toggleSection('welfare-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-hand-holding-dollar w-5"></i> Welfare Funds</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button onclick="toggleSection('settings-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-shield-halved w-5"></i> Security Settings</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
         </nav>
         
         <div class="p-4 border-t border-slate-800/50">
-            <!-- SECURE LOGOUT BUTTON -->
             <a href="#" onclick="sessionStorage.removeItem('adminLoggedIn'); window.location.replace('admin-login.html');" class="flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:text-white hover:bg-red-600 px-4 py-3.5 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
                 <i class="fa-solid fa-power-off"></i> Secure Logout
             </a>
@@ -67,8 +70,6 @@
 
     <!-- MAIN DASHBOARD CONTENT -->
     <main class="flex-grow md:ml-64 p-6 lg:p-10 relative">
-        
-        <!-- Background Glow Effect -->
         <div class="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 z-0 pointer-events-none"></div>
 
         <div class="relative z-10">
@@ -84,191 +85,202 @@
                 </div>
             </div>
 
-            <!-- QUICK STATS CARDS -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 hover:shadow-md transition">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Governing Body Members</p>
-                            <h3 class="text-3xl font-black text-slate-900 mt-1">13</h3>
-                        </div>
-                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-blue-100">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 hover:shadow-md transition">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Welfare Bank Balance</p>
-                            <h3 class="text-3xl font-black text-emerald-600 mt-1">₹ 7,66,187</h3>
-                        </div>
-                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-100">
-                            <i class="fa-solid fa-wallet"></i>
-                        </div>
-                    </div>
+            <!-- ================= 1. LIVE ANALYTICS SECTION ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('analytics-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-chart-line text-blue-400"></i> Live Analytics</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
                 </div>
 
-                <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 hover:shadow-md transition">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Registration Authority</p>
-                            <h3 class="text-lg font-black text-indigo-600 mt-1">North-West Delhi</h3>
+                <div id="analytics-content" class="space-y-6 transition-all">
+                    <!-- QUICK STATS CARDS -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Governing Body Members</p>
+                                    <h3 class="text-3xl font-black text-slate-900 mt-1">13</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-blue-100">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-indigo-100">
-                            <i class="fa-solid fa-building-columns"></i>
+                        
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Welfare Bank Balance</p>
+                                    <h3 class="text-3xl font-black text-emerald-600 mt-1">₹ 7,66,187</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-100">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Registration Authority</p>
+                                    <h3 class="text-lg font-black text-indigo-600 mt-1">North-West Delhi</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-indigo-100">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PREMIUM MAC-STYLE GRAPH -->
+                    <div class="bg-white rounded-[2rem] shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-slate-200/80 overflow-hidden">
+                        <div class="bg-slate-50/90 border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-rose-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                            </div>
+                            <div class="bg-slate-200/50 px-4 py-1.5 rounded-xl text-[11px] font-bold text-slate-500 border border-slate-200/60 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-blue-500"></i> live-traffic-analytics.gewa
+                            </div>
+                            <div class="flex items-center gap-2 text-xs font-bold text-slate-400">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Live Stream
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 md:p-8 bg-white relative">
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="font-black text-xl text-slate-900 tracking-tight">Real-Time Visitor Flow</h3>
+                                    <p class="text-xs text-slate-400 font-semibold mt-0.5">Tracking live user engagement and interactions</p>
+                                </div>
+                            </div>
+                            
+                            <div class="w-full h-[320px] md:h-[380px]">
+                                <canvas id="trafficChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 1. VOLUNTEERS DB SECTION (From Volunteer DATABASE.pdf) -->
-            <div id="volunteers-section" class="bg-white rounded-[2rem] shadow-sm border border-slate-200/80 mb-10 overflow-hidden p-6 md:p-8">
-                <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
-                    <div>
-                        <h3 class="text-xl font-black text-slate-900 tracking-tight"><i class="fa-solid fa-id-badge text-blue-600 mr-2"></i> Volunteers & Governing Body Database</h3>
-                        <p class="text-xs text-slate-400 font-semibold mt-0.5">Official Registered Governing Body Members of GEWA</p>
-                    </div>
-                    <span class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1 rounded-xl">Total: 13 Officials</span>
+            <!-- ================= 2. VOLUNTEERS DB SECTION (डिफ़ॉल्ट बंद, क्लिक करने पर खुलेगा) ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('volunteers-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-users text-emerald-400"></i> Volunteers DB</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs whitespace-nowrap">
-                        <thead class="bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px]">
-                            <tr>
-                                <th class="px-4 py-3 text-center">S/No</th>
-                                <th class="px-4 py-3">Name & Address</th>
-                                <th class="px-4 py-3">Occupation</th>
-                                <th class="px-4 py-3 text-right">Designation</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-slate-700 font-medium divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">1</td><td class="px-4 py-3"><strong>Lt.Col. (Retd) Phool Kumar Mor</strong><br><span class="text-[10px] text-slate-400">Tau Devi Lal Colony, Hissar Cantt, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-amber-600">President</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">2</td><td class="px-4 py-3"><strong>Hony.Sub Maj (Retd.) Ramniwas</strong><br><span class="text-[10px] text-slate-400">Village Malikpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-blue-600">Vice President</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">3</td><td class="px-4 py-3"><strong>H/Sub Maj (Retd.) Jagvir Singh</strong><br><span class="text-[10px] text-slate-400">VPO Kakrola, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-red-600">Gen-Secretary</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">4</td><td class="px-4 py-3"><strong>Sub Ramesh Singh</strong><br><span class="text-[10px] text-slate-400">Village Kalwa, Jind, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint Secretary</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">5</td><td class="px-4 py-3"><strong>Smt. Pushpa</strong><br><span class="text-[10px] text-slate-400">VPO Chhuchhkwas, Jhajjar, Haryana</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-700">Treasurer</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">6</td><td class="px-4 py-3"><strong>Hav. (Retd.) Sunil Kumar Ahlawat</strong><br><span class="text-[10px] text-slate-400">VPO Dighal, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint-Treasurer</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">7</td><td class="px-4 py-3"><strong>Smt. Ritu</strong><br><span class="text-[10px] text-slate-400">Gram Sabha, Pooth Kalan, Delhi</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-600">Founder / Advisor</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">8</td><td class="px-4 py-3"><strong>Hony.Capt (Retd.) Parma Ram</strong><br><span class="text-[10px] text-slate-400">Nagri, Nagour, Rajasthan</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Advisor</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">9</td><td class="px-4 py-3"><strong>Hav (Retd.) Parmod Kumar</strong><br><span class="text-[10px] text-slate-400">Village Bupania, Bahadurgarh, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">10</td><td class="px-4 py-3"><strong>Hav (Retd.) Balwan</strong><br><span class="text-[10px] text-slate-400">Tajnagar, Gurgaon, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">11</td><td class="px-4 py-3"><strong>Hav. (Retd.) Parveen Kumar</strong><br><span class="text-[10px] text-slate-400">Amadalshahpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">12</td><td class="px-4 py-3"><strong>Shri Balraj Singh</strong><br><span class="text-[10px] text-slate-400">Village Kheri Ram Nagar, Kurukshetra</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">13</td><td class="px-4 py-3"><strong>Hav (Retd.) Deep Chand</strong><br><span class="text-[10px] text-slate-400">Naveen Vihar, Begampur, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 2. WELFARE FUNDS SECTION (From welfare Funds.jpeg) -->
-            <div id="welfare-section" class="bg-white rounded-[2rem] shadow-sm border border-slate-200/80 mb-10 overflow-hidden p-6 md:p-8">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-slate-100 pb-4 gap-4">
-                    <div>
-                        <h3 class="text-xl font-black text-slate-900 tracking-tight"><i class="fa-solid fa-vault text-emerald-600 mr-2"></i> Welfare Funds - Axis Bank Ledger</h3>
-                        <p class="text-xs text-slate-400 font-semibold mt-0.5">Account No: 923010055446720 (Pooth Kalan Branch, Delhi)</p>
-                    </div>
-                    <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-right">
-                        <p class="text-[10px] font-extrabold text-emerald-700 uppercase">Closing Balance (As of 30/06/2026)</p>
-                        <p class="text-xl font-black text-emerald-900">₹ 7,66,187.38</p>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-4 mb-6 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200 font-mono">
-                    <div><strong>Account Type:</strong> SB-TRUST/SOCIETY/NGO/GOVT</div>
-                    <div><strong>IFSC Code:</strong> UTIB0002667</div>
-                    <div><strong>Opening Balance (01/06/2026):</strong> ₹ 7,32,766.28</div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs whitespace-nowrap">
-                        <thead class="bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px]">
-                            <tr>
-                                <th class="px-4 py-3">Date</th>
-                                <th class="px-4 py-3">Transaction Details</th>
-                                <th class="px-4 py-3 text-right">Withdrawals (₹)</th>
-                                <th class="px-4 py-3 text-right">Deposits (₹)</th>
-                                <th class="px-4 py-3 text-right">Balance (₹)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-slate-700 font-medium divide-y divide-slate-100 font-mono text-[11px]">
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">01-06-2026</td><td class="px-4 py-2">UPI/P2A/AMRISH P/SBIN/Sent usi</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">100.00</td><td class="px-4 py-2 text-right font-bold">732,866.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">01-06-2026</td><td class="px-4 py-2">UPI/P2A/NETRA PAL/SBIN/Payment</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">201.00</td><td class="px-4 py-2 text-right font-bold">733,067.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">01-06-2026</td><td class="px-4 py-2">UPI/P2A/Mr RAMA N/CBIN/Payment</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">201.00</td><td class="px-4 py-2 text-right font-bold">733,268.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">01-06-2026</td><td class="px-4 py-2">UPI/P2A/DHARMENDE/UTIB/UPI</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">200.00</td><td class="px-4 py-2 text-right font-bold">733,468.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">02-06-2026</td><td class="px-4 py-2">EDC/68557-68557-/M037213026670026</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">501.00</td><td class="px-4 py-2 text-right font-bold">734,169.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">03-06-2026</td><td class="px-4 py-2">UPI/P2A/SUKHVINDE/SBIN/Payment</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">500.00</td><td class="px-4 py-2 text-right font-bold">734,669.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">05-06-2026</td><td class="px-4 py-2">UPI/P2A/ANKITA/ICIC/Ramnivas</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">2,100.00</td><td class="px-4 py-2 text-right font-bold">738,969.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">18-06-2026</td><td class="px-4 py-2">UPI/P2A/SATISH KU/HDFC/Payment</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">21,000.00</td><td class="px-4 py-2 text-right font-bold">761,369.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">22-06-2026</td><td class="px-4 py-2">Delvry Rtn Chrg Incl GST</td><td class="px-4 py-2 text-right text-rose-600 font-bold">59.00</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right font-bold">761,310.28</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2">28-06-2026</td><td class="px-4 py-2">EDC/69183-69183-/M037213026670026</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-emerald-600 font-bold">4,876.10</td><td class="px-4 py-2 text-right font-bold">766,186.38</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- ANALYTICS GRAPH SECTION -->
-            <div id="analytics-section" class="bg-white rounded-[2rem] shadow-sm border border-slate-200/80 mb-10 overflow-hidden">
-                <div class="bg-slate-50/90 border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full bg-rose-400"></div>
-                        <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                    </div>
-                    <div class="bg-slate-200/50 px-4 py-1.5 rounded-xl text-[11px] font-bold text-slate-500 border border-slate-200/60 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-line text-blue-500"></i> live-traffic-analytics.gewa
-                    </div>
-                    <div class="flex items-center gap-2 text-xs font-bold text-slate-400">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Live Stream
-                    </div>
-                </div>
-                
-                <div class="p-6 md:p-8 bg-white relative">
-                    <div class="flex justify-between items-center mb-6">
+                <div id="volunteers-content" class="hidden bg-white rounded-[2rem] shadow-sm border border-slate-200/80 overflow-hidden p-6 md:p-8 transition-all">
+                    <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
                         <div>
-                            <h3 class="font-black text-xl text-slate-900 tracking-tight">Real-Time Visitor Flow</h3>
-                            <p class="text-xs text-slate-400 font-semibold mt-0.5">Tracking live user engagement and interactions</p>
+                            <h3 class="text-xl font-black text-slate-900 tracking-tight"><i class="fa-solid fa-id-badge text-blue-600 mr-2"></i> Official Governing Body Registry</h3>
+                            <p class="text-xs text-slate-400 font-semibold mt-0.5">Registered Officials of GEWA</p>
+                        </div>
+                        <span class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1 rounded-xl">Total: 13 Officials</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs whitespace-nowrap">
+                            <thead class="bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px]">
+                                <tr>
+                                    <th class="px-4 py-3 text-center">S/No</th>
+                                    <th class="px-4 py-3">Name & Address</th>
+                                    <th class="px-4 py-3">Occupation</th>
+                                    <th class="px-4 py-3 text-right">Designation</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-700 font-medium divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">1</td><td class="px-4 py-3"><strong>Lt.Col. (Retd) Phool Kumar Mor</strong><br><span class="text-[10px] text-slate-400">Tau Devi Lal Colony, Hissar Cantt, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-amber-600">President</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">2</td><td class="px-4 py-3"><strong>Hony.Sub Maj (Retd.) Ramniwas</strong><br><span class="text-[10px] text-slate-400">Village Malikpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-blue-600">Vice President</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">3</td><td class="px-4 py-3"><strong>H/Sub Maj (Retd.) Jagvir Singh</strong><br><span class="text-[10px] text-slate-400">VPO Kakrola, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-red-600">Gen-Secretary</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">4</td><td class="px-4 py-3"><strong>Sub Ramesh Singh</strong><br><span class="text-[10px] text-slate-400">Village Kalwa, Jind, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint Secretary</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">5</td><td class="px-4 py-3"><strong>Smt. Pushpa</strong><br><span class="text-[10px] text-slate-400">VPO Chhuchhkwas, Jhajjar, Haryana</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-700">Treasurer</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">6</td><td class="px-4 py-3"><strong>Hav. (Retd.) Sunil Kumar Ahlawat</strong><br><span class="text-[10px] text-slate-400">VPO Dighal, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint-Treasurer</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">7</td><td class="px-4 py-3"><strong>Smt. Ritu</strong><br><span class="text-[10px] text-slate-400">Gram Sabha, Pooth Kalan, Delhi</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-600">Founder / Advisor</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">8</td><td class="px-4 py-3"><strong>Hony.Capt (Retd.) Parma Ram</strong><br><span class="text-[10px] text-slate-400">Nagri, Nagour, Rajasthan</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Advisor</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">9</td><td class="px-4 py-3"><strong>Hav (Retd.) Parmod Kumar</strong><br><span class="text-[10px] text-slate-400">Village Bupania, Bahadurgarh, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">10</td><td class="px-4 py-3"><strong>Hav (Retd.) Balwan</strong><br><span class="text-[10px] text-slate-400">Tajnagar, Gurgaon, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">11</td><td class="px-4 py-3"><strong>Hav. (Retd.) Parveen Kumar</strong><br><span class="text-[10px] text-slate-400">Amadalshahpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">12</td><td class="px-4 py-3"><strong>Shri Balraj Singh</strong><br><span class="text-[10px] text-slate-400">Village Kheri Ram Nagar, Kurukshetra</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">13</td><td class="px-4 py-3"><strong>Hav (Retd.) Deep Chand</strong><br><span class="text-[10px] text-slate-400">Naveen Vihar, Begampur, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 3. WELFARE FUNDS SECTION (सिर्फ अकाउंट बैलेंस, लेजर पूरी तरह हटाया गया) ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="welfare-content" class="hidden bg-white rounded-[2rem] shadow-sm border border-slate-200/80 overflow-hidden p-8 text-center transition-all">
+                    <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">
+                        <i class="fa-solid fa-vault"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900 tracking-tight">Gurais Ex-Servicemen Welfare Association</h3>
+                    <p class="text-xs text-slate-400 font-semibold mt-1">Official Welfare Bank Account Balance</p>
+
+                    <div class="my-6 p-6 bg-slate-50 rounded-3xl border border-slate-200 max-w-md mx-auto">
+                        <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">Current Available Balance</p>
+                        <h4 class="text-4xl font-black text-emerald-600">₹ 7,66,187.38</h4>
+                        <p class="text-[11px] text-slate-400 font-mono mt-2">Account No: 923010055446720</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 4. SECURITY SETTINGS SECTION (डिफ़ॉल्ट बंद, क्लिक करने पर खुलेगा) ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('settings-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Security Settings</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="settings-content" class="hidden bg-white p-8 rounded-3xl shadow-sm border border-slate-200 max-w-xl transition-all">
+                    <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+                        <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-xl shadow-lg">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-slate-900">Security Credentials</h3>
+                            <p class="text-xs font-bold text-slate-500">Update your master admin password.</p>
                         </div>
                     </div>
                     
-                    <div class="w-full h-[320px] md:h-[380px]">
-                        <canvas id="trafficChart"></canvas>
-                    </div>
+                    <form class="space-y-5" onsubmit="event.preventDefault(); alert('Security Alert: Password Updated Successfully!');">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Current Password</label>
+                            <input type="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password</label>
+                            <input type="password" placeholder="Enter new password" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-xl shadow-lg shadow-blue-200 transition mt-2">
+                            Commit Changes
+                        </button>
+                    </form>
                 </div>
-            </div>
-
-            <!-- SETTINGS SECTION -->
-            <div id="settings-section" class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 max-w-xl">
-                <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
-                    <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-xl shadow-lg">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-black text-slate-900">Security Credentials</h3>
-                        <p class="text-xs font-bold text-slate-500">Update your master admin password.</p>
-                    </div>
-                </div>
-                
-                <form class="space-y-5" onsubmit="event.preventDefault(); alert('Security Alert: Password Updated Successfully!');">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Current Password</label>
-                        <input type="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password</label>
-                        <input type="password" placeholder="Enter new password" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-xl shadow-lg shadow-blue-200 transition mt-2">
-                        Commit Changes
-                    </button>
-                </form>
             </div>
         </div>
     </main>
 
-    <!-- SCRIPT FOR DRAWING THE CHART -->
+    <!-- TOGGLE & CHART SCRIPT -->
     <script>
+        function toggleSection(sectionId) {
+            const el = document.getElementById(sectionId);
+            if (el) {
+                if (el.classList.contains('hidden')) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('trafficChart').getContext('2d');
 
