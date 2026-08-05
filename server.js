@@ -7,7 +7,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Simplest & Most Reliable CORS Configuration
 app.use(cors());
 app.use(express.json());
 
