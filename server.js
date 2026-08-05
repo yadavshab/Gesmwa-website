@@ -7,14 +7,8 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS Configuration (Prevents all blocking and preflight errors)
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-app.options('*', cors());
-
+// Simplest & Most Reliable CORS Configuration
+app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
@@ -28,7 +22,7 @@ if (MONGO_URI) {
     console.log("Warning: MONGO_URI is missing in environment variables!");
 }
 
-// Nodemailer Transporter Setup
+// Nodemailer Setup
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -37,7 +31,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Admin Schema
+// Schemas
 const adminSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
@@ -47,7 +41,6 @@ const adminSchema = new mongoose.Schema({
 });
 const Admin = mongoose.model('Admin', adminSchema);
 
-// Article Schema
 const articleSchema = new mongoose.Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
@@ -55,7 +48,7 @@ const articleSchema = new mongoose.Schema({
 });
 const Article = mongoose.model('Article', articleSchema);
 
-// 1. Get All Articles Route
+// Routes
 app.get('/api/articles', async (req, res) => {
     try {
         const articles = await Article.find();
@@ -65,12 +58,11 @@ app.get('/api/articles', async (req, res) => {
     }
 });
 
-// 2. Setup Main Admin Route
 app.get('/api/admin/setup-my-admin', async (req, res) => {
     try {
         const existingAdmin = await Admin.findOne({ username: 'mayank' });
         if (existingAdmin) {
-            return res.json({ success: true, message: "Admin account already exists! Username: mayank, Password: adminpassword123" });
+            return res.json({ success: true, message: "Admin account already exists!" });
         }
 
         const hashedPassword = await bcrypt.hash('adminpassword123', 10);
@@ -83,16 +75,14 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
         });
 
         await newAdmin.save();
-        res.json({ success: true, message: "Main Admin Account Created Successfully! Username: mayank, Password: adminpassword123" });
+        res.json({ success: true, message: "Admin Account Created Successfully!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// 3. Ultra-Safe Login Route with Detailed Logging
 app.post('/api/admin/login', async (req, res) => {
     try {
-        console.log("Login request received:", req.body);
         const { username, password } = req.body;
 
         if (!username || !password) {
@@ -100,39 +90,17 @@ app.post('/api/admin/login', async (req, res) => {
         }
 
         const user = await Admin.findOne({ username });
-
         if (!user) {
-            console.log("User not found in database:", username);
             return res.status(400).json({ success: false, message: "User not found!" });
-        }
-
-        if (user.status === 'pending') {
-            return res.status(403).json({ success: false, message: "Your access is pending approval by Main Admin." });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            console.log("Invalid password attempted for:", username);
             return res.status(400).json({ success: false, message: "Invalid Password!" });
         }
 
-        // Safe email notification
-        if (user.role === 'admin' && process.env.EMAIL_PASS) {
-            const mailOptions = {
-                from: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
-                to: user.email,
-                subject: 'Security Alert: Admin Login Detected',
-                text: `Alert! Admin '${username}' has successfully logged into the GEWA Admin Dashboard at ${new Date().toLocaleString()}.`
-            };
-            transporter.sendMail(mailOptions, (err) => {
-                if (err) console.log('Email notification error:', err);
-            });
-        }
-
-        console.log("Login successful for:", username);
         res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
     } catch (err) {
-        console.log("Login route internal error:", err.message);
         res.status(500).json({ success: false, error: err.message });
     }
 });
