@@ -7,31 +7,33 @@ require('dotenv').config();
 
 const app = express();
 
-// 🟢 Explicit CORS Setup (इसे ठीक से सेट करें ताकि कोई ब्लॉक न हो)
+// CORS Configuration (Prevents all blocking and preflight errors)
 app.use(cors({
-    origin: '*', // आप चाहें तो यहाँ 'https://gesmwa.in' भी लिख सकते हैं
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
-// Handle preflight requests explicitly
 app.options('*', cors());
 
 app.use(express.json());
 
 // MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://cluster0... (your mongodb uri)";
+const MONGO_URI = process.env.MONGO_URI || "";
 
-mongoose.connect(MONGO_URI)
-    .then(() => console.log("MongoDB Connected Successfully"))
-    .catch(err => console.log("MongoDB Connection Error:", err));
+if (MONGO_URI) {
+    mongoose.connect(MONGO_URI)
+        .then(() => console.log("MongoDB Connected Successfully"))
+        .catch(err => console.log("MongoDB Connection Error:", err));
+} else {
+    console.log("Warning: MONGO_URI is missing in environment variables!");
+}
 
 // Nodemailer Transporter Setup
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
-        pass: process.env.EMAIL_PASS
+        pass: process.env.EMAIL_PASS || ''
     }
 });
 
@@ -87,18 +89,34 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
     }
 });
 
-// 3. Login Route
+// 3. Ultra-Safe Login Route with Detailed Logging
 app.post('/api/admin/login', async (req, res) => {
     try {
+        console.log("Login request received:", req.body);
         const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({ success: false, message: "Username and password are required!" });
+        }
+
         const user = await Admin.findOne({ username });
 
-        if (!user) return res.status(400).json({ success: false, message: "User not found!" });
-        if (user.status === 'pending') return res.status(403).json({ success: false, message: "Your access is pending approval by Main Admin." });
+        if (!user) {
+            console.log("User not found in database:", username);
+            return res.status(400).json({ success: false, message: "User not found!" });
+        }
+
+        if (user.status === 'pending') {
+            return res.status(403).json({ success: false, message: "Your access is pending approval by Main Admin." });
+        }
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ success: false, message: "Invalid Password!" });
+        if (!isMatch) {
+            console.log("Invalid password attempted for:", username);
+            return res.status(400).json({ success: false, message: "Invalid Password!" });
+        }
 
+        // Safe email notification
         if (user.role === 'admin' && process.env.EMAIL_PASS) {
             const mailOptions = {
                 from: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
@@ -111,8 +129,10 @@ app.post('/api/admin/login', async (req, res) => {
             });
         }
 
-        res.json({ success: type = true, role: user.role, username: user.username, message: "Login successful!" });
+        console.log("Login successful for:", username);
+        res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
     } catch (err) {
+        console.log("Login route internal error:", err.message);
         res.status(500).json({ success: false, error: err.message });
     }
 });
