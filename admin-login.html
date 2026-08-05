@@ -314,6 +314,13 @@
 <div class="auth-container">
     <div class="auth-card-glow"></div>
     <div class="auth-card">
+        <!-- Back to Homepage Link -->
+        <div style="text-align: center; margin-bottom: 16px;">
+            <a href="index.html" style="color: #a1a1aa; text-decoration: none; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s;">
+                &larr; Back to Homepage
+            </a>
+        </div>
+
         <div class="brand-section">
             <div class="brand-logo">GEWA Enterprise</div>
             <div class="system-badge">
@@ -474,7 +481,7 @@
         }
 
         statusBanner.className = "status-banner loading";
-        statusBanner.innerHTML = `<div class="spinner"></div> Generating OTP...`;
+        statusBanner.innerHTML = `<div class="spinner"></div> Sending SMS OTP...`;
         statusBanner.style.display = "flex";
 
         try {
@@ -488,9 +495,9 @@
             if (response.ok && data.success) {
                 statusBanner.className = "status-banner success";
                 statusBanner.style.display = "block";
-                statusBanner.innerHTML = "OTP generated! Check Render Logs.";
+                statusBanner.innerHTML = "OTP sent successfully to your mobile phone!";
             } else {
-                throw new Error(data.message || "Failed to generate OTP");
+                throw new Error(data.message || "Failed to send OTP");
             }
         } catch (err) {
             statusBanner.className = "status-banner error";

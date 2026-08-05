@@ -144,7 +144,6 @@ app.post('/api/admin/send-otp', async (req, res) => {
         admin.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
         await admin.save();
 
-        // Send Real SMS via Fast2SMS API
         const tenDigitNumber = formattedMobile.replace('+91', '');
         const apiKey = process.env.FAST2SMS_API_KEY;
 
@@ -191,7 +190,6 @@ app.post('/api/admin/verify-otp', async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid or expired OTP!" });
         }
 
-        // Clear OTP after successful use
         admin.otp = undefined;
         admin.otpExpires = undefined;
         await admin.save();
