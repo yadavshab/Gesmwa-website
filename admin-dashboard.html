@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <!-- SECURITY LOCK -->
+    <!-- SECURITY LOCK: बिना लॉगिन के कोई अंदर नहीं आ सकता -->
     <script>
         if (sessionStorage.getItem("adminLoggedIn") !== "true") {
             alert("Security Alert: Direct access is strictly prohibited!");
@@ -18,8 +18,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
@@ -85,7 +83,7 @@
                 </div>
             </div>
 
-            <!-- ================= 1. LIVE ANALYTICS SECTION ================= -->
+            <!-- ================= 1. LIVE ANALYTICS SECTION (सबसे ऊपर) ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('analytics-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-chart-line text-blue-400"></i> Live Analytics</h2>
@@ -94,7 +92,21 @@
 
                 <div id="analytics-content" class="space-y-6 transition-all">
                     <!-- QUICK STATS CARDS -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        
+                        <!-- कुल विज़िटर काउंटर कार्ड -->
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-blue-50/50">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest">Total Website Visits</p>
+                                    <h3 id="totalVisitsCount" class="text-3xl font-black text-blue-900 mt-1">Loading...</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-blue-200">
+                                    <i class="fa-solid fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -132,39 +144,54 @@
                         </div>
                     </div>
 
-                    <!-- PREMIUM MAC-STYLE GRAPH -->
-                    <div class="bg-white rounded-[2rem] shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-slate-200/80 overflow-hidden">
-                        <div class="bg-slate-50/90 border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <div class="w-3 h-3 rounded-full bg-rose-400"></div>
-                                <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                                <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                            </div>
-                            <div class="bg-slate-200/50 px-4 py-1.5 rounded-xl text-[11px] font-bold text-slate-500 border border-slate-200/60 flex items-center gap-2">
-                                <i class="fa-solid fa-chart-line text-blue-500"></i> live-traffic-analytics.gewa
-                            </div>
-                            <div class="flex items-center gap-2 text-xs font-bold text-slate-400">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Live Stream
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 md:p-8 bg-white relative">
-                            <div class="flex justify-between items-center mb-6">
-                                <div>
-                                    <h3 class="font-black text-xl text-slate-900 tracking-tight">Real-Time Visitor Flow</h3>
-                                    <p class="text-xs text-slate-400 font-semibold mt-0.5">Tracking live user engagement and interactions</p>
-                                </div>
-                            </div>
-                            
-                            <div class="w-full h-[320px] md:h-[380px]">
-                                <canvas id="trafficChart"></canvas>
-                            </div>
+                    <!-- PAGE-WISE TRAFFIC BREAKDOWN TABLE -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+                        <h3 class="text-base font-black text-slate-900 mb-4 uppercase tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-globe text-blue-600"></i> Page-Wise Traffic Breakdown (सभी पेजेस का ट्रैफिक)
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs whitespace-nowrap">
+                                <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[10px]">
+                                    <tr>
+                                        <th class="px-4 py-3">Page Name</th>
+                                        <th class="px-4 py-3">File Path</th>
+                                        <th class="px-4 py-3 text-right">Visits Count</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 font-mono">
+                                    <tr>
+                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Main Homepage</td>
+                                        <td class="px-4 py-3 text-slate-500">index.html</td>
+                                        <td id="page-index" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Services & Schemes</td>
+                                        <td class="px-4 py-3 text-slate-500">services.html</td>
+                                        <td id="page-services" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Welfare & Support</td>
+                                        <td class="px-4 py-3 text-slate-500">donation.html</td>
+                                        <td id="page-donation" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Photo Gallery</td>
+                                        <td class="px-4 py-3 text-slate-500">gallery.html</td>
+                                        <td id="page-gallery" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Members & Laws</td>
+                                        <td class="px-4 py-3 text-slate-500">members.html</td>
+                                        <td id="page-members" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ================= 2. VOLUNTEERS DB SECTION (डिफ़ॉल्ट बंद, क्लिक करने पर खुलेगा) ================= -->
+            <!-- ================= 2. VOLUNTEERS DB SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('volunteers-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-users text-emerald-400"></i> Volunteers DB</h2>
@@ -195,14 +222,13 @@
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">2</td><td class="px-4 py-3"><strong>Hony.Sub Maj (Retd.) Ramniwas</strong><br><span class="text-[10px] text-slate-400">Village Malikpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-blue-600">Vice President</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">3</td><td class="px-4 py-3"><strong>H/Sub Maj (Retd.) Jagvir Singh</strong><br><span class="text-[10px] text-slate-400">VPO Kakrola, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-red-600">Gen-Secretary</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">4</td><td class="px-4 py-3"><strong>Sub Ramesh Singh</strong><br><span class="text-[10px] text-slate-400">Village Kalwa, Jind, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint Secretary</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">5</td><td class="px-4 py-3"><strong>Smt. Pushpa</strong><br><span class="text-[10px] text-slate-400">VPO Chhuchhkwas, Jhajjar, Haryana</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-700">Treasurer</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">5</td><td class="px-4 py-3"><strong>Smt. Pushpa W/O Hav (Retd) Satish Kuamr</strong><br><span class="text-[10px] text-slate-400">VPO Chhuchhkwas, Jhajjar, Haryana</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-700">Treasurer</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">6</td><td class="px-4 py-3"><strong>Hav. (Retd.) Sunil Kumar Ahlawat</strong><br><span class="text-[10px] text-slate-400">VPO Dighal, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint-Treasurer</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">7</td><td class="px-4 py-3"><strong>Smt. Ritu</strong><br><span class="text-[10px] text-slate-400">Gram Sabha, Pooth Kalan, Delhi</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-600">Founder / Advisor</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">7</td><td class="px-4 py-3"><strong>Smt. Ritu W/O Hav (Retd.) Rajbir Malik</strong><br><span class="text-[10px] text-slate-400">Gram Sabha, Pooth Kalan, Delhi</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-600">Founder / Advisor</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">8</td><td class="px-4 py-3"><strong>Hony.Capt (Retd.) Parma Ram</strong><br><span class="text-[10px] text-slate-400">Nagri, Nagour, Rajasthan</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Advisor</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">9</td><td class="px-4 py-3"><strong>Hav (Retd.) Parmod Kumar</strong><br><span class="text-[10px] text-slate-400">Village Bupania, Bahadurgarh, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">10</td><td class="px-4 py-3"><strong>Hav (Retd.) Balwan</strong><br><span class="text-[10px] text-slate-400">Tajnagar, Gurgaon, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">11</td><td class="px-4 py-3"><strong>Hav. (Retd.) Parveen Kumar</strong><br><span class="text-[10px] text-slate-400">Amadalshahpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">12</td><td class="px-4 py-3"><strong>Shri Balraj Singh</strong><br><span class="text-[10px] text-slate-400">Village Kheri Ram Nagar, Kurukshetra</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">13</td><td class="px-4 py-3"><strong>Hav (Retd.) Deep Chand</strong><br><span class="text-[10px] text-slate-400">Naveen Vihar, Begampur, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                             </tbody>
                         </table>
@@ -210,7 +236,7 @@
                 </div>
             </div>
 
-            <!-- ================= 3. WELFARE FUNDS SECTION (सिर्फ अकाउंट बैलेंस, लेजर पूरी तरह हटाया गया) ================= -->
+            <!-- ================= 3. WELFARE FUNDS SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds</h2>
@@ -232,7 +258,7 @@
                 </div>
             </div>
 
-            <!-- ================= 4. SECURITY SETTINGS SECTION (डिफ़ॉल्ट बंद, क्लिक करने पर खुलेगा) ================= -->
+            <!-- ================= 4. SECURITY SETTINGS SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('settings-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Security Settings</h2>
@@ -268,8 +294,44 @@
         </div>
     </main>
 
-    <!-- TOGGLE & CHART SCRIPT -->
+    <!-- LIVE COUNTER & PAGE-WISE SCRIPT -->
     <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            let totalVisits = 0;
+
+            // 1. Fetch Index Page Visits
+            try {
+                let res = await fetch('https://api.counterapi.dev/v1/gesmwa/visits');
+                let data = await res.json();
+                if(data && data.count !== undefined) {
+                    document.getElementById('page-index').innerText = data.count.toLocaleString();
+                    totalVisits += data.count;
+                } else {
+                    document.getElementById('page-index').innerText = "0";
+                }
+            } catch(e) {
+                document.getElementById('page-index').innerText = "0";
+            }
+
+            // 2. Fetch Other Pages Visits (अलग-अलग पेजेस के लिए CounterAPI एंडपॉइंट्स)
+            const pages = ['services', 'donation', 'gallery', 'members'];
+            for (let page of pages) {
+                try {
+                    let res = await fetch(`https://api.counterapi.dev/v1/gesmwa/${page}`);
+                    let data = await res.json();
+                    let count = (data && data.count !== undefined) ? data.count : 0;
+                    document.getElementById(`page-${page}`).innerText = count.toLocaleString();
+                    totalVisits += count;
+                } catch(e) {
+                    document.getElementById(`page-${page}`).innerText = "0";
+                }
+            }
+
+            // कुल विज़िटर्स दिखाना
+            document.getElementById('totalVisitsCount').innerText = totalVisits > 0 ? totalVisits.toLocaleString() : "1";
+        });
+
+        // Toggle Accordion
         function toggleSection(sectionId) {
             const el = document.getElementById(sectionId);
             if (el) {
@@ -280,62 +342,6 @@
                 }
             }
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('trafficChart').getContext('2d');
-
-            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.4)'); 
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.0)'); 
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
-                        label: 'Website Visitors',
-                        data: [1200, 1900, 1500, 2200, 1800, 2800, 3100, 2900, 3500, 4200, 3800, 4800],
-                        borderColor: '#3b82f6',
-                        backgroundColor: gradient,
-                        borderWidth: 3,
-                        pointBackgroundColor: '#ffffff',
-                        pointBorderColor: '#3b82f6',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#0f172a',
-                            titleFont: { family: 'Plus Jakarta Sans', size: 13 },
-                            bodyFont: { family: 'Plus Jakarta Sans', size: 14, weight: 'bold' },
-                            padding: 12,
-                            displayColors: false,
-                            cornerRadius: 8
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#f1f5f9', drawBorder: false },
-                            ticks: { font: { family: 'Plus Jakarta Sans', weight: 'bold' }, color: '#94a3b8' }
-                        },
-                        x: {
-                            grid: { display: false, drawBorder: false },
-                            ticks: { font: { family: 'Plus Jakarta Sans', weight: 'bold' }, color: '#94a3b8' }
-                        }
-                    },
-                    interaction: { mode: 'index', intersect: false }
-                }
-            });
-        });
     </script>
 </body>
 </html>
