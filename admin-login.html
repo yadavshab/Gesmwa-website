@@ -1,124 +1,88 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEWA - Secure Admin Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA - Secure Login Portal</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; transition: opacity 0.3s ease-in-out; }</style>
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; }</style>
 </head>
-<body class="bg-slate-900 flex items-center justify-center min-h-screen relative overflow-hidden text-slate-800">
-    
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-70 animate-pulse"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-70 animate-pulse" style="animation-delay: 2s;"></div>
+<body class="flex items-center justify-center min-h-screen text-slate-800">
 
-    <div class="w-full max-w-md bg-white/95 backdrop-blur-xl p-8 md:p-10 rounded-[2rem] shadow-2xl z-10 mx-4 border border-white/20">
-        
+    <div class="bg-white p-8 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100">
         <div class="text-center mb-8">
-            <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-800 text-white rounded-2xl flex items-center justify-center text-4xl mx-auto mb-5 shadow-lg transform rotate-3 hover:rotate-0 transition duration-300">
-                <i class="fa-solid fa-fingerprint"></i>
+            <div class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg">
+                <i class="fa-solid fa-shield-halved text-amber-400"></i>
             </div>
-            <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Admin Gateway</h1>
-            <p class="text-xs text-slate-500 font-bold tracking-widest uppercase mt-1">GEWA Central Command</p>
+            <h1 class="text-2xl font-black text-slate-900">GEWA Central Auth</h1>
+            <p class="text-xs text-slate-500 font-bold mt-1">Admin & Guest Secure Gateway</p>
         </div>
 
-        <form class="space-y-4">
-            <div class="relative">
-                <i class="fa-solid fa-user-shield absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="adminId" placeholder="Admin ID / Username" class="w-full bg-slate-100/50 border border-slate-200 text-slate-900 text-sm rounded-xl block pl-11 p-4 font-bold outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Username</label>
+                <input type="text" id="username" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-600" required>
             </div>
-            
-            <div class="relative">
-                <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                <input type="password" id="adminPwd" placeholder="Custom Password" class="w-full bg-slate-100/50 border border-slate-200 text-slate-900 text-sm rounded-xl block pl-11 p-4 font-bold outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+            <div>
+                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Password</label>
+                <input type="password" id="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-600" required>
             </div>
-
-            <button type="button" id="loginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black uppercase tracking-widest text-xs py-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2 mt-2">
-                Secure Login <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-widest py-4 rounded-xl shadow-lg transition">
+                Secure Login
             </button>
         </form>
 
-        <div class="flex items-center my-6">
-            <div class="flex-grow border-t border-slate-200"></div>
-            <span class="px-4 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Or Access With</span>
-            <div class="flex-grow border-t border-slate-200"></div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-            <button onclick="alert('Google Login Module Active')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-3 rounded-xl transition flex justify-center items-center gap-2 shadow-sm">
-                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-4 h-4" alt="Google"> Google
-            </button>
-            <button onclick="alert('OTP System Connected')" class="bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-800 font-bold text-xs py-3 rounded-xl transition flex justify-center items-center gap-2 shadow-sm">
-                <i class="fa-solid fa-mobile-screen text-base"></i> Phone OTP
-            </button>
-        </div>
-
-        <div class="mt-8 text-center">
-            <a href="index.html" class="text-[11px] font-bold text-slate-500 hover:text-slate-900 transition flex items-center justify-center gap-1.5 uppercase tracking-wider">
-                <i class="fa-solid fa-arrow-left"></i> Return to Homepage
-            </a>
+        <div class="mt-6 text-center border-t border-slate-100 pt-4">
+            <p class="text-xs text-slate-500 font-medium">Need temporary viewing access?</p>
+            <button onclick="requestGuestAccess()" class="text-blue-600 font-bold text-xs mt-1 hover:underline">Request Guest Access</button>
         </div>
     </div>
 
     <script>
-        // आपके सभी एडमिन और उनके पासवर्ड्स (अब बिल्कुल ठीक हैं)
-        const allowedAdmins = {
-            "admin": "Mayank,(2715)",        
-            "rajbir": "Rajbir@2026",   
-            "sunil": "Sunil@2026",     // यहाँ पहले कॉमा छूटा था
-            "satish": "Satish@2026"        
-        };
-
-        document.getElementById('loginBtn').addEventListener('click', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // यहाँ ब्रैकेट की गलतियाँ ठीक कर दी गई हैं
-            const adminIdValue = document.getElementById('adminId').value.trim();
-            const passwordValue = document.getElementById('adminPwd').value.trim();
-            const currentTime = new Date().toLocaleString(); 
-            const yourEmail = "yadavshab793@gmail.com"; 
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-            const btn = document.getElementById('loginBtn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
-
-            if(allowedAdmins[adminIdValue] && allowedAdmins[adminIdValue] === passwordValue) {
-                
-                sessionStorage.setItem("adminLoggedIn", "true");
-                
-                fetch(`https://formsubmit.co/ajax/${yourEmail}`, {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({
-                        Subject: "🚨 SUCCESS: Admin Login (" + adminIdValue + ")",
-                        Message: "User '" + adminIdValue + "' successfully logged into GEWA Admin Portal.",
-                        Time: currentTime
-                    })
-                }).then(() => {
-                    document.body.style.opacity = 0;
-                    setTimeout(() => { window.location.href = "admin-dashboard.html"; }, 300);
-                }).catch(() => {
-                    window.location.href = "admin-dashboard.html";
+            try {
+                const response = await fetch('https://gewa-backend.onrender.com/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
                 });
+                const data = await response.json();
 
-            } else {
-                fetch(`https://formsubmit.co/ajax/${yourEmail}`, {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({
-                        Subject: "⚠️ FAILED: Wrong Login Attempt",
-                        Message: "Someone tried to login with incorrect credentials.",
-                        Attempted_ID: adminIdValue,
-                        Attempted_Password: passwordValue,
-                        Time: currentTime
-                    })
-                }).finally(() => {
-                    btn.innerHTML = originalText;
-                    alert("Access Denied: Invalid Credentials.");
-                });
+                if (data.success) {
+                    sessionStorage.setItem("adminLoggedIn", "true");
+                    sessionStorage.setItem("userRole", data.role); // 'admin' या 'guest'
+                    sessionStorage.setItem("username", data.username);
+                    window.location.replace("admin-dashboard.html");
+                } else {
+                    alert(data.message || "Login Failed!");
+                }
+            } catch(err) {
+                alert("Network error connecting to backend!");
             }
         });
+
+        async function requestGuestAccess() {
+            const username = prompt("Enter desired Guest Username:");
+            const email = prompt("Enter your Email for verification:");
+            const password = prompt("Set a temporary password:");
+
+            if(username && email && password) {
+                const res = await fetch('https://gewa-backend.onrender.com/api/admin/request-guest', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+                const data = await res.json();
+                alert(data.message);
+            }
+        }
     </script>
 </body>
 </html>

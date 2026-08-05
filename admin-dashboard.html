@@ -12,11 +12,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEWA - Admin Dashboard</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     
     <style>
@@ -34,8 +31,8 @@
             </div>
             <div>
                 <h2 class="font-black text-white text-lg tracking-wide leading-tight">GEWA Panel</h2>
-                <p class="text-[9px] text-emerald-400 font-bold tracking-widest uppercase">
-                    <i class="fa-solid fa-circle text-[6px] animate-pulse relative -top-[1px]"></i> Admin Active
+                <p id="userRoleBadge" class="text-[9px] text-emerald-400 font-bold tracking-widest uppercase">
+                    <i class="fa-solid fa-circle text-[6px] animate-pulse relative -top-[1px]"></i> Active
                 </p>
             </div>
         </div>
@@ -60,7 +57,7 @@
         </nav>
         
         <div class="p-4 border-t border-slate-800/50">
-            <a href="#" onclick="sessionStorage.removeItem('adminLoggedIn'); window.location.replace('admin-login.html');" class="flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:text-white hover:bg-red-600 px-4 py-3.5 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
+            <a href="#" onclick="sessionStorage.clear(); window.location.replace('admin-login.html');" class="flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:text-white hover:bg-red-600 px-4 py-3.5 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
                 <i class="fa-solid fa-power-off"></i> Secure Logout
             </a>
         </div>
@@ -79,11 +76,11 @@
                 </div>
                 <div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-black text-slate-600 flex items-center gap-2 shadow-sm">
                     <span class="text-slate-400 font-medium">Status:</span> 
-                    <span class="text-emerald-600 flex items-center gap-1.5"><i class="fa-solid fa-check-circle"></i> Encrypted & Secured</span>
+                    <span id="headerStatusRole" class="text-emerald-600 flex items-center gap-1.5"><i class="fa-solid fa-check-circle"></i> Secured</span>
                 </div>
             </div>
 
-            <!-- ================= 1. LIVE ANALYTICS SECTION (सबसे ऊपर) ================= -->
+            <!-- ================= 1. LIVE ANALYTICS SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('analytics-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-chart-line text-blue-400"></i> Live Analytics</h2>
@@ -93,8 +90,6 @@
                 <div id="analytics-content" class="space-y-6 transition-all">
                     <!-- QUICK STATS CARDS -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        
-                        <!-- कुल विज़िटर काउंटर कार्ड -->
                         <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-blue-50/50">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -147,7 +142,7 @@
                     <!-- PAGE-WISE TRAFFIC BREAKDOWN TABLE -->
                     <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
                         <h3 class="text-base font-black text-slate-900 mb-4 uppercase tracking-wide flex items-center gap-2">
-                            <i class="fa-solid fa-globe text-blue-600"></i> Page-Wise Traffic Breakdown (सभी पेजेस का ट्रैफिक)
+                            <i class="fa-solid fa-globe text-blue-600"></i> Page-Wise Traffic Breakdown
                         </h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs whitespace-nowrap">
@@ -159,31 +154,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 font-mono">
-                                    <tr>
-                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Main Homepage</td>
-                                        <td class="px-4 py-3 text-slate-500">index.html</td>
-                                        <td id="page-index" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Services & Schemes</td>
-                                        <td class="px-4 py-3 text-slate-500">services.html</td>
-                                        <td id="page-services" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Welfare & Support</td>
-                                        <td class="px-4 py-3 text-slate-500">donation.html</td>
-                                        <td id="page-donation" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Photo Gallery</td>
-                                        <td class="px-4 py-3 text-slate-500">gallery.html</td>
-                                        <td id="page-gallery" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-3 font-bold text-slate-900 font-sans">Members & Laws</td>
-                                        <td class="px-4 py-3 text-slate-500">members.html</td>
-                                        <td id="page-members" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td>
-                                    </tr>
+                                    <tr><td class="px-4 py-3 font-bold text-slate-900 font-sans">Main Homepage</td><td class="px-4 py-3 text-slate-500">index.html</td><td id="page-index" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td></tr>
+                                    <tr><td class="px-4 py-3 font-bold text-slate-900 font-sans">Services & Schemes</td><td class="px-4 py-3 text-slate-500">services.html</td><td id="page-services" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td></tr>
+                                    <tr><td class="px-4 py-3 font-bold text-slate-900 font-sans">Welfare & Support</td><td class="px-4 py-3 text-slate-500">donation.html</td><td id="page-donation" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td></tr>
+                                    <tr><td class="px-4 py-3 font-bold text-slate-900 font-sans">Photo Gallery</td><td class="px-4 py-3 text-slate-500">gallery.html</td><td id="page-gallery" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td></tr>
+                                    <tr><td class="px-4 py-3 font-bold text-slate-900 font-sans">Members & Laws</td><td class="px-4 py-3 text-slate-500">members.html</td><td id="page-members" class="px-4 py-3 text-right font-bold text-blue-600">Loading...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -222,13 +197,14 @@
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">2</td><td class="px-4 py-3"><strong>Hony.Sub Maj (Retd.) Ramniwas</strong><br><span class="text-[10px] text-slate-400">Village Malikpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-blue-600">Vice President</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">3</td><td class="px-4 py-3"><strong>H/Sub Maj (Retd.) Jagvir Singh</strong><br><span class="text-[10px] text-slate-400">VPO Kakrola, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-red-600">Gen-Secretary</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">4</td><td class="px-4 py-3"><strong>Sub Ramesh Singh</strong><br><span class="text-[10px] text-slate-400">Village Kalwa, Jind, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint Secretary</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">5</td><td class="px-4 py-3"><strong>Smt. Pushpa W/O Hav (Retd) Satish Kuamr</strong><br><span class="text-[10px] text-slate-400">VPO Chhuchhkwas, Jhajjar, Haryana</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-700">Treasurer</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">5</td><td class="px-4 py-3"><strong>Smt. Pushpa</strong><br><span class="text-[10px] text-slate-400">VPO Chhuchhkwas, Jhajjar, Haryana</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-700">Treasurer</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">6</td><td class="px-4 py-3"><strong>Hav. (Retd.) Sunil Kumar Ahlawat</strong><br><span class="text-[10px] text-slate-400">VPO Dighal, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint-Treasurer</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">7</td><td class="px-4 py-3"><strong>Smt. Ritu W/O Hav (Retd.) Rajbir Malik</strong><br><span class="text-[10px] text-slate-400">Gram Sabha, Pooth Kalan, Delhi</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-600">Founder / Advisor</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">7</td><td class="px-4 py-3"><strong>Smt. Ritu</strong><br><span class="text-[10px] text-slate-400">Gram Sabha, Pooth Kalan, Delhi</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-600">Founder / Advisor</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">8</td><td class="px-4 py-3"><strong>Hony.Capt (Retd.) Parma Ram</strong><br><span class="text-[10px] text-slate-400">Nagri, Nagour, Rajasthan</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Advisor</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">9</td><td class="px-4 py-3"><strong>Hav (Retd.) Parmod Kumar</strong><br><span class="text-[10px] text-slate-400">Village Bupania, Bahadurgarh, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">10</td><td class="px-4 py-3"><strong>Hav (Retd.) Balwan</strong><br><span class="text-[10px] text-slate-400">Tajnagar, Gurgaon, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">11</td><td class="px-4 py-3"><strong>Hav. (Retd.) Parveen Kumar</strong><br><span class="text-[10px] text-slate-400">Amadalshahpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">12</td><td class="px-4 py-3"><strong>Shri Balraj Singh</strong><br><span class="text-[10px] text-slate-400">Village Kheri Ram Nagar, Kurukshetra</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">13</td><td class="px-4 py-3"><strong>Hav (Retd.) Deep Chand</strong><br><span class="text-[10px] text-slate-400">Naveen Vihar, Begampur, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                             </tbody>
                         </table>
@@ -276,14 +252,14 @@
                         </div>
                     </div>
                     
-                    <form class="space-y-5" onsubmit="event.preventDefault(); alert('Security Alert: Password Updated Successfully!');">
+                    <form id="passwordUpdateForm" class="space-y-5">
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Current Password</label>
-                            <input type="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
+                            <input type="password" id="oldPassword" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition" required>
                         </div>
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password</label>
-                            <input type="password" placeholder="Enter new password" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
+                            <input type="password" id="newPassword" placeholder="Enter new password" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition" required>
                         </div>
                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-xl shadow-lg shadow-blue-200 transition mt-2">
                             Commit Changes
@@ -294,12 +270,28 @@
         </div>
     </main>
 
-    <!-- LIVE COUNTER & PAGE-WISE SCRIPT -->
+    <!-- LIVE COUNTER & ROLE CHECK SCRIPT -->
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
+            const userRole = sessionStorage.getItem("userRole");
+            const username = sessionStorage.getItem("username");
+
+            if(userRole === 'guest') {
+                document.getElementById('userRoleBadge').innerHTML = `<i class="fa-solid fa-circle text-[6px] text-amber-400"></i> Guest Mode (Read-Only)`;
+                document.getElementById('headerStatusRole').innerHTML = `<i class="fa-solid fa-eye text-amber-500"></i> Guest View`;
+                
+                // गेस्ट के लिए पासवर्ड बदलने का सेक्शन ब्लॉक करना
+                const settingsBox = document.getElementById('settings-content');
+                if(settingsBox) {
+                    settingsBox.innerHTML = `<div class="p-4 bg-amber-50 text-amber-800 rounded-xl font-bold text-xs">Guest Notice: You have Read-Only view access. Security credential modifications are restricted.</div>`;
+                }
+            } else {
+                document.getElementById('userRoleBadge').innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400"></i> Admin (${username || 'Master'})`;
+            }
+
             let totalVisits = 0;
 
-            // 1. Fetch Index Page Visits
+            // 1. Index Page Visits
             try {
                 let res = await fetch('https://api.counterapi.dev/v1/gesmwa/visits');
                 let data = await res.json();
@@ -313,7 +305,7 @@
                 document.getElementById('page-index').innerText = "0";
             }
 
-            // 2. Fetch Other Pages Visits (अलग-अलग पेजेस के लिए CounterAPI एंडपॉइंट्स)
+            // 2. Other Pages Visits
             const pages = ['services', 'donation', 'gallery', 'members'];
             for (let page of pages) {
                 try {
@@ -327,11 +319,37 @@
                 }
             }
 
-            // कुल विज़िटर्स दिखाना
+            // Display Total Visits at Top
             document.getElementById('totalVisitsCount').innerText = totalVisits > 0 ? totalVisits.toLocaleString() : "1";
         });
 
-        // Toggle Accordion
+        // Password Update Form Submission
+        const pwdForm = document.getElementById('passwordUpdateForm');
+        if(pwdForm) {
+            pwdForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const oldPassword = document.getElementById('oldPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const username = sessionStorage.getItem("username");
+
+                try {
+                    const res = await fetch('https://gewa-backend.onrender.com/api/admin/update-password', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, oldPassword, newPassword })
+                    });
+                    const data = await res.json();
+                    alert(data.message);
+                    if(data.success) {
+                        pwdForm.reset();
+                    }
+                } catch(err) {
+                    alert("Error updating password via backend!");
+                }
+            });
+        }
+
+        // Toggle Accordion Sections
         function toggleSection(sectionId) {
             const el = document.getElementById(sectionId);
             if (el) {
