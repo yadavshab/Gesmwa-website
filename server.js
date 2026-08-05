@@ -89,7 +89,7 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
         
         const adminsList = [
             { username: 'mayank', password: masterPasswordHash, mobile: '+918395972715' },
-            { username: 'satish', password: defaultPasswordHash, mobile: '+917017374882' },
+            { username: 'satish', password: defaultPasswordHash, mobile: '+917015374882' },
             { username: 'gures', password: defaultPasswordHash, mobile: '+918287744626' },
             { username: 'rajbir', password: defaultPasswordHash, mobile: '+918510865522' },
             { username: 'sunil', password: defaultPasswordHash, mobile: '+918222876304' }
