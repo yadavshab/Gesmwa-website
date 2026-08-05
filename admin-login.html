@@ -62,19 +62,20 @@
     </div>
 
     <script>
-        // 👉 यहाँ आप जितने चाहें उतने नए एडमिन और उनके पासवर्ड जोड़ सकते हैं
+        // आपके सभी एडमिन और उनके पासवर्ड्स (अब बिल्कुल ठीक हैं)
         const allowedAdmins = {
-            "admin": "Mayank,(2715)",        // मुख्य एडमिन
-            "rajbir": "Rajbir@2026",   // आपका दूसरा पासवर्ड
-            "sunil": "Sunil@2026"    
-            "satish": "Satish@2026"        // किसी और दोस्त या पार्टनर के लिए
+            "admin": "Mayank,(2715)",        
+            "rajbir": "Rajbir@2026",   
+            "sunil": "Sunil@2026",     // यहाँ पहले कॉमा छूटा था
+            "satish": "Satish@2026"        
         };
 
         document.getElementById('loginBtn').addEventListener('click', function(e) {
             e.preventDefault();
             
-            const adminIdValue = document.getElementById('adminId'].value.trim();
-            const passwordValue = document.getElementById('adminPwd'].value.trim();
+            // यहाँ ब्रैकेट की गलतियाँ ठीक कर दी गई हैं
+            const adminIdValue = document.getElementById('adminId').value.trim();
+            const passwordValue = document.getElementById('adminPwd').value.trim();
             const currentTime = new Date().toLocaleString(); 
             const yourEmail = "yadavshab793@gmail.com"; 
 
@@ -82,7 +83,6 @@
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
 
-            // चेक करना कि क्या यह आईडी और पासवर्ड हमारी लिस्ट में सही है या नहीं
             if(allowedAdmins[adminIdValue] && allowedAdmins[adminIdValue] === passwordValue) {
                 
                 sessionStorage.setItem("adminLoggedIn", "true");
