@@ -7,8 +7,16 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// 🟢 Explicit CORS Setup (इसे ठीक से सेट करें ताकि कोई ब्लॉक न हो)
+app.use(cors({
+    origin: '*', // आप चाहें तो यहाँ 'https://gesmwa.in' भी लिख सकते हैं
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Handle preflight requests explicitly
+app.options('*', cors());
+
 app.use(express.json());
 
 // MongoDB Connection
@@ -23,7 +31,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
-        pass: process.env.EMAIL_PASS // Render environment variable में EMAIL_PASS सेट होना चाहिए
+        pass: process.env.EMAIL_PASS
     }
 });
 
@@ -79,7 +87,7 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
     }
 });
 
-// 3. Login Route with Safe Email Handling
+// 3. Login Route
 app.post('/api/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -91,7 +99,6 @@ app.post('/api/admin/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ success: false, message: "Invalid Password!" });
 
-        // Safe email notification (Only sends if EMAIL_PASS is configured)
         if (user.role === 'admin' && process.env.EMAIL_PASS) {
             const mailOptions = {
                 from: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
@@ -104,7 +111,7 @@ app.post('/api/admin/login', async (req, res) => {
             });
         }
 
-        res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
+        res.json({ success: type = true, role: user.role, username: user.username, message: "Login successful!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
