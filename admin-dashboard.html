@@ -255,18 +255,26 @@
                         </div>
                         <div>
                             <h3 class="text-lg font-black text-slate-900">Security Credentials</h3>
-                            <p class="text-xs font-bold text-slate-500">Update your master admin password.</p>
+                            <p class="text-xs font-bold text-slate-500">Update your admin username and password.</p>
                         </div>
                     </div>
                     
-                    <form id="passwordUpdateForm" class="space-y-5">
+                    <form id="credentialUpdateForm" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Current Username</label>
+                            <input type="text" id="currentUsername" placeholder="e.g. mayank" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Username (Optional)</label>
+                            <input type="text" id="newUsername" placeholder="Leave blank if you don't want to change" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
+                        </div>
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Current Password</label>
                             <input type="password" id="oldPassword" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition" required>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password</label>
-                            <input type="password" id="newPassword" placeholder="Enter new password" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition" required>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password (Optional)</label>
+                            <input type="password" id="newPassword" placeholder="Leave blank if you don't want to change" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition">
                         </div>
                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-xl shadow-lg shadow-blue-200 transition mt-2">
                             Commit Changes
@@ -293,6 +301,9 @@
                 }
             } else {
                 document.getElementById('userRoleBadge').innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400"></i> Admin (${username || 'Master'})`;
+                if(username && document.getElementById('currentUsername')) {
+                    document.getElementById('currentUsername').value = username;
+                }
             }
 
             let totalVisits = 0;
@@ -328,28 +339,44 @@
             document.getElementById('totalVisitsCount').innerText = totalVisits > 0 ? totalVisits.toLocaleString() : "1";
         });
 
-        // Password Update Form Submission (Connected to Live Render Backend)
-        const pwdForm = document.getElementById('passwordUpdateForm');
-        if(pwdForm) {
-            pwdForm.addEventListener('submit', async function(e) {
+        // Credential (Username & Password) Update Form Submission
+        const credForm = document.getElementById('credentialUpdateForm');
+        if(credForm) {
+            credForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                const currentUsername = document.getElementById('currentUsername').value.trim();
+                const newUsername = document.getElementById('newUsername').value.trim();
                 const oldPassword = document.getElementById('oldPassword').value;
                 const newPassword = document.getElementById('newPassword').value;
-                const username = sessionStorage.getItem("username") || "mayank";
+
+                // Determine final username/password payload
+                const username = currentUsername;
+                const targetNewPassword = newPassword ? newPassword : oldPassword;
 
                 try {
                     const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/update-password', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username, oldPassword, newPassword })
+                        body: JSON.stringify({ 
+                            username: username, 
+                            oldPassword: oldPassword, 
+                            newPassword: targetNewPassword,
+                            newUsername: newUsername ? newUsername : undefined 
+                        })
                     });
                     const data = await res.json();
-                    alert(data.message || (data.success ? "Password updated successfully!" : "Failed to update password"));
+                    alert(data.message || (data.success ? "Credentials updated successfully!" : "Failed to update credentials"));
                     if(data.success) {
-                        pwdForm.reset();
+                        if(newUsername) {
+                            sessionStorage.setItem("username", newUsername);
+                        }
+                        credForm.reset();
+                        if(document.getElementById('currentUsername')) {
+                            document.getElementById('currentUsername').value = newUsername || currentUsername;
+                        }
                     }
                 } catch(err) {
-                    alert("Error updating password via backend!");
+                    alert("Error updating credentials via backend!");
                 }
             });
         }
