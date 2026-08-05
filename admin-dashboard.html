@@ -56,8 +56,11 @@
             </button>
         </nav>
         
-        <div class="p-4 border-t border-slate-800/50">
-            <a href="#" onclick="sessionStorage.clear(); window.location.replace('admin-login.html');" class="flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:text-white hover:bg-red-600 px-4 py-3.5 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
+        <div class="p-4 border-t border-slate-800/50 space-y-2">
+            <a href="index.html" class="flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 px-4 py-3 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
+                <i class="fa-solid fa-house"></i> Homepage
+            </a>
+            <a href="#" onclick="sessionStorage.clear(); window.location.replace('admin-login.html');" class="flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:text-white hover:bg-red-600 px-4 py-3 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
                 <i class="fa-solid fa-power-off"></i> Secure Logout
             </a>
         </div>
@@ -74,9 +77,14 @@
                     <h1 class="text-3xl font-black text-slate-900 tracking-tight">System Central Command</h1>
                     <p class="text-slate-500 text-sm font-medium mt-1">Gurais Ex-Servicemen Welfare Association (Regd. No. S/3924/SDM/NW/2023)</p>
                 </div>
-                <div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-black text-slate-600 flex items-center gap-2 shadow-sm">
-                    <span class="text-slate-400 font-medium">Status:</span> 
-                    <span id="headerStatusRole" class="text-emerald-600 flex items-center gap-1.5"><i class="fa-solid fa-check-circle"></i> Secured</span>
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="md:hidden bg-slate-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-house"></i> Homepage
+                    </a>
+                    <div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-black text-slate-600 flex items-center gap-2 shadow-sm">
+                        <span class="text-slate-400 font-medium">Status:</span> 
+                        <span id="headerStatusRole" class="text-emerald-600 flex items-center gap-1.5"><i class="fa-solid fa-check-circle"></i> Secured</span>
+                    </div>
                 </div>
             </div>
 
@@ -106,7 +114,7 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Governing Body Members</p>
-                                    <h3 class="text-3xl font-black text-slate-900 mt-1">13</h3>
+                                    <h3 class="text-3xl font-black text-slate-900 mt-1">12</h3>
                                 </div>
                                 <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-blue-100">
                                     <i class="fa-solid fa-users"></i>
@@ -118,7 +126,7 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Welfare Bank Balance</p>
-                                    <h3 class="text-3xl font-black text-emerald-600 mt-1">₹ 7,66,187</h3>
+                                    <h3 class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
                                 </div>
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-100">
                                     <i class="fa-solid fa-wallet"></i>
@@ -179,7 +187,7 @@
                             <h3 class="text-xl font-black text-slate-900 tracking-tight"><i class="fa-solid fa-id-badge text-blue-600 mr-2"></i> Official Governing Body Registry</h3>
                             <p class="text-xs text-slate-400 font-semibold mt-0.5">Registered Officials of GEWA</p>
                         </div>
-                        <span class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1 rounded-xl">Total: 13 Officials</span>
+                        <span class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1 rounded-xl">Total: 12 Officials</span>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -204,8 +212,7 @@
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">9</td><td class="px-4 py-3"><strong>Hav (Retd.) Parmod Kumar</strong><br><span class="text-[10px] text-slate-400">Village Bupania, Bahadurgarh, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">10</td><td class="px-4 py-3"><strong>Hav (Retd.) Balwan</strong><br><span class="text-[10px] text-slate-400">Tajnagar, Gurgaon, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                                 <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">11</td><td class="px-4 py-3"><strong>Hav. (Retd.) Parveen Kumar</strong><br><span class="text-[10px] text-slate-400">Amadalshahpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">12</td><td class="px-4 py-3"><strong>Shri Balraj Singh</strong><br><span class="text-[10px] text-slate-400">Village Kheri Ram Nagar, Kurukshetra</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">13</td><td class="px-4 py-3"><strong>Hav (Retd.) Deep Chand</strong><br><span class="text-[10px] text-slate-400">Naveen Vihar, Begampur, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">12</td><td class="px-4 py-3"><strong>Hav (Retd.) Deep Chand</strong><br><span class="text-[10px] text-slate-400">Naveen Vihar, Begampur, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -228,7 +235,7 @@
 
                     <div class="my-6 p-6 bg-slate-50 rounded-3xl border border-slate-200 max-w-md mx-auto">
                         <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">Current Available Balance</p>
-                        <h4 class="text-4xl font-black text-emerald-600">₹ 7,66,187.38</h4>
+                        <h4 class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
                         <p class="text-[11px] text-slate-400 font-mono mt-2">Account No: 923010055446720</p>
                     </div>
                 </div>
@@ -280,7 +287,6 @@
                 document.getElementById('userRoleBadge').innerHTML = `<i class="fa-solid fa-circle text-[6px] text-amber-400"></i> Guest Mode (Read-Only)`;
                 document.getElementById('headerStatusRole').innerHTML = `<i class="fa-solid fa-eye text-amber-500"></i> Guest View`;
                 
-                // गेस्ट के लिए पासवर्ड बदलने का सेक्शन ब्लॉक करना
                 const settingsBox = document.getElementById('settings-content');
                 if(settingsBox) {
                     settingsBox.innerHTML = `<div class="p-4 bg-amber-50 text-amber-800 rounded-xl font-bold text-xs">Guest Notice: You have Read-Only view access. Security credential modifications are restricted.</div>`;
@@ -319,7 +325,6 @@
                 }
             }
 
-            // Display Total Visits at Top
             document.getElementById('totalVisitsCount').innerText = totalVisits > 0 ? totalVisits.toLocaleString() : "1";
         });
 

@@ -127,7 +127,7 @@ app.post('/api/admin/login', async (req, res) => {
     }
 });
 
-// Send OTP Route via Fast2SMS (Sends real SMS to mobile phone)
+// Send OTP Route via Fast2SMS
 app.post('/api/admin/send-otp', async (req, res) => {
     try {
         const { mobile } = req.body;
