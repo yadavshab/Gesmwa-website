@@ -1,54 +1,117 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-
-// हमने जो Article का मॉडल बनाया था, उसे यहाँ जोड़ रहे हैं
-const Article = require('./models/Article');
+const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// MongoDB डेटाबेस से कनेक्शन (यहाँ अपना .env वाला लिंक ही रहने दें या सीधा लिंक डाल दें)
-mongoose.connect("mongodb+srv://yadavshab954_db_user:TVl0FNQdcEfM0FoK@cluster0.exmhi0c.mongodb.net/?appName=Cluster0")
-    .then(() => console.log('✅ MongoDB से सफलतापूर्वक जुड़ गए!'))
-    .catch((err) => console.log('❌ MongoDB कनेक्शन एरर:', err));
+// MongoDB Connection
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://cluster0... (your mongodb uri)";
 
-// ==========================================
-// हमारी API (Routes)
-// ==========================================
+mongoose.connect(MONGO_URI)
+    .then(() => console.log("MongoDB Connected Successfully"))
+    .catch(err => console.log("MongoDB Connection Error:", err));
 
-// 1. सारे आर्टिकल्स देखने का रास्ता (GET API)
+// Nodemailer Transporter Setup
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
+        pass: process.env.EMAIL_PASS // Render environment variable में EMAIL_PASS सेट होना चाहिए
+    }
+});
+
+// Admin Schema
+const adminSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    email: { type: String, default: "yadavshab793@gmail.com" },
+    role: { type: String, default: "admin" },
+    status: { type: String, default: "active" }
+});
+const Admin = mongoose.model('Admin', adminSchema);
+
+// Article Schema
+const articleSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    image: { type: String, default: "" }
+});
+const Article = mongoose.model('Article', articleSchema);
+
+// 1. Get All Articles Route
 app.get('/api/articles', async (req, res) => {
     try {
-        const articles = await Article.find().sort({ createdAt: -1 }); // नए आर्टिकल्स सबसे ऊपर दिखेंगे
+        const articles = await Article.find();
         res.json(articles);
-    } catch (error) {
-        res.status(500).json({ error: "आर्टिकल्स लाने में समस्या आई" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// 2. नया आर्टिकल सेव करने का रास्ता (POST API)
-app.post('/api/articles', async (req, res) => {
+// 2. Setup Main Admin Route
+app.get('/api/admin/setup-my-admin', async (req, res) => {
     try {
-        const newArticle = new Article({
-            title: req.body.title,
-            content: req.body.content,
-            image: req.body.image
+        const existingAdmin = await Admin.findOne({ username: 'mayank' });
+        if (existingAdmin) {
+            return res.json({ success: true, message: "Admin account already exists! Username: mayank, Password: adminpassword123" });
+        }
+
+        const hashedPassword = await bcrypt.hash('adminpassword123', 10);
+        const newAdmin = new Admin({
+            username: 'mayank',
+            password: hashedPassword,
+            email: 'yadavshab793@gmail.com',
+            role: 'admin',
+            status: 'active'
         });
-        await newArticle.save(); // डेटाबेस में सेव करना
-        res.status(201).json({ message: "🎉 आर्टिकल सफलतापूर्वक सेव हो गया!", article: newArticle });
-    } catch (error) {
-        res.status(500).json({ error: "आर्टिकल सेव करने में समस्या आई" });
+
+        await newAdmin.save();
+        res.json({ success: true, message: "Main Admin Account Created Successfully! Username: mayank, Password: adminpassword123" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// ==========================================
+// 3. Login Route with Safe Email Handling
+app.post('/api/admin/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await Admin.findOne({ username });
 
-// सर्वर चालू करना
+        if (!user) return res.status(400).json({ success: false, message: "User not found!" });
+        if (user.status === 'pending') return res.status(403).json({ success: false, message: "Your access is pending approval by Main Admin." });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ success: false, message: "Invalid Password!" });
+
+        // Safe email notification (Only sends if EMAIL_PASS is configured)
+        if (user.role === 'admin' && process.env.EMAIL_PASS) {
+            const mailOptions = {
+                from: process.env.EMAIL_USER || 'yadavshab793@gmail.com',
+                to: user.email,
+                subject: 'Security Alert: Admin Login Detected',
+                text: `Alert! Admin '${username}' has successfully logged into the GEWA Admin Dashboard at ${new Date().toLocaleString()}.`
+            };
+            transporter.sendMail(mailOptions, (err) => {
+                if (err) console.log('Email notification error:', err);
+            });
+        }
+
+        res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Server Listener
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`🚀 सर्वर http://localhost:${PORT} पर चालू हो गया है`);
+    console.log(`Server running on port ${PORT}`);
 });
