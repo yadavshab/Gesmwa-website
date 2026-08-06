@@ -1,4 +1,71 @@
 <!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA - Admin Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 border border-slate-200">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-blue-200">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h1 class="text-2xl font-black text-slate-900">Admin Portal</h1>
+            <p class="text-xs text-slate-400 font-bold mt-1">Gurais Ex-Servicemen Welfare Association</p>
+        </div>
+
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Username</label>
+                <input type="text" id="username" placeholder="Enter username" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition" required>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Password</label>
+                <input type="password" id="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-bold transition" required>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-xl shadow-lg shadow-blue-200 transition">
+                Secure Login
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    sessionStorage.setItem("adminLoggedIn", "true");
+                    sessionStorage.setItem("username", data.username || username);
+                    sessionStorage.setItem("userRole", data.role || "admin");
+                    window.location.href = "admin-dashboard.html";
+                } else {
+                    alert(data.message || "Invalid credentials!");
+                }
+            } catch (err) {
+                console.error("Login error:", err);
+                alert("Server connection error!");
+            }
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -177,25 +244,6 @@
             width: 18px;
             height: 18px;
             pointer-events: none;
-        }
-
-        .captcha-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #000000;
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 10px;
-            margin-bottom: 18px;
-            justify-content: space-between;
-        }
-
-        #captchaCanvas {
-            background: #000;
-            border-radius: 6px;
-            letter-spacing: 4px;
-            cursor: pointer;
         }
 
         .otp-row {
@@ -377,18 +425,6 @@
                 </div>
             </div>
 
-            <!-- CAPTCHA Section -->
-            <div class="form-group">
-                <label class="form-label">Security Verification (CAPTCHA)</label>
-                <div class="captcha-box">
-                    <canvas id="captchaCanvas" width="160" height="42"></canvas>
-                    <button type="button" class="otp-btn" onclick="generateCaptcha()" title="Refresh Captcha">↻ Refresh</button>
-                </div>
-                <div class="input-wrapper">
-                    <input type="text" id="box_c" class="input-field" placeholder="Enter exact code shown above" style="padding-left: 16px;" autocomplete="off" required>
-                </div>
-            </div>
-
             <button type="submit" class="submit-btn" id="submitBtn">Authenticate Session</button>
             
             <div id="statusBanner" class="status-banner"></div>
@@ -402,59 +438,15 @@
 
 <script>
     let currentMode = 'username';
-    let expectedCaptcha = '';
-
-    function generateCaptcha() {
-        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let captchaText = '';
-        for (let i = 0; i < 6; i++) {
-            captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        expectedCaptcha = captchaText;
-
-        const canvas = document.getElementById('captchaCanvas');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#050507';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-        for (let i = 0; i < 4; i++) {
-            ctx.beginPath();
-            ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-            ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-            ctx.stroke();
-        }
-
-        ctx.font = 'bold 22px monospace';
-        ctx.fillStyle = '#f3f4f6';
-        ctx.textBaseline = 'middle';
-        
-        let x = 15;
-        for (let i = 0; i < expectedCaptcha.length; i++) {
-            ctx.save();
-            ctx.translate(x, canvas.height / 2);
-            let angle = (Math.random() - 0.5) * 0.4;
-            ctx.rotate(angle);
-            ctx.fillText(expectedCaptcha[i], 0, 0);
-            ctx.restore();
-            x += 22;
-        }
-
-        document.getElementById('box_c').value = '';
-    }
 
     function clearAllInputs() {
         document.getElementById('box_u').value = '';
         document.getElementById('box_p').value = '';
         document.getElementById('box_m').value = '';
         document.getElementById('box_o').value = '';
-        document.getElementById('box_c').value = '';
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        generateCaptcha();
         clearAllInputs();
         setTimeout(clearAllInputs, 100);
         setTimeout(clearAllInputs, 500);
@@ -509,13 +501,6 @@
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        const userCaptcha = document.getElementById('box_c').value.trim();
-        if (userCaptcha !== expectedCaptcha) {
-            alert("Incorrect CAPTCHA code! Please match the exact characters shown.");
-            generateCaptcha();
-            return;
-        }
-
         const statusBanner = document.getElementById('statusBanner');
         const submitBtn = document.getElementById('submitBtn');
 
@@ -564,7 +549,6 @@
             statusBanner.style.display = "block";
             statusBanner.innerHTML = err.message || "Network handshake failure!";
             submitBtn.disabled = false;
-            generateCaptcha();
         }
     });
 </script>
