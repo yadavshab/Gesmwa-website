@@ -216,13 +216,13 @@ app.post('/api/admin/verify-otp', async (req, res) => {
     }
 });
 
-// Self-Service Password Update Route (Admin can change their password anytime)
+// Self-Service Username & Password Update Route
 app.put('/api/admin/update-password', async (req, res) => {
     try {
-        const { username, oldPassword, newPassword } = req.body;
+        const { username, oldPassword, newPassword, newUsername } = req.body;
 
-        if (!username || !oldPassword || !newPassword) {
-            return res.status(400).json({ success: false, message: "All fields are required!" });
+        if (!username || !oldPassword) {
+            return res.status(400).json({ success: false, message: "Username and current password are required!" });
         }
 
         const user = await Admin.findOne({ username });
@@ -235,10 +235,23 @@ app.put('/api/admin/update-password', async (req, res) => {
             return res.status(400).json({ success: false, message: "Current password is incorrect!" });
         }
 
-        user.password = await bcrypt.hash(newPassword, 10);
+        // Update password if provided
+        if (newPassword) {
+            user.password = await bcrypt.hash(newPassword, 10);
+        }
+
+        // Update username if provided and unique
+        if (newUsername && newUsername.trim() !== "" && newUsername !== username) {
+            const existingUser = await Admin.findOne({ username: newUsername.trim() });
+            if (existingUser) {
+                return res.status(400).json({ success: false, message: "Username already taken!" });
+            }
+            user.username = newUsername.trim();
+        }
+
         await user.save();
 
-        res.json({ success: true, message: "Security credentials (Password) updated successfully!" });
+        res.json({ success: true, message: "Security credentials updated successfully!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
