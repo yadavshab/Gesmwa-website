@@ -236,7 +236,51 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
     }
 });
 
-// 2. NEW: Fetch All Content for a Section (एडमिन डैशबोर्ड टेबल के लिए - बेहद जरूरी)
+// 2. Update Dynamic Content API (रिकॉर्ड एडिट/अपडेट करने के लिए - नया जोड़ा गया)
+app.put('/api/admin/update-dynamic/:id', async (req, res) => {
+    try {
+        const recordId = req.params.id;
+        const { section, subCategory, title, imageUrl, description } = req.body;
+        
+        const updatedContent = await DynamicContent.findByIdAndUpdate(
+            recordId,
+            { 
+                section: section ? section.toLowerCase().trim() : undefined, 
+                subCategory: subCategory ? subCategory.toLowerCase().trim() : undefined, 
+                title, 
+                imageUrl, 
+                description 
+            },
+            { new: true }
+        );
+
+        if (!updatedContent) {
+            return res.status(404).json({ success: false, message: "Record not found!" });
+        }
+
+        res.json({ success: true, message: "Updated successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 3. Delete Dynamic Content API (रिकॉर्ड डिलीट करने के लिए - नया जोड़ा गया)
+app.delete('/api/admin/delete-dynamic/:id', async (req, res) => {
+    try {
+        const recordId = req.params.id;
+        const deletedContent = await DynamicContent.findByIdAndDelete(recordId);
+
+        if (!deletedContent) {
+            return res.status(404).json({ success: false, message: "Record not found!" });
+        }
+
+        res.json({ success: true, message: "Deleted successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 4. Fetch All Content for a Section (एडमिन डैशबोर्ड टेबल के लिए)
 app.get('/api/content/all/:section', async (req, res) => {
     try {
         const sectionName = req.params.section.toLowerCase().trim();
@@ -247,7 +291,7 @@ app.get('/api/content/all/:section', async (req, res) => {
     }
 });
 
-// 3. NEW: Fetch All Content in Database (फॉलबैक के लिए)
+// 5. Fetch All Content in Database (फॉलबैक के लिए)
 app.get('/api/content/all', async (req, res) => {
     try {
         const items = await DynamicContent.find({}).sort({ date: -1 });
@@ -257,7 +301,7 @@ app.get('/api/content/all', async (req, res) => {
     }
 });
 
-// 4. Fetch Dynamic Content API by Section & SubCategory (वेबसाइट पर ऑटो-डिस्प्ले करने के लिए)
+// 6. Fetch Dynamic Content API by Section & SubCategory (वेबसाइट पर ऑटो-डिस्प्ले करने के लिए)
 app.get('/api/content/:section/:subCategory', async (req, res) => {
     try {
         const { section, subCategory } = req.params;
