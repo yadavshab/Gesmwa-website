@@ -443,9 +443,22 @@
 
             try {
                 const res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
-                const items = await res.json();
+                const data = res.ok ? await res.json() : [];
 
-                if(Array.isArray(items) && items.length > 0) {
+                // सुरक्षित रूप से चेक करें कि डेटा ऐरे है या किसी ऑब्जेक्ट के अंदर छिपा है
+                let items = [];
+                if (Array.isArray(data)) {
+                    items = data;
+                } else if (data && Array.isArray(data.items)) {
+                    items = data.items;
+                } else if (data && Array.isArray(data.data)) {
+                    items = data.data;
+                } else if (data && typeof data === 'object') {
+                    const possibleArray = Object.values(data).find(val => Array.isArray(val));
+                    if (possibleArray) items = possibleArray;
+                }
+
+                if(items.length > 0) {
                     tableBody.innerHTML = items.map(item => `
                         <tr class="hover:bg-slate-50">
                             <td class="p-3">
