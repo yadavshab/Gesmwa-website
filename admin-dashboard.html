@@ -438,14 +438,15 @@
 
         async function fetchSectionRecords() {
             const section = document.getElementById('pubSection').value;
+            const subCategory = document.getElementById('pubSubCategory').value;
             const tableBody = document.getElementById('sectionRecordsTable');
             tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">Loading records...</td></tr>`;
 
             try {
-                const res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
-                const data = res.ok ? await res.json() : [];
+                // 1. पहले डायरेक्ट सेक्शन से डेटा फेच करें
+                let res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
+                let data = res.ok ? await res.json() : [];
 
-                // सुरक्षित रूप से चेक करें कि डेटा ऐरे है या किसी ऑब्जेक्ट के अंदर छिपा है
                 let items = [];
                 if (Array.isArray(data)) {
                     items = data;
@@ -456,6 +457,21 @@
                 } else if (data && typeof data === 'object') {
                     const possibleArray = Object.values(data).find(val => Array.isArray(val));
                     if (possibleArray) items = possibleArray;
+                }
+
+                // 2. यदि डायरेक्ट डेटा नहीं मिला, तो सभी कंटेंट फेच करके फिल्टर करें (Fallback)
+                if (items.length === 0) {
+                    const resAll = await fetch(`https://gewa-backend-live.onrender.com/api/content/all`);
+                    if (resAll.ok) {
+                        const allData = await resAll.json();
+                        let allItems = Array.isArray(allData) ? allData : (allData.items || allData.data || Object.values(allData).find(v => Array.isArray(v)) || []);
+                        
+                        items = allItems.filter(item => 
+                            (item.section && item.section.toLowerCase() === section.toLowerCase()) ||
+                            (item.category && item.category.toLowerCase() === section.toLowerCase()) ||
+                            (item.subCategory && item.subCategory.toLowerCase() === subCategory.toLowerCase())
+                        );
+                    }
                 }
 
                 if(items.length > 0) {
