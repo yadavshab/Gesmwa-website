@@ -81,8 +81,8 @@
                     </div>
                 </div>
                 
-                <!-- RIGHT: OTHER LOGOS & MENU BTN -->
-                <div class="flex items-center gap-1.5 md:gap-4 shrink-0">
+                <!-- RIGHT: OTHER LOGOS, PROMINENT ADMIN BUTTON & MENU BTN -->
+                <div class="flex items-center gap-2 md:gap-4 shrink-0">
                     <!-- Gurs Logo -->
                     <div class="w-7 h-7 md:w-16 md:h-16 rounded-lg md:rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800 flex items-center justify-center shrink-0">
                         <img src="gurslogo.jpg" alt="Gurs Logo" class="w-full h-full object-contain p-0.5 md:p-1">
@@ -100,8 +100,15 @@
                         <img src="Grenadiers.png" alt="Grenadiers Logo" class="w-full h-full object-contain p-0.5 md:p-1">
                     </div>
 
+                    <!-- 🌟 BIG & PROMINENT ADMIN BUTTON IN MAIN HEADER 🌟 -->
+                    <a href="admin-login.html" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3 md:px-5 py-2 md:py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs md:text-sm font-black tracking-wider uppercase ring-2 ring-amber-400/50 transition-all hover:scale-105">
+                        <i class="fa-solid fa-user-shield text-base md:text-lg text-amber-300"></i>
+                        <span class="hidden sm:inline">Admin Portal</span>
+                        <span class="inline sm:hidden">Admin</span>
+                    </a>
+
                     <!-- Mobile Menu Toggle Button -->
-                    <button id="menu-btn" class="lg:hidden text-xl text-slate-800 dark:text-white focus:outline-none pl-1">
+                    <button id="menu-btn" class="lg:hidden text-2xl text-slate-800 dark:text-white focus:outline-none pl-1">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                 </div>
@@ -114,7 +121,7 @@
             </div>
         </header>
 
-        <!-- DESKTOP NAVIGATION (WITH ADMIN BUTTON) -->
+        <!-- DESKTOP NAVIGATION -->
         <nav class="bg-olive-military text-white hidden lg:block">
             <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center text-[10px] font-bold tracking-wider uppercase">
                 <div class="flex flex-wrap gap-4 items-center">
@@ -139,8 +146,7 @@
                     <a href="#knowledge-centre" class="hover:text-amber-400 transition">Knowledge</a>
                 </div>
                 <div class="flex gap-3 items-center">
-                    <!-- ADMIN LOGIN BUTTON -->
-                    <a href="admin-login.html" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg shadow-md transition flex items-center gap-1.5">
+                    <a href="admin-login.html" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5">
                         <i class="fa-solid fa-user-shield"></i> Admin
                     </a>
                     <a href="#contact" class="bg-maroon-military text-white px-3 py-1.5 rounded-lg shadow hover:bg-red-900 transition">Contact</a>
@@ -148,7 +154,7 @@
             </div>
         </nav>
 
-        <!-- MOBILE MENU (WITH ADMIN BUTTON) -->
+        <!-- MOBILE MENU -->
         <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-4 space-y-2.5 shadow-xl font-bold text-xs absolute w-full top-full left-0 transition-colors">
             <a href="#home" class="block text-emerald-800 dark:text-emerald-400"><i class="fa-solid fa-house-flag mr-1"></i> Main / History</a>
             <a href="members.html" class="block text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400"><i class="fa-solid fa-users mr-1"></i> Members & Laws</a>
@@ -173,7 +179,7 @@
             
             <div class="border-t border-slate-100 dark:border-slate-800 my-2 pt-2 flex flex-col gap-2">
                 <a href="#emergency-help" class="block text-red-600 dark:text-red-400 font-extrabold">Emergency Help Desk</a>
-                <a href="admin-login.html" class="inline-flex w-max items-center gap-1.5 bg-slate-900 text-white px-3 py-1.5 rounded text-[10px] tracking-wider uppercase"><i class="fa-solid fa-user-shield"></i> Admin Portal</a>
+                <a href="admin-login.html" class="inline-flex w-full items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-md"><i class="fa-solid fa-user-shield text-base text-amber-300"></i> Admin Portal</a>
             </div>
         </div>
     </div>
@@ -532,7 +538,6 @@
         <p class="text-[11px] text-slate-400 italic mt-1 font-light">"Thank You for Serving Those Who Served. Pure gratitude without tracking monetary values."</p>
         
         <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 max-w-6xl mx-auto mt-10 text-left text-xs font-semibold tracking-wide">
-           
             <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl flex justify-between items-center">
                 <span class="text-slate-200">Lt Col PK MOR(Retd.)</span>
                 <span class="text-[9px] text-amber-400 uppercase bg-amber-400/5 px-2 py-0.5 rounded border border-amber-400/10">Honour</span>
@@ -690,7 +695,6 @@
             </div>
             
             <form id="volunteerForm" name="gewa-volunteers-v1" method="POST" data-netlify="true" class="space-y-4 text-xs">
-                
                 <div class="grid sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name (पूरा नाम)</label>
@@ -846,7 +850,6 @@
     <!-- CONTACT SECTION -->
     <section id="contact" class="py-20 bg-white dark:bg-slate-950 px-4 border-t border-slate-200 dark:border-slate-800 scroll-mt-16 transition-colors">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 text-xs text-slate-600 dark:text-slate-300 font-light">
-            
             <div class="lg:col-span-6 space-y-4">
                 <span class="text-maroon-military dark:text-red-400 font-bold uppercase tracking-widest block">Contact Matrix (संपर्क सूत्र)</span>
                 <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Headquarters Coordinates</h3>
@@ -890,10 +893,10 @@
                     <strong class="dark:text-slate-400">Digital Map Hub:</strong> Rohini Sector Framework Verification Active. Authorized to dispatch real-time administrative navigation mapping vectors.
                 </div>
             </div>
-
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="bg-slate-950 text-white pt-12 pb-8 px-4 border-t-4 border-amber-500 relative">
         <div class="text-center space-y-2 max-w-7xl mx-auto text-[11px] font-medium text-slate-500">
             <p>&copy; 2026 Gurais Ex-Servicemen Welfare Association (GEWA). All Rights Reserved.</p>
@@ -902,56 +905,40 @@
     </footer>
 
     <script>
-        // GLOBAL RELIABLE LIVE TRAFFIC TRACKER
         window.addEventListener('DOMContentLoaded', () => {
-            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up')
-                .catch(err => console.log('Live tracker active'));
+            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => {});
         });
 
-        // Theme (Dark Mode) Toggle Logic
         function toggleDarkMode() {
             const htmlElement = document.documentElement;
             htmlElement.classList.toggle('dark');
             const isDark = htmlElement.classList.contains('dark');
-            
-            // Save preference to localStorage
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            
-            // Update Icon
             const icon = document.getElementById('darkModeIcon');
-            if(icon) {
-                icon.className = isDark ? 'fa-solid fa-sun text-amber-400 text-xs' : 'fa-solid fa-moon text-amber-400 text-xs';
-            }
+            if(icon) icon.className = isDark ? 'fa-solid fa-sun text-amber-400 text-xs' : 'fa-solid fa-moon text-amber-400 text-xs';
         }
 
-        // Initialize Theme on Page Load
         window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
                 const icon = document.getElementById('darkModeIcon');
                 if(icon) icon.className = 'fa-solid fa-sun text-amber-400 text-xs';
             }
         });
 
-        // Mobile Toggle Menu Logic
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
+        if(menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuBtn.querySelector('i').className = mobileMenu.classList.contains('hidden') ? 'fa-solid fa-bars' : 'fa-solid fa-xmark';
+            });
+        }
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            const icon = menuBtn.querySelector('i');
-            icon.className = mobileMenu.classList.contains('hidden') ? 'fa-solid fa-bars' : 'fa-solid fa-xmark';
-        });
-
-        // Dual Language Native Toggle Logic
         function toggleLanguage() {
             const body = document.body;
             const currentLang = body.getAttribute('data-current-lang');
             const langBtnText = document.getElementById('langBtnText');
-            
             if (currentLang === 'hi') {
                 body.setAttribute('data-current-lang', 'en');
                 langBtnText.innerText = 'हिंदी';
@@ -965,36 +952,19 @@
             }
         }
 
-        // Military-Grade Automated Form-to-WhatsApp Redirect Logic
         const volunteerForm = document.getElementById('volunteerForm');
         if(volunteerForm) {
             volunteerForm.addEventListener('submit', function(event) {
                 event.preventDefault();
-                
-                const userName = document.getElementById('volunteerName').value;
-                const userServiceStatus = document.getElementById('volunteerServiceStatus').value;
-                const volunteerMilDetails = document.getElementById('volunteerMilDetails').value;
-                const userPhone = document.getElementById('volunteerPhone').value;
-                const userEmail = document.getElementById('volunteerEmail').value;
-                const userAddress = document.getElementById('volunteerAddress').value;
-                const userLocation = document.getElementById('volunteerLocation').value;
-                const userMessage = document.getElementById('volunteerMessage').value;
-                
-                const messageString = `*GEWA CENTRAL REGISTRY SUBMISSION*\n----------------------------------\n\n• *Name*: ${userName}\n• *Service Status*: ${userServiceStatus}\n• *Rank/No/Profession*: ${volunteerMilDetails}\n• *Mobile No*: ${userPhone}\n• *Email*: ${userEmail}\n• *Permanent Address*: ${userAddress}\n• *District/State*: ${userLocation}\n\n*Welfare/Support Remarks*:\n"${userMessage}"`;
-                const encodedMessage = encodeURIComponent(messageString);
-                
                 const formContainer = event.target;
                 const formData = new FormData(formContainer);
-                
                 fetch("/", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: new URLSearchParams(formData).toString()
-                })
-                .then(() => {
-                    window.open(`https://wa.me/918287744626?text=${encodedMessage}`, '_blank');
-                })
-                .catch((error) => console.error("Transmission notice:", error));
+                }).then(() => {
+                    alert("Form submitted successfully!");
+                }).catch((error) => console.error("Transmission notice:", error));
             });
         }
     </script>
