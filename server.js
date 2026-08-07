@@ -40,12 +40,13 @@ const visitSchema = new mongoose.Schema({
 });
 const Visit = mongoose.model('Visit', visitSchema);
 
-// Dynamic Content Schema for Sections & Sub-categories
+// Dynamic Content Schema (Updated with linkUrl for Guide/External links)
 const dynamicContentSchema = new mongoose.Schema({
     section: { type: String, required: true, lowercase: true, trim: true },
     subCategory: { type: String, lowercase: true, trim: true },
     title: { type: String, required: true },
     imageUrl: { type: String },
+    linkUrl: { type: String }, // <--- बाहरी लिंक (जैसे Read Full Guide/Article के लिए)
     description: { type: String },
     date: { type: Date, default: Date.now }
 });
@@ -220,10 +221,10 @@ app.post('/api/admin/verify-otp', async (req, res) => {
     }
 });
 
-// 1. Upload Dynamic Content API
+// 1. Upload Dynamic Content API (Supports linkUrl)
 app.post('/api/admin/upload-dynamic', async (req, res) => {
     try {
-        const { section, subCategory, title, imageUrl, description } = req.body;
+        const { section, subCategory, title, imageUrl, description, linkUrl } = req.body;
         if (!section || !subCategory || !title) {
             return res.status(400).json({ success: false, message: "Section, Sub-category, and Title are required!" });
         }
@@ -232,6 +233,7 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
             subCategory: subCategory.toLowerCase().trim(), 
             title, 
             imageUrl, 
+            linkUrl, 
             description 
         });
         await newContent.save();
@@ -241,11 +243,11 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
     }
 });
 
-// 2. Update Dynamic Content API
+// 2. Update Dynamic Content API (Supports linkUrl update)
 app.put('/api/admin/update-dynamic/:id', async (req, res) => {
     try {
         const recordId = req.params.id;
-        const { section, subCategory, title, imageUrl, description } = req.body;
+        const { section, subCategory, title, imageUrl, description, linkUrl } = req.body;
         
         const updatedContent = await DynamicContent.findByIdAndUpdate(
             recordId,
@@ -254,6 +256,7 @@ app.put('/api/admin/update-dynamic/:id', async (req, res) => {
                 subCategory: subCategory ? subCategory.toLowerCase().trim() : undefined, 
                 title, 
                 imageUrl, 
+                linkUrl, 
                 description 
             },
             { new: true }
