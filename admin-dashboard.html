@@ -441,20 +441,55 @@
             const tableBody = document.getElementById('sectionRecordsTable');
             tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">Loading records...</td></tr>`;
 
-            try {
-                const res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
-                const data = res.ok ? await res.json() : [];
+            let items = [];
 
-                let items = [];
-                if (Array.isArray(data)) {
-                    items = data;
-                } else if (data && Array.isArray(data.items)) {
-                    items = data.items;
-                } else if (data && Array.isArray(data.data)) {
-                    items = data.data;
-                } else if (data && typeof data === 'object') {
-                    const possibleArray = Object.values(data).find(val => Array.isArray(val));
-                    if (possibleArray) items = possibleArray;
+            try {
+                // 1. पहले डायरेक्ट सेक्शन से डेटा लाने की कोशिश करें
+                let res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
+                if (res.ok) {
+                    let data = await res.json();
+                    if (Array.isArray(data)) items = data;
+                    else if (data && Array.isArray(data.items)) items = data.items;
+                    else if (data && Array.isArray(data.data)) items = data.data;
+                    else if (data && typeof data === 'object') {
+                        const arr = Object.values(data).find(v => Array.isArray(v));
+                        if (arr) items = arr;
+                    }
+                }
+
+                // 2. अगर वहाँ नहीं मिला, तो हम सभी आर्टिकल्स या कंटेंट मंगवाकर मैच करेंगे (Universal Fallback)
+                if (items.length === 0) {
+                    const fallbackUrls = [
+                        'https://gewa-backend-live.onrender.com/api/content',
+                        'https://gewa-backend-live.onrender.com/api/articles'
+                    ];
+
+                    for (let url of fallbackUrls) {
+                        try {
+                            let r = await fetch(url);
+                            if (r.ok) {
+                                let d = await r.json();
+                                let allItems = [];
+                                if (Array.isArray(d)) allItems = d;
+                                else if (d && Array.isArray(d.items)) allItems = d.items;
+                                else if (d && Array.isArray(d.data)) allItems = d.data;
+                                else if (d && typeof d === 'object') {
+                                    const arr = Object.values(d).find(v => Array.isArray(v));
+                                    if (arr) allItems = arr;
+                                }
+
+                                if (allItems.length > 0) {
+                                    // अगर डेटा मिल गया तो इस सेक्शन से मैच करने वाले या सारे दिखा देंगे
+                                    items = allItems.filter(item => {
+                                        const s = (item.section || item.category || '').toLowerCase();
+                                        return s.includes(section.toLowerCase()) || s === '';
+                                    });
+                                    if (items.length === 0) items = allItems; // अगर फिल्टर न हो तो सभी दिखाएं ताकि रिकॉर्ड दिखे
+                                    break;
+                                }
+                            }
+                        } catch (e) {}
+                    }
                 }
 
                 if(items.length > 0) {
