@@ -444,73 +444,56 @@
             let items = [];
 
             try {
-                // 1. पहले डायरेक्ट सेक्शन से डेटा लाने की कोशिश करें
-                let res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
-                if (res.ok) {
-                    let data = await res.json();
-                    if (Array.isArray(data)) items = data;
-                    else if (data && Array.isArray(data.items)) items = data.items;
-                    else if (data && Array.isArray(data.data)) items = data.data;
-                    else if (data && typeof data === 'object') {
-                        const arr = Object.values(data).find(v => Array.isArray(v));
-                        if (arr) items = arr;
-                    }
-                }
+                // सभी संभावित डेटा स्रोतों से डेटा फेच करें ताकि कोई भी रिकॉर्ड छूटे नहीं
+                const urls = [
+                    `https://gewa-backend-live.onrender.com/api/content/all/${section}`,
+                    `https://gewa-backend-live.onrender.com/api/content/all`,
+                    `https://gewa-backend-live.onrender.com/api/content`,
+                    `https://gewa-backend-live.onrender.com/api/articles`
+                ];
 
-                // 2. अगर वहाँ नहीं मिला, तो हम सभी आर्टिकल्स या कंटेंट मंगवाकर मैच करेंगे (Universal Fallback)
-                if (items.length === 0) {
-                    const fallbackUrls = [
-                        'https://gewa-backend-live.onrender.com/api/content',
-                        'https://gewa-backend-live.onrender.com/api/articles'
-                    ];
-
-                    for (let url of fallbackUrls) {
-                        try {
-                            let r = await fetch(url);
-                            if (r.ok) {
-                                let d = await r.json();
-                                let allItems = [];
-                                if (Array.isArray(d)) allItems = d;
-                                else if (d && Array.isArray(d.items)) allItems = d.items;
-                                else if (d && Array.isArray(d.data)) allItems = d.data;
-                                else if (d && typeof d === 'object') {
-                                    const arr = Object.values(d).find(v => Array.isArray(v));
-                                    if (arr) allItems = arr;
-                                }
-
-                                if (allItems.length > 0) {
-                                    // अगर डेटा मिल गया तो इस सेक्शन से मैच करने वाले या सारे दिखा देंगे
-                                    items = allItems.filter(item => {
-                                        const s = (item.section || item.category || '').toLowerCase();
-                                        return s.includes(section.toLowerCase()) || s === '';
-                                    });
-                                    if (items.length === 0) items = allItems; // अगर फिल्टर न हो तो सभी दिखाएं ताकि रिकॉर्ड दिखे
-                                    break;
-                                }
+                for (let url of urls) {
+                    try {
+                        let res = await fetch(url);
+                        if (res.ok) {
+                            let data = await res.json();
+                            let extracted = [];
+                            if (Array.isArray(data)) extracted = data;
+                            else if (data && Array.isArray(data.items)) extracted = data.items;
+                            else if (data && Array.isArray(data.data)) extracted = data.data;
+                            else if (data && typeof data === 'object') {
+                                const arr = Object.values(data).find(v => Array.isArray(v));
+                                if (arr) extracted = arr;
                             }
-                        } catch (e) {}
-                    }
+
+                            if (extracted.length > 0) {
+                                items = extracted;
+                                break;
+                            }
+                        }
+                    } catch (e) {}
                 }
 
+                // अगर डेटा मिल गया है, तो उसे टेबल में दिखाएं (बिना सख्त पाबंदी के ताकि सब दिखे)
                 if(items.length > 0) {
                     tableBody.innerHTML = items.map(item => `
                         <tr class="hover:bg-slate-50">
                             <td class="p-3">
                                 ${item.imageUrl ? `<img src="${item.imageUrl}" class="w-10 h-10 object-cover rounded-lg border">` : '<span class="text-[10px] text-slate-400">No Image</span>'}
                             </td>
-                            <td class="p-3 font-bold text-slate-900">${item.title || 'Untitled'}</td>
-                            <td class="p-3 text-slate-500">${item.subCategory || item.category || section}</td>
+                            <td class="p-3 font-bold text-slate-900">${item.title || item.name || 'Untitled'}</td>
+                            <td class="p-3 text-slate-500">${item.subCategory || item.category || item.section || section}</td>
                             <td class="p-3 text-right space-x-2">
-                                <button onclick="editRecord('${item._id || item.id}', '${item.subCategory || ''}', '${item.title || ''}', '${item.imageUrl || ''}', '${item.description || ''}')" class="text-blue-600 font-bold hover:underline">Edit</button>
+                                <button onclick="editRecord('${item._id || item.id}', '${item.subCategory || ''}', '${item.title || item.name || ''}', '${item.imageUrl || ''}', '${item.description || ''}')" class="text-blue-600 font-bold hover:underline">Edit</button>
                                 <button onclick="deleteRecord('${item._id || item.id}')" class="text-red-600 font-bold hover:underline">Delete</button>
                             </td>
                         </tr>
                     `).join('');
                 } else {
-                    tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">No records found in this section.</td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">No records found in database.</td></tr>`;
                 }
             } catch(err) {
-                tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">No records found in this section.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">No records found.</td></tr>`;
             }
         }
 
