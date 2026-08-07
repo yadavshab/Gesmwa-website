@@ -42,10 +42,10 @@ const Visit = mongoose.model('Visit', visitSchema);
 
 // Dynamic Content Schema for Sections & Sub-categories
 const dynamicContentSchema = new mongoose.Schema({
-    section: { type: String, required: true, lowercase: true, trim: true },      // जैसे: 'welfare'
-    subCategory: { type: String, lowercase: true, trim: true },                  // जैसे: 'blood-donation'
+    section: { type: String, required: true, lowercase: true, trim: true },
+    subCategory: { type: String, lowercase: true, trim: true },
     title: { type: String, required: true },
-    imageUrl: { type: String },                                                  // फोटो का लिंक
+    imageUrl: { type: String },
     description: { type: String },
     date: { type: Date, default: Date.now }
 });
@@ -60,7 +60,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Function to Send Login Notification Email
+// Function to Send Login Notification Email (Background)
 async function sendLoginAlert(username, role) {
     try {
         const mailOptions = {
@@ -72,7 +72,7 @@ async function sendLoginAlert(username, role) {
         await transporter.sendMail(mailOptions);
         console.log(`Login alert email sent successfully for user: ${username}`);
     } catch (err) {
-        console.error("Error sending login alert email:", err);
+        console.error("Error sending login alert email:", err.message);
     }
 }
 
@@ -127,7 +127,7 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
     }
 });
 
-// Admin Login Route
+// Admin Login Route (Lightning Fast Response)
 app.post('/api/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -145,7 +145,9 @@ app.post('/api/admin/login', async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid Password!" });
         }
 
-        await sendLoginAlert(user.username, user.role);
+        // Email alert is triggered instantly in background
+        sendLoginAlert(user.username, user.role).catch(err => console.log("Background email error:", err.message));
+
         res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -194,7 +196,7 @@ app.post('/api/admin/send-otp', async (req, res) => {
     }
 });
 
-// Verify OTP Route
+// Verify OTP Route (Lightning Fast Response)
 app.post('/api/admin/verify-otp', async (req, res) => {
     try {
         const { mobile, otp } = req.body;
@@ -209,14 +211,16 @@ app.post('/api/admin/verify-otp', async (req, res) => {
         admin.otpExpires = undefined;
         await admin.save();
 
-        await sendLoginAlert(admin.username, admin.role);
+        // Email alert triggered in background
+        sendLoginAlert(admin.username, admin.role).catch(err => console.log("Background email error:", err.message));
+
         res.json({ success: true, role: admin.role, username: admin.username, message: "OTP Login successful!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// 1. Upload Dynamic Content API (डैशबोर्ड से डेटा और फोटो सेव करने के लिए)
+// 1. Upload Dynamic Content API
 app.post('/api/admin/upload-dynamic', async (req, res) => {
     try {
         const { section, subCategory, title, imageUrl, description } = req.body;
@@ -237,7 +241,7 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
     }
 });
 
-// 2. Update Dynamic Content API (रिकॉर्ड एडिट/अपडेट करने के लिए - नया जोड़ा गया)
+// 2. Update Dynamic Content API
 app.put('/api/admin/update-dynamic/:id', async (req, res) => {
     try {
         const recordId = req.params.id;
@@ -265,7 +269,7 @@ app.put('/api/admin/update-dynamic/:id', async (req, res) => {
     }
 });
 
-// 3. Delete Dynamic Content API (रिकॉर्ड डिलीट करने के लिए - नया जोड़ा गया)
+// 3. Delete Dynamic Content API
 app.delete('/api/admin/delete-dynamic/:id', async (req, res) => {
     try {
         const recordId = req.params.id;
@@ -281,7 +285,7 @@ app.delete('/api/admin/delete-dynamic/:id', async (req, res) => {
     }
 });
 
-// 4. Fetch All Content for a Section (एडमिन डैशबोर्ड टेबल के लिए)
+// 4. Fetch All Content for a Section
 app.get('/api/content/all/:section', async (req, res) => {
     try {
         const sectionName = req.params.section.toLowerCase().trim();
@@ -292,7 +296,7 @@ app.get('/api/content/all/:section', async (req, res) => {
     }
 });
 
-// 5. Fetch All Content in Database (फॉलबैक के लिए)
+// 5. Fetch All Content in Database
 app.get('/api/content/all', async (req, res) => {
     try {
         const items = await DynamicContent.find({}).sort({ date: -1 });
@@ -302,7 +306,7 @@ app.get('/api/content/all', async (req, res) => {
     }
 });
 
-// 6. Fetch Dynamic Content API by Section & SubCategory (वेबसाइट पर ऑटो-डिस्प्ले करने के लिए)
+// 6. Fetch Dynamic Content API by Section & SubCategory
 app.get('/api/content/:section/:subCategory', async (req, res) => {
     try {
         const { section, subCategory } = req.params;
