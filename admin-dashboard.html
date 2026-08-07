@@ -438,26 +438,64 @@
 
         async function fetchSectionRecords() {
             const section = document.getElementById('pubSection').value;
+            const subCategory = document.getElementById('pubSubCategory').value;
             const tableBody = document.getElementById('sectionRecordsTable');
             tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">Loading records...</td></tr>`;
 
-            try {
-                const res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
-                const data = res.ok ? await res.json() : [];
-                
-                // यह कंसोल में दिखाएगा कि सर्वर ने इस सेक्शन के लिए क्या भेजा है
-                console.log("Server Response for section:", section, data);
+            let items = [];
 
-                let items = [];
-                if (Array.isArray(data)) {
-                    items = data;
-                } else if (data && Array.isArray(data.items)) {
-                    items = data.items;
-                } else if (data && Array.isArray(data.data)) {
-                    items = data.data;
-                } else if (data && typeof data === 'object') {
-                    const possibleArray = Object.values(data).find(val => Array.isArray(val));
-                    if (possibleArray) items = possibleArray;
+            try {
+                // 1. Try endpoint /api/content/all/:section
+                let res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
+                if (res.ok) {
+                    let data = await res.json();
+                    console.log("Response from /all/:section:", data);
+                    if (Array.isArray(data)) items = data;
+                    else if (data && Array.isArray(data.items)) items = data.items;
+                    else if (data && Array.isArray(data.data)) items = data.data;
+                    else if (data && typeof data === 'object') {
+                        const arr = Object.values(data).find(v => Array.isArray(v));
+                        if (arr) items = arr;
+                    }
+                }
+
+                // 2. If empty, try general content endpoints as fallback
+                if (items.length === 0) {
+                    const fallbackUrls = [
+                        'https://gewa-backend-live.onrender.com/api/content',
+                        'https://gewa-backend-live.onrender.com/api/articles',
+                        'https://gewa-backend-live.onrender.com/api/admin/content'
+                    ];
+
+                    for (let url of fallbackUrls) {
+                        try {
+                            let r = await fetch(url);
+                            if (r.ok) {
+                                let d = await r.json();
+                                console.log(`Response from fallback ${url}:`, d);
+                                let allItems = [];
+                                if (Array.isArray(d)) allItems = d;
+                                else if (d && Array.isArray(d.items)) allItems = d.items;
+                                else if (d && Array.isArray(d.data)) allItems = d.data;
+                                else if (d && typeof d === 'object') {
+                                    const arr = Object.values(d).find(v => Array.isArray(v));
+                                    if (arr) allItems = arr;
+                                }
+
+                                if (allItems.length > 0) {
+                                    items = allItems.filter(item => {
+                                        const s = (item.section || item.category || '').toLowerCase();
+                                        const sc = (item.subCategory || '').toLowerCase();
+                                        return s === section.toLowerCase() || s.includes(section.toLowerCase()) || sc === subCategory.toLowerCase();
+                                    });
+                                    if (items.length === 0) items = allItems; // show all if strict filter fails
+                                    break;
+                                }
+                            }
+                        } catch (e) {
+                            // Continue trying other fallback URLs
+                        }
+                    }
                 }
 
                 if(items.length > 0) {
