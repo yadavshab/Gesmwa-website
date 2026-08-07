@@ -34,24 +34,28 @@ const adminSchema = new mongoose.Schema({
 });
 const Admin = mongoose.model('Admin', adminSchema);
 
-const articleSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-    image: { type: String, default: "" }
-});
-const Article = mongoose.model('Article', articleSchema);
-
 const visitSchema = new mongoose.Schema({
     count: { type: Number, default: 0 }
 });
 const Visit = mongoose.model('Visit', visitSchema);
+
+// NEW: Dynamic Content Schema for Sections & Sub-categories (Services, Blood Donation, etc.)
+const dynamicContentSchema = new mongoose.Schema({
+    section: { type: String, required: true },       // जैसे: 'services', 'donation'
+    subCategory: { type: String, required: true },  // जैसे: 'blood-donation'
+    title: { type: String, required: true },
+    imageUrl: { type: String },                     // फोटो का लिंक
+    description: { type: String },
+    date: { type: Date, default: Date.now }
+});
+const DynamicContent = mongoose.model('DynamicContent', dynamicContentSchema);
 
 // Nodemailer Transporter Configuration for Login Alerts
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER || "yadavshab793@gmail.com",
-        pass: process.env.EMAIL_PASS // Gmail App Password
+        pass: process.env.EMAIL_PASS 
     }
 });
 
@@ -60,9 +64,9 @@ async function sendLoginAlert(username, role) {
     try {
         const mailOptions = {
             from: process.env.EMAIL_USER || "yadavshab793@gmail.com",
-            to: "yadavshab793@gmail.com", // Mayank Yadav's email
+            to: "yadavshab793@gmail.com", 
             subject: `🚨 GEWA Security Alert: Admin Logged In (${username})`,
-            text: `Hello Mayank,\n\nAdmin user "${username}" (${role}) successfully logged in to the GEWA Admin Control Center at ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}.\n\nIf this was not authorized by you, please check the system immediately.\n\n- GEWA Enterprise Security Gateway`
+            text: `Hello Mayank,\n\nAdmin user "${username}" (${role}) successfully logged in to the GEWA Admin Control Center at ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}.\n\n- GEWA Enterprise Security Gateway`
         };
         await transporter.sendMail(mailOptions);
         console.log(`Login alert email sent successfully for user: ${username}`);
@@ -81,7 +85,7 @@ function formatMobile(num) {
     return cleaned;
 }
 
-// Setup Admins with Master Password `Mayank@Mainadmin` for Mayank
+// Setup Admins Route
 app.get('/api/admin/setup-my-admin', async (req, res) => {
     try {
         const masterPasswordHash = await bcrypt.hash('Mayank@Mainadmin', 10);
@@ -110,23 +114,22 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
             } else {
                 existing.mobile = adminData.mobile;
                 if(adminData.username === 'mayank') {
-                    existing.password = adminData.password; // Force update Mayank's password to Master Password
+                    existing.password = adminData.password;
                 }
                 await existing.save();
             }
         }
 
-        res.json({ success: true, message: "Admins configured successfully with Master Password Mayank@Mainadmin!" });
+        res.json({ success: true, message: "Admins configured successfully!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// Password Login Route + Trigger Email Alert
+// Admin Login Route
 app.post('/api/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-
         if (!username || !password) {
             return res.status(400).json({ success: false, message: "Username and password are required!" });
         }
@@ -141,9 +144,7 @@ app.post('/api/admin/login', async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid Password!" });
         }
 
-        // Send Email Notification on Successful Login
         await sendLoginAlert(user.username, user.role);
-
         res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -186,13 +187,13 @@ app.post('/api/admin/send-otp', async (req, res) => {
             });
         }
 
-        res.json({ success: true, message: "OTP sent successfully to your mobile phone via SMS!" });
+        res.json({ success: true, message: "OTP sent successfully!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// Verify OTP Login Route + Trigger Email Alert
+// Verify OTP Route
 app.post('/api/admin/verify-otp', async (req, res) => {
     try {
         const { mobile, otp } = req.body;
@@ -207,51 +208,34 @@ app.post('/api/admin/verify-otp', async (req, res) => {
         admin.otpExpires = undefined;
         await admin.save();
 
-        // Send Email Notification on Successful OTP Login
         await sendLoginAlert(admin.username, admin.role);
-
         res.json({ success: true, role: admin.role, username: admin.username, message: "OTP Login successful!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// Self-Service Username & Password Update Route
-app.put('/api/admin/update-password', async (req, res) => {
+// NEW: Upload Dynamic Content API (डैशबोर्ड से डेटा और फोटो सेव करने के लिए)
+app.post('/api/admin/upload-dynamic', async (req, res) => {
     try {
-        const { username, oldPassword, newPassword, newUsername } = req.body;
-
-        if (!username || !oldPassword) {
-            return res.status(400).json({ success: false, message: "Username and current password are required!" });
+        const { section, subCategory, title, imageUrl, description } = req.body;
+        if (!section || !subCategory || !title) {
+            return res.status(400).json({ success: false, message: "Section, Sub-category, and Title are required!" });
         }
+        const newContent = new DynamicContent({ section, subCategory, title, imageUrl, description });
+        await newContent.save();
+        res.json({ success: true, message: "Content uploaded and live successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
 
-        const user = await Admin.findOne({ username });
-        if (!user) {
-            return res.status(400).json({ success: false, message: "Admin user not found!" });
-        }
-
-        const isMatch = await bcrypt.compare(oldPassword, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ success: false, message: "Current password is incorrect!" });
-        }
-
-        // Update password if provided
-        if (newPassword) {
-            user.password = await bcrypt.hash(newPassword, 10);
-        }
-
-        // Update username if provided and unique
-        if (newUsername && newUsername.trim() !== "" && newUsername !== username) {
-            const existingUser = await Admin.findOne({ username: newUsername.trim() });
-            if (existingUser) {
-                return res.status(400).json({ success: false, message: "Username already taken!" });
-            }
-            user.username = newUsername.trim();
-        }
-
-        await user.save();
-
-        res.json({ success: true, message: "Security credentials updated successfully!" });
+// NEW: Fetch Dynamic Content API (वेबसाइट पर ऑटो-डिस्प्ले करने के लिए)
+app.get('/api/content/:section/:subCategory', async (req, res) => {
+    try {
+        const { section, subCategory } = req.params;
+        const items = await DynamicContent.find({ section, subCategory }).sort({ date: -1 });
+        res.json(items);
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
