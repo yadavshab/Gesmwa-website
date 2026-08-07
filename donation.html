@@ -45,9 +45,6 @@
             <p class="text-slate-500 mt-4 font-medium max-w-2xl mx-auto">समाज और पर्यावरण की भलाई के लिए GEWA द्वारा उठाए गए प्रमुख कदम एवं झलकियाँ।</p>
         </div>
 
-        <!-- DYNAMIC LIVE UPDATES CONTAINER (एडमिन डैशबोर्ड से आने वाला डेटा यहाँ दिखेगा) -->
-        <div id="dynamicWelfareContainer" class="mb-12 grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-
         <!-- 1. BLOOD DONATION SECTION -->
         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-lg border-l-8 border-l-red-600 mb-12 hover:shadow-xl transition duration-300">
             <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
@@ -62,7 +59,8 @@
                     <button type="button" onclick="openWhatsApp('Blood Donation / Join Donor List')" class="cursor-pointer inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition"><i class="fa-solid fa-heart-pulse mr-2"></i> Join Donor List</button>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Dynamic & Static Images Container -->
+            <div id="blood-donation-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <img src="blood1.jpeg" alt="Blood Donation Camp" class="w-full h-48 md:h-56 object-cover rounded-2xl shadow-md hover:scale-105 transition duration-300">
                 <img src="blood2.jpeg" alt="Blood Donation Camp" class="w-full h-48 md:h-56 object-cover rounded-2xl shadow-md hover:scale-105 transition duration-300">
             </div>
@@ -82,7 +80,8 @@
                     <button type="button" onclick="openWhatsApp('Tree Plantation Support')" class="cursor-pointer inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition"><i class="fa-solid fa-leaf mr-2"></i> Support Plantation</button>
                 </div>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <!-- Dynamic & Static Images Container -->
+            <div id="tree-plantation-container" class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <img src="ped1.jpeg" alt="Tree Plantation" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition duration-300">
                 <img src="ped2.jpeg" alt="Tree Plantation" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition duration-300">
                 <img src="ped3.jpeg" alt="Tree Plantation" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition duration-300">
@@ -94,7 +93,7 @@
         <!-- 3. KANYADAN & VEER NARI GALLERY -->
         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-lg mb-12">
             <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-emerald-700 pl-4">कन्यादान सहयोग गैलरी (Kanyadan Support)</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+            <div id="kanyadaan-support-container" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
                 <img src="gureswedding1.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="gureswedding2.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="gureswedding3.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
@@ -119,22 +118,23 @@
                 <img src="gureswedding22.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
             </div>
             
-            <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-red-700 pl-4 mt-8">वीर नारी कन्यादान (Veer Nari Support)</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-red-700 pl-4 mt-8">वीर नारी कन्यादान (Veer Nari / Martyr Family Support)</h2>
+            <div id="martyr-family-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <img src="Wedding Event.jpeg" class="w-full h-40 object-cover rounded-xl shadow-sm hover:scale-105 transition">
             </div>
         </div>
 
         <!-- 4. MARTYR FAMILY & CULTURAL GALLERY -->
         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-lg mb-12">
-            <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-blue-700 pl-4">शहीद परिवार एवं छात्रवृत्ति (Martyr Family )</h2>
+            <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-blue-700 pl-4">शहीद परिवार सहयोग (Martyr Family Support)</h2>
+            <!-- Note: You can use martyr-family or create a separate container if needed, mapped below -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <img src="martare_3.jpg" class="w-full h-40 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="martare1_3.jpg" class="w-full h-40 object-cover rounded-xl shadow-sm hover:scale-105 transition">
             </div>
 
             <h2 class="text-2xl font-black text-slate-900 mb-6 border-l-4 border-purple-700 pl-4 mt-8">सांस्कृतिक एवं सामाजिक (Cultural & Social Activities)</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div id="cultural-activity-container" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 <img src="GuresMembers.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="welfare1.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
                 <img src="welfare2.jpeg" class="w-full h-32 object-cover rounded-xl shadow-sm hover:scale-105 transition">
@@ -161,7 +161,7 @@
                     <button type="button" onclick="openWhatsApp('Student Scholarship Application')" class="cursor-pointer inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition"><i class="fa-solid fa-book-open-reader mr-2"></i> Apply / Support</button>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div id="student-scholarship-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <img src="schlor1.jpg" alt="Student Scholarship" class="w-full h-48 md:h-56 object-cover rounded-2xl shadow-md hover:scale-105 transition duration-300">
             </div>
         </div>
@@ -195,7 +195,7 @@
         </div>
 
         <!-- 6.5 OFFICIAL DONATION & SUPPORT LEDGER -->
-        <div id="donation-list" class="bg-white p-8 md:p-10 rounded-3xl border border-slate-200 shadow-xl mb-16 scroll-mt-24">
+        <div id="support-ledger-container" class="bg-white p-8 md:p-10 rounded-3xl border border-slate-200 shadow-xl mb-16 scroll-mt-24">
             <div class="text-center mb-6">
                 <span class="text-emerald-700 text-xs font-extrabold uppercase tracking-widest block mb-2"><i class="fa-solid fa-file-shield"></i> Transparent Operations</span>
                 <h2 class="text-3xl font-black text-slate-900 uppercase">Official Support Ledger</h2>
@@ -279,21 +279,21 @@
                 const res = await fetch(`https://gewa-backend-live.onrender.com/api/content/all/${section}`);
                 const items = await res.json();
                 
-                const container = document.getElementById('dynamicWelfareContainer');
                 if(items && items.length > 0) {
-                    container.innerHTML = items.map(item => `
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                            <div>
-                                <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider inline-block mb-3">${item.subCategory}</span>
-                                ${item.imageUrl ? `<img src="${item.imageUrl}" alt="Uploaded Photo" class="w-full h-48 object-cover rounded-2xl mb-4 border">` : ''}
-                                <h3 class="text-xl font-black text-slate-900">${item.title}</h3>
-                                <p class="text-sm text-slate-600 mt-2 leading-relaxed">${item.description || ''}</p>
-                            </div>
-                            <span class="text-[10px] text-slate-400 mt-4 block border-t pt-2">Published on: ${new Date(item.date).toLocaleDateString()}</span>
-                        </div>
-                    `).join('');
-                } else {
-                    container.innerHTML = "";
+                    items.forEach(item => {
+                        // subCategory के आधार पर सही कंटेनर ढूंढें (जैसे blood-donation-container)
+                        const container = document.getElementById(item.subCategory + '-container');
+                        if(container) {
+                            if(item.imageUrl) {
+                                container.innerHTML += `
+                                    <div class="relative group">
+                                        <img src="${item.imageUrl}" alt="${item.title || 'Welfare Image'}" class="w-full h-40 md:h-48 object-cover rounded-2xl shadow-md hover:scale-105 transition duration-300">
+                                        ${item.title ? `<p class="text-[11px] font-bold text-center mt-1 text-slate-600">${item.title}</p>` : ''}
+                                    </div>
+                                `;
+                            }
+                        }
+                    });
                 }
             } catch(err) {
                 console.error("Error loading dynamic welfare content:", err);

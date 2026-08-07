@@ -173,26 +173,15 @@
                     <form id="dynamicUploadForm" class="space-y-4">
                         <input type="hidden" id="editRecordId">
                         
-                        <!-- Step 1: Main Section Selection -->
+                        <!-- Step 1: Main Section Selection (ताज़ा और चुनिंदा 5 विकल्प) -->
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">1. Select Website Section</label>
                             <select id="pubSection" onchange="updateSubcategories(); fetchSectionRecords();" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="welfare">Welfare</option>
                                 <option value="main">Main / History</option>
-                                <option value="members">Members & Laws</option>
+                                <option value="members">Member and Laws</option>
+                                <option value="welfare">Welfare</option>
                                 <option value="services">Services</option>
                                 <option value="gallery">Gallery</option>
-                                <option value="messages">Messages</option>
-                                <option value="impact">Impact</option>
-                                <option value="about">About</option>
-                                <option value="heritage">Heritage</option>
-                                <option value="pledge">Pledge</option>
-                                <option value="honour">Honour</option>
-                                <option value="programs">Programs</option>
-                                <option value="social">Social</option>
-                                <option value="volunteer">Volunteer</option>
-                                <option value="news">News</option>
-                                <option value="knowledge">Knowledge</option>
                             </select>
                         </div>
 
@@ -365,51 +354,24 @@
                 { value: 'blood-donation', label: 'Blood Donation' },
                 { value: 'tree-plantation', label: 'Tree Plantation' },
                 { value: 'kanyadaan-support', label: 'Kanyadaan Support' },
-                { value: 'martyr-family', label: 'Martyr Family Support' },
-                { value: 'cultural-activity', label: 'Cultural & Social Activity' },
-                { value: 'student-scholarship', label: 'Student Scholarship' },
-                { value: 'support-ledger', label: 'Official Support Ledger' }
+                { value: 'veer-nari-support', label: 'Veer Nari Support' },
+                { value: 'martyr-support', label: 'Martyr Support' },
+                { value: 'cultural-social-activities', label: 'Cultural and Social Activities' },
+                { value: 'student-schlorship', label: 'Student Schlorship' }
             ],
             services: [
-                { value: 'medical-support', label: 'Medical Support' },
-                { value: 'pension-help', label: 'Pension Help' },
-                { value: 'general-service', label: 'General Service' }
+                { value: 'live-updates', label: 'Live Updates' },
+                { value: 'news', label: 'News' }
             ],
-            gallery: [
-                { value: 'events-photo', label: 'Events Photo' },
-                { value: 'meetings', label: 'Meetings & Gatherings' },
-                { value: 'memorials', label: 'Memorials' }
+            main: [
+                { value: 'history-overview', label: 'Main / History Overview' }
             ],
             members: [
-                { value: 'governing-body', label: 'Governing Body' },
-                { value: 'bylaws', label: 'By-Laws & Rules' },
-                { value: 'advisors', label: 'Advisors' }
+                { value: 'members-laws-overview', label: 'Members & Laws Overview' }
             ],
-            news: [
-                { value: 'latest-updates', label: 'Latest Updates' },
-                { value: 'circulars', label: 'Official Circulars' }
-            ],
-            programs: [
-                { value: 'upcoming-programs', label: 'Upcoming Programs' },
-                { value: 'past-programs', label: 'Past Programs' }
-            ],
-            events: [
-                { value: 'social-gathering', label: 'Social Gathering' },
-                { value: 'ceremony', label: 'Ceremony' }
-            ],
-            about: [
-                { value: 'history', label: 'Association History' },
-                { value: 'mission', label: 'Mission & Vision' }
-            ],
-            main: [{ value: 'general-history', label: 'Main / History Overview' }],
-            messages: [{ value: 'official-messages', label: 'Messages' }],
-            impact: [{ value: 'social-impact', label: 'Impact' }],
-            heritage: [{ value: 'cultural-heritage', label: 'Heritage' }],
-            pledge: [{ value: 'association-pledge', label: 'Pledge' }],
-            honour: [{ value: 'martyrs-honour', label: 'Honour' }],
-            social: [{ value: 'social-work', label: 'Social' }],
-            volunteer: [{ value: 'volunteer-form', label: 'Volunteer Membership' }],
-            knowledge: [{ value: 'knowledge-hub', label: 'Knowledge Base' }]
+            gallery: [
+                { value: 'gallery-photos', label: 'Gallery Photos' }
+            ]
         };
 
         document.addEventListener('DOMContentLoaded', async function() {
@@ -456,7 +418,6 @@
                         let res = await fetch(url);
                         if (res.ok) {
                             let json = await res.json();
-                            console.log("URL Checked:", url, "Data:", json);
                             let extracted = [];
                             if (Array.isArray(json)) extracted = json;
                             else if (json && Array.isArray(json.items)) extracted = json.items;
@@ -489,7 +450,7 @@
                         </tr>
                     `).join('');
                 } else {
-                    tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-red-500">Database collection is empty or not returning records. Please verify backend database.</td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">No records found in this section.</td></tr>`;
                 }
             } catch(err) {
                 tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-red-500">Error connecting to database.</td></tr>`;
@@ -555,6 +516,7 @@
         }
 
         function resetForm() {
+            document.getElementById('editRecordId').value = id;
             document.getElementById('editRecordId').value = '';
             document.getElementById('existingImageUrl').value = '';
             dynamicForm.reset();
