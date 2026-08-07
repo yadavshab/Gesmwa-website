@@ -39,12 +39,12 @@ const visitSchema = new mongoose.Schema({
 });
 const Visit = mongoose.model('Visit', visitSchema);
 
-// NEW: Dynamic Content Schema for Sections & Sub-categories (Services, Blood Donation, etc.)
+// Dynamic Content Schema for Sections & Sub-categories
 const dynamicContentSchema = new mongoose.Schema({
-    section: { type: String, required: true },       // जैसे: 'services', 'donation'
-    subCategory: { type: String, required: true },  // जैसे: 'blood-donation'
+    section: { type: String, required: true, lowercase: true, trim: true },      // जैसे: 'welfare'
+    subCategory: { type: String, lowercase: true, trim: true },                  // जैसे: 'blood-donation'
     title: { type: String, required: true },
-    imageUrl: { type: String },                     // फोटो का लिंक
+    imageUrl: { type: String },                                                  // फोटो का लिंक
     description: { type: String },
     date: { type: Date, default: Date.now }
 });
@@ -215,14 +215,20 @@ app.post('/api/admin/verify-otp', async (req, res) => {
     }
 });
 
-// NEW: Upload Dynamic Content API (डैशबोर्ड से डेटा और फोटो सेव करने के लिए)
+// 1. Upload Dynamic Content API (डैशबोर्ड से डेटा और फोटो सेव करने के लिए)
 app.post('/api/admin/upload-dynamic', async (req, res) => {
     try {
         const { section, subCategory, title, imageUrl, description } = req.body;
         if (!section || !subCategory || !title) {
             return res.status(400).json({ success: false, message: "Section, Sub-category, and Title are required!" });
         }
-        const newContent = new DynamicContent({ section, subCategory, title, imageUrl, description });
+        const newContent = new DynamicContent({ 
+            section: section.toLowerCase().trim(), 
+            subCategory: subCategory.toLowerCase().trim(), 
+            title, 
+            imageUrl, 
+            description 
+        });
         await newContent.save();
         res.json({ success: true, message: "Content uploaded and live successfully!" });
     } catch (err) {
@@ -230,11 +236,35 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
     }
 });
 
-// NEW: Fetch Dynamic Content API (वेबसाइट पर ऑटो-डिस्प्ले करने के लिए)
+// 2. NEW: Fetch All Content for a Section (एडमिन डैशबोर्ड टेबल के लिए - बेहद जरूरी)
+app.get('/api/content/all/:section', async (req, res) => {
+    try {
+        const sectionName = req.params.section.toLowerCase().trim();
+        const items = await DynamicContent.find({ section: sectionName }).sort({ date: -1 });
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 3. NEW: Fetch All Content in Database (फॉलबैक के लिए)
+app.get('/api/content/all', async (req, res) => {
+    try {
+        const items = await DynamicContent.find({}).sort({ date: -1 });
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 4. Fetch Dynamic Content API by Section & SubCategory (वेबसाइट पर ऑटो-डिस्प्ले करने के लिए)
 app.get('/api/content/:section/:subCategory', async (req, res) => {
     try {
         const { section, subCategory } = req.params;
-        const items = await DynamicContent.find({ section, subCategory }).sort({ date: -1 });
+        const items = await DynamicContent.find({ 
+            section: section.toLowerCase().trim(), 
+            subCategory: subCategory.toLowerCase().trim() 
+        }).sort({ date: -1 });
         res.json(items);
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
