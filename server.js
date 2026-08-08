@@ -65,14 +65,27 @@ io.on('connection', (socket) => {
     let currentPage = '';
 
     socket.on('join_page', (pageName) => {
+        // If the socket was already tracking a page, decrement it first
+        if (currentPage && pageViewers[currentPage]) {
+            pageViewers[currentPage] = Math.max(0, pageViewers[currentPage] - 1);
+        }
+
         currentPage = pageName;
         pageViewers[currentPage] = (pageViewers[currentPage] || 0) + 1;
+        
+        // Broadcast updated counts to all connected clients (including the Admin Dashboard)
         io.emit('update_counts', pageViewers);
     });
 
     socket.on('disconnect', () => {
         if (currentPage && pageViewers[currentPage]) {
             pageViewers[currentPage] = Math.max(0, pageViewers[currentPage] - 1);
+            
+            // Clean up empty categories from memory if count drops to 0
+            if (pageViewers[currentPage] === 0) {
+                delete pageViewers[currentPage];
+            }
+
             io.emit('update_counts', pageViewers);
         }
     });
