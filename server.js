@@ -46,6 +46,12 @@ const visitSchema = new mongoose.Schema({
 });
 const Visit = mongoose.model('Visit', visitSchema);
 
+// Welfare Bank Balance Schema
+const welfareBalanceSchema = new mongoose.Schema({
+    balance: { type: String, default: "7,89,703.38" }
+});
+const WelfareBalance = mongoose.model('WelfareBalance', welfareBalanceSchema);
+
 // Dynamic Content Schema (Updated with linkUrl for Guide/External links)
 const dynamicContentSchema = new mongoose.Schema({
     section: { type: String, required: true, lowercase: true, trim: true },
@@ -167,7 +173,7 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
     }
 });
 
-// Admin Login Route (Lightning Fast Response)
+// Admin Login Route
 app.post('/api/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -235,7 +241,7 @@ app.post('/api/admin/send-otp', async (req, res) => {
     }
 });
 
-// Verify OTP Route (Lightning Fast Response)
+// Verify OTP Route
 app.post('/api/admin/verify-otp', async (req, res) => {
     try {
         const { mobile, otp } = req.body;
@@ -258,7 +264,49 @@ app.post('/api/admin/verify-otp', async (req, res) => {
     }
 });
 
-// 1. Upload Dynamic Content API (Supports linkUrl)
+// ================= WELFARE BANK BALANCE ROUTES ================= //
+
+// 1. Get Welfare Bank Balance
+app.get('/api/welfare/balance', async (req, res) => {
+    try {
+        let bData = await WelfareBalance.findOne();
+        if (!bData) {
+            bData = new WelfareBalance({ balance: "7,89,703.38" });
+            await bData.save();
+        }
+        res.json({ success: true, balance: bData.balance });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 2. Update Welfare Bank Balance (Admin Dashboard)
+app.post('/api/admin/update-balance', async (req, res) => {
+    try {
+        const { balance } = req.body;
+        if (!balance) {
+            return res.status(400).json({ success: false, message: "Balance is required!" });
+        }
+
+        let bData = await WelfareBalance.findOne();
+        if (!bData) {
+            bData = new WelfareBalance({ balance });
+        } else {
+            bData.balance = balance;
+        }
+        await bData.save();
+
+        // Broadcast balance update in real-time via Socket.io if needed
+        io.emit('balance_updated', balance);
+
+        res.json({ success: true, message: "Balance updated successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ================= DYNAMIC CONTENT ROUTES ================= //
+
 app.post('/api/admin/upload-dynamic', async (req, res) => {
     try {
         const { section, subCategory, title, imageUrl, description, linkUrl } = req.body;
@@ -280,7 +328,6 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
     }
 });
 
-// 2. Update Dynamic Content API (Supports linkUrl update)
 app.put('/api/admin/update-dynamic/:id', async (req, res) => {
     try {
         const recordId = req.params.id;
@@ -309,7 +356,6 @@ app.put('/api/admin/update-dynamic/:id', async (req, res) => {
     }
 });
 
-// 3. Delete Dynamic Content API
 app.delete('/api/admin/delete-dynamic/:id', async (req, res) => {
     try {
         const recordId = req.params.id;
@@ -325,7 +371,6 @@ app.delete('/api/admin/delete-dynamic/:id', async (req, res) => {
     }
 });
 
-// 4. Fetch All Content for a Section
 app.get('/api/content/all/:section', async (req, res) => {
     try {
         const sectionName = req.params.section.toLowerCase().trim();
@@ -336,7 +381,6 @@ app.get('/api/content/all/:section', async (req, res) => {
     }
 });
 
-// 5. Fetch All Content in Database
 app.get('/api/content/all', async (req, res) => {
     try {
         const items = await DynamicContent.find({}).sort({ date: -1 });
@@ -346,7 +390,6 @@ app.get('/api/content/all', async (req, res) => {
     }
 });
 
-// 6. Fetch Dynamic Content API by Section & SubCategory
 app.get('/api/content/:section/:subCategory', async (req, res) => {
     try {
         const { section, subCategory } = req.params;
@@ -360,7 +403,7 @@ app.get('/api/content/:section/:subCategory', async (req, res) => {
     }
 });
 
-// Visit Count API Route
+// Visit Count API Route (Auto incrementing total views)
 app.get('/api/visits', async (req, res) => {
     try {
         let visitData = await Visit.findOne();

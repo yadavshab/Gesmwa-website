@@ -133,7 +133,7 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Welfare Bank Balance</p>
-                                    <h3 class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
+                                    <h3 id="dashboardBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
                                 </div>
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-100">
                                     <i class="fa-solid fa-wallet"></i>
@@ -154,18 +154,18 @@
                         </div>
                     </div>
 
-                    <!-- Real-Time Section/Page Viewers Panel -->
+                    <!-- Real-Time Horizontal Section/Page Viewers Panel -->
                     <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
-                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 flex-wrap gap-3">
                             <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
                                 <i class="fa-solid fa-users-viewfinder text-blue-600"></i> Real-Time Active Section Viewers
                             </h3>
                             <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full animate-pulse">● Live Tracking Active</span>
                         </div>
-                        <div id="realtimeSectionList" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">Connecting...</p>
-                                <h4 class="text-xl font-black text-slate-800 mt-1">-</h4>
+                        <!-- Horizontal Container -->
+                        <div id="realtimeSectionList" class="flex flex-wrap items-center gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-3">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Connecting to live network...</p>
                             </div>
                         </div>
                     </div>
@@ -193,7 +193,6 @@
                     <form id="dynamicUploadForm" class="space-y-4">
                         <input type="hidden" id="editRecordId">
                         
-                        <!-- Step 1: Main Section Selection -->
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">1. Select Website Section</label>
                             <select id="pubSection" onchange="updateSubcategories(); fetchSectionRecords();" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500">
@@ -205,34 +204,29 @@
                             </select>
                         </div>
 
-                        <!-- Step 2: Dynamic Subcategory Options -->
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">2. Select Subcategory / Option</label>
                             <select id="pubSubCategory" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500" required>
-                                <!-- Populated dynamically based on section -->
+                                <!-- Populated dynamically -->
                             </select>
                         </div>
 
-                        <!-- Step 3: Title -->
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">3. Title / Heading</label>
                             <input type="text" id="pubTitle" placeholder="Enter title..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500" required>
                         </div>
 
-                        <!-- Step 3.5: External Link URL -->
                         <div>
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">External Link URL (Optional - Read Full Guide / Details)</label>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">External Link URL (Optional)</label>
                             <input type="url" id="pubLinkUrl" placeholder="https://esmcorner.com/..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
-                        <!-- Step 4: Direct Photo Upload File Input -->
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">4. Upload Photo (Select from Device)</label>
                             <input type="file" id="pubImageFile" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                             <input type="hidden" id="existingImageUrl">
                         </div>
 
-                        <!-- Step 5: Description -->
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">5. Description / Details</label>
                             <textarea id="pubDescription" rows="3" placeholder="Enter details..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500"></textarea>
@@ -315,10 +309,10 @@
                 </div>
             </div>
 
-            <!-- ================= 4. WELFARE FUNDS SECTION ================= -->
+            <!-- ================= 4. WELFARE FUNDS SECTION (WITH LIVE EDITOR) ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
-                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds</h2>
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds & Bank Editor</h2>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
 
@@ -327,12 +321,23 @@
                         <i class="fa-solid fa-vault"></i>
                     </div>
                     <h3 class="text-xl font-black text-slate-900 tracking-tight">Gurais Ex-Servicemen Welfare Association</h3>
-                    <p class="text-xs text-slate-400 font-semibold mt-1">Official Welfare Bank Account Balance</p>
+                    <p class="text-xs text-slate-400 font-semibold mt-1">Official Welfare Bank Account Balance & Manager</p>
 
                     <div class="my-6 p-6 bg-slate-50 rounded-3xl border border-slate-200 max-w-md mx-auto">
-                        <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">Current Available Balance</p>
-                        <h4 class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
+                        <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">Current Active Balance</p>
+                        <h4 id="welfareBalanceLarge" class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
                         <p class="text-[11px] text-slate-400 font-mono mt-2">Account No: 923010055446720</p>
+                    </div>
+
+                    <!-- Live Bank Balance Editor Form -->
+                    <div class="max-w-md mx-auto bg-blue-50/50 p-6 rounded-2xl border border-blue-100 text-left">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-blue-800 mb-2">Edit Welfare Bank Balance Anytime</label>
+                        <div class="flex gap-3">
+                            <input type="text" id="editBalanceInput" placeholder="7,89,703.38" class="w-full bg-white border border-blue-200 rounded-xl px-4 py-3 font-bold text-slate-900 outline-none focus:ring-2 focus:ring-blue-600 text-sm">
+                            <button onclick="updateWelfareBalance()" class="bg-blue-600 hover:bg-blue-700 text-white font-black px-5 py-3 rounded-xl uppercase tracking-wider text-xs whitespace-nowrap shadow-md cursor-pointer transition">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> Save
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -373,7 +378,7 @@
         </div>
     </main>
 
-    <!-- SCRIPTS FOR CASCADING SUBCATEGORIES & LIVE TRACKING -->
+    <!-- SCRIPTS FOR HORIZONTAL VIEWERS, BALANCE EDITOR & CASCADING -->
     <script>
         const subcategoryMapping = {
             welfare: [
@@ -389,7 +394,7 @@
                 { value: 'live-updates', label: 'Live Updates' },
                 { value: 'news', label: 'News' },
                 { value: 'essential-guides', label: 'Essential Guides & Links' },
-                { value: 'major-schemes', label: 'Major Scheme Banners (बड़े नोटिस/योजना कार्ड)' }
+                { value: 'major-schemes', label: 'Major Scheme Banners' }
             ],
             main: [
                 { value: 'history-overview', label: 'Main / History Overview' }
@@ -406,23 +411,27 @@
             updateSubcategories();
             fetchSectionRecords();
             fetchTotalVisits();
+            fetchWelfareBalance();
             initRealtimeAnalytics();
         });
 
-        // Real-time Page/Section Viewers Counter via Socket.io
+        // Real-time Horizontal Active Section Viewers via Socket.io
         function initRealtimeAnalytics() {
             try {
                 const adminSocket = io('https://gewa-backend-live.onrender.com');
                 adminSocket.on('update_counts', (counts) => {
                     const container = document.getElementById('realtimeSectionList');
                     if (!counts || Object.keys(counts).length === 0) {
-                        container.innerHTML = `<div class="col-span-full p-3 text-xs text-slate-400">No active visitors online.</div>`;
+                        container.innerHTML = `<div class="p-3 text-xs text-slate-400">No active visitors online.</div>`;
                         return;
                     }
                     container.innerHTML = Object.entries(counts).map(([page, count]) => `
-                        <div class="p-4 bg-blue-50/40 rounded-2xl border border-blue-100 shadow-sm transition-all hover:shadow-md">
-                            <p class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest truncate">${page}</p>
-                            <h4 class="text-2xl font-black text-blue-900 mt-1">${count} <span class="text-[10px] font-semibold text-emerald-600">Active</span></h4>
+                        <div class="bg-slate-50 border border-slate-200 px-5 py-3 rounded-2xl flex items-center gap-3 shadow-sm">
+                            <i class="fa-solid fa-globe text-blue-600"></i>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">${page}</p>
+                                <p class="text-lg font-black text-slate-900">${count} <span class="text-[10px] text-emerald-600 font-bold">Active</span></p>
+                            </div>
                         </div>
                     `).join('');
                 });
@@ -431,9 +440,10 @@
             }
         }
 
+        // Fetch Total Visits
         async function fetchTotalVisits() {
             try {
-                const res = await fetch('https://api.counterapi.dev/v1/gesmwa/visits');
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/visits');
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.count !== undefined) {
@@ -447,15 +457,48 @@
             }
         }
 
+        // Fetch Welfare Bank Balance
+        async function fetchWelfareBalance() {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/welfare/balance');
+                const data = await res.json();
+                if(data.success && data.balance) {
+                    document.getElementById('dashboardBalanceDisplay').innerText = `₹ ${data.balance}`;
+                    document.getElementById('editBalanceInput').value = data.balance;
+                }
+            } catch(e) {
+                console.log('Error fetching balance');
+            }
+        }
+
+        // Update Welfare Bank Balance from Admin Dashboard
+        async function updateWelfareBalance() {
+            const newBalance = document.getElementById('editBalanceInput').value.trim();
+            if(!newBalance) return alert("कृपया बैलेंस दर्ज करें!");
+
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/update-balance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ balance: newBalance })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert("बैंक बैलेंस सफलतापूर्वक अपडेट कर दिया गया है!");
+                    fetchWelfareBalance();
+                } else {
+                    alert("अपडेट करने में विफल!");
+                }
+            } catch(e) {
+                alert("सर्वर एरर!");
+            }
+        }
+
         function updateSubcategories() {
             const sectionSelect = document.getElementById('pubSection');
             const subCategorySelect = document.getElementById('pubSubCategory');
             const selectedSection = sectionSelect.value;
-
-            const options = subcategoryMapping[selectedSection] || [
-                { value: 'general', label: 'General Option' }
-            ];
-
+            const options = subcategoryMapping[selectedSection] || [{ value: 'general', label: 'General Option' }];
             subCategorySelect.innerHTML = options.map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('');
         }
 
@@ -472,13 +515,11 @@
             tableBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">Loading records...</td></tr>`;
 
             let items = [];
-
             try {
                 const urls = [
                     `https://gewa-backend-live.onrender.com/api/content/all/${section}`,
                     `https://gewa-backend-live.onrender.com/api/content/all`,
-                    `https://gewa-backend-live.onrender.com/api/content`,
-                    `https://gewa-backend-live.onrender.com/api/articles`
+                    `https://gewa-backend-live.onrender.com/api/content`
                 ];
 
                 for (let url of urls) {
@@ -490,10 +531,6 @@
                             if (Array.isArray(json)) extracted = json;
                             else if (json && Array.isArray(json.items)) extracted = json.items;
                             else if (json && Array.isArray(json.data)) extracted = json.data;
-                            else if (json && typeof json === 'object') {
-                                const arr = Object.values(json).find(v => Array.isArray(v));
-                                if (arr) extracted = arr;
-                            }
 
                             if (extracted.length > 0) {
                                 items = extracted;
@@ -510,7 +547,7 @@
                                 ${item.imageUrl || item.image ? `<img src="${item.imageUrl || item.image}" class="w-10 h-10 object-cover rounded-lg border">` : '<span class="text-[10px] text-slate-400">No Image</span>'}
                             </td>
                             <td class="p-3 font-bold text-slate-900">${item.title || item.name || 'Untitled'}</td>
-                            <td class="p-3 text-slate-500">${item.subCategory || item.category || item.section || section}</td>
+                            <td class="p-3 text-slate-500">${item.subCategory || item.category || section}</td>
                             <td class="p-3 text-right space-x-2">
                                 <button type="button" onclick="editRecord('${item._id || item.id}', '${item.subCategory || ''}', '${item.title || item.name || ''}', '${item.imageUrl || item.image || ''}', '${item.description || item.desc || ''}', '${item.linkUrl || ''}')" class="text-blue-600 font-bold hover:underline">Edit</button>
                                 <button type="button" onclick="deleteRecord('${item._id || item.id}')" class="text-red-600 font-bold hover:underline">Delete</button>

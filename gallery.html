@@ -176,9 +176,14 @@
     <script>
         // GLOBAL LIVE TRAFFIC & REAL-TIME TRACKER
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. Total Visits Counter API Call
-            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up')
-                .catch(err => console.log('Live tracker active'));
+            // 1. Automatic Total Visits Counter API Call (+1 on Render DB)
+            fetch('https://gewa-backend-live.onrender.com/api/visits')
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success) {
+                        console.log("Total visits updated:", data.count);
+                    }
+                }).catch(err => console.log('Live tracker error'));
 
             // 2. Real-time Live Page Viewer Tracking via Socket.io
             try {

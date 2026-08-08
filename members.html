@@ -63,7 +63,7 @@
         </div>
 
         <div class="space-y-8 mb-16 relative">
-            <!-- Background connecting line (optional visual effect) -->
+            <!-- Background connecting line -->
             <div class="hidden md:block absolute w-0.5 bg-slate-200 h-full left-1/2 transform -translate-x-1/2 -z-10 top-10"></div>
 
             <!-- TIER 1: PRESIDENT (सबसे ऊपर) -->
@@ -172,9 +172,14 @@
     <!-- LIVE TRAFFIC & REAL-TIME TRACKER SCRIPT -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. Total Visits Counter API Call
-            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up')
-                .catch(err => console.log('Tracker active'));
+            // 1. Automatic Total Visits Counter API (+1 on Render DB)
+            fetch('https://gewa-backend-live.onrender.com/api/visits')
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success) {
+                        console.log("Total visits updated:", data.count);
+                    }
+                }).catch(err => console.log('Tracker active'));
 
             // 2. Real-time Live Page Viewer Tracking via Socket.io
             try {

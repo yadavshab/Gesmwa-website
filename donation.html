@@ -208,7 +208,7 @@
                 <div class="flex flex-wrap justify-center gap-3 mt-6">
                     <a href="Gures Youth.pdf" target="_blank" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-sm"><i class="fa-solid fa-file-pdf text-red-500"></i> Youth Support PDF</a>
                     <a href="Gures Martyr's Support .pdf" target="_blank" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-sm"><i class="fa-solid fa-file-pdf text-red-500"></i> Martyrs Support PDF</a>
-                    <a href="Gures Kanyadan List.pdf" target="_blank" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-sm"><i class="fa-solid fa-file-pdf text-red-500"></i> Kanyadaan List PDF</a>
+                    <a href="Gures Kanyadan List.pdf" target="_blank" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-sm"><i class="fa-solid fa-file-pdf text-red-500"></i> Kanyadan List PDF</a>
                     <a href="Gures booklet.pdf" target="_blank" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-sm"><i class="fa-solid fa-file-pdf text-red-500"></i> GEWA Booklet PDF</a>
                 </div>
             </div>
@@ -256,8 +256,14 @@
     <!-- SCRIPTS -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. Total Visits Counter
-            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => {});
+            // 1. Automatic Total Visits Counter API (+1 on Render DB)
+            fetch('https://gewa-backend-live.onrender.com/api/visits')
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success) {
+                        console.log("Total visits updated:", data.count);
+                    }
+                }).catch(err => console.log('Live tracker error'));
 
             // 2. Real-time Live Page Tracker (Socket.io)
             try {

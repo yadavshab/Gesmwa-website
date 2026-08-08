@@ -78,7 +78,7 @@
             </div>
             <div class="text-slate-700 font-medium mb-10 space-y-4 bg-indigo-50/60 p-8 rounded-3xl border border-indigo-100 leading-relaxed text-base">
                 <p><strong>1.</strong> <strong>रक्षा मंत्रालय के आरक्षित कोटे</strong> के अंतर्गत <strong>एमबीबीएस/बीडीएस (MBBS/BDS) सीटों</strong> पर शैक्षणिक सत्र <strong>2026-27</strong> के लिए ऑनलाइन आवेदन आमंत्रित किए गए हैं।</p>
-                <p><strong>2.</strong> <strong>प्राथमिकता (Priority I–IX):</strong> इसके अनुसार पात्र श्रेणियों में युद्ध शहीदों के आश्रित, युद्ध/सेवा में दिव्यांग हुए रक्षा कर्मियों के आश्रित, वीरता पदक प्राप्त सैनिकों के आश्रित, <strong>भूतपूर्व सैनिकों के बच्चे</strong>, <strong>सेवारत सैनिकों के बच्चे</strong> तथा <strong>सेवारत सैनिकों की पत्नियाँ</strong> आदि शामिल हैं।</p>
+                <p><strong>2.</strong> <strong>प्राтивность (Priority I–IX):</strong> इसके अनुसार पात्र श्रेणियों में युद्ध शहीदों के आश्रित, युद्ध/सेवा में दिव्यांग हुए रक्षा कर्मियों के आश्रित, वीरता पदक प्राप्त सैनिकों के आश्रित, <strong>भूतपूर्व सैनिकों के बच्चे</strong>, <strong>सेवारत सैनिकों के बच्चे</strong> तथा <strong>सेवारत सैनिकों की पत्नियाँ</strong> आदि शामिल हैं।</p>
                 <p><strong>3.</strong> प्रवेश केवल <strong>NEET-2026</strong> में प्राप्त अंकों के आधार पर होगा। NEET-2026 में अनुत्तीर्ण अभ्यर्थी आवेदन न करें।</p>
                 <p><strong>4.</strong> <strong>सिविलियन (नागरिक) कर्मचारियों के बच्चे</strong> इस योजना के लिए पात्र नहीं हैं।</p>
                 <p><strong>5.</strong> ऑनलाइन आवेदन केवल <a href="http://www.ksb.gov.in" target="_blank" class="text-indigo-600 font-extrabold underline">www.ksb.gov.in</a> पर करें। आवेदन के साथ पात्रता प्रमाण-पत्र (RSB/ZSB/Record Office/CO द्वारा सत्यापित) तथा सभी आवश्यक दस्तावेज एवं फोटो अपलोड करना अनिवार्य है।</p>
@@ -339,11 +339,17 @@
 
     <footer class="bg-slate-950 text-slate-500 text-center py-6 text-xs font-bold tracking-widest uppercase">&copy; 2026 GEWA - Official Portal</footer>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPTS -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. Total Visits Counter API
-            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => {});
+            // 1. Automatic Total Visits Counter API (+1 on Render DB)
+            fetch('https://gewa-backend-live.onrender.com/api/visits')
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success) {
+                        console.log("Total visits updated:", data.count);
+                    }
+                }).catch(e => {});
 
             // 2. Real-time Live Page Tracker (Socket.io)
             try {
