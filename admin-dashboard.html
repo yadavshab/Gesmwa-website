@@ -154,18 +154,19 @@
                         </div>
                     </div>
 
-                    <!-- Real-Time Horizontal Section/Page Viewers Panel -->
+                    <!-- Real-Time Vertical Section/Page Viewers Panel -->
                     <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
-                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 flex-wrap gap-3">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                             <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
                                 <i class="fa-solid fa-users-viewfinder text-blue-600"></i> Real-Time Active Section Viewers
                             </h3>
                             <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full animate-pulse">● Live Tracking Active</span>
                         </div>
-                        <!-- Horizontal Container -->
-                        <div id="realtimeSectionList" class="flex flex-wrap items-center gap-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-3">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">Connecting to live network...</p>
+                        <!-- Vertical Container -->
+                        <div id="realtimeSectionList" class="space-y-3">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-400 uppercase">Connecting to live network...</span>
+                                <span class="text-sm font-black text-slate-800">-</span>
                             </div>
                         </div>
                     </div>
@@ -378,7 +379,7 @@
         </div>
     </main>
 
-    <!-- SCRIPTS FOR HORIZONTAL VIEWERS, BALANCE EDITOR & CASCADING -->
+    <!-- SCRIPTS FOR VERTICAL VIEWERS, BALANCE EDITOR & CASCADING -->
     <script>
         const subcategoryMapping = {
             welfare: [
@@ -415,25 +416,46 @@
             initRealtimeAnalytics();
         });
 
-        // Real-time Horizontal Active Section Viewers via Socket.io
+        // Real-time Vertical Active Section Viewers via Socket.io with Page Names
         function initRealtimeAnalytics() {
             try {
                 const adminSocket = io('https://gewa-backend-live.onrender.com');
                 adminSocket.on('update_counts', (counts) => {
                     const container = document.getElementById('realtimeSectionList');
                     if (!counts || Object.keys(counts).length === 0) {
-                        container.innerHTML = `<div class="p-3 text-xs text-slate-400">No active visitors online.</div>`;
+                        container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
                         return;
                     }
-                    container.innerHTML = Object.entries(counts).map(([page, count]) => `
-                        <div class="bg-slate-50 border border-slate-200 px-5 py-3 rounded-2xl flex items-center gap-3 shadow-sm">
-                            <i class="fa-solid fa-globe text-blue-600"></i>
-                            <div>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">${page}</p>
-                                <p class="text-lg font-black text-slate-900">${count} <span class="text-[10px] text-emerald-600 font-bold">Active</span></p>
+
+                    // Mapping for clean UI display names
+                    const pageNames = {
+                        'Main': 'Main / History (होमपेज)',
+                        'Members': 'Members & Laws (सदस्य और नियम)',
+                        'Welfare': 'Welfare & Support (कल्याण कोष)',
+                        'Services': 'Services & Schemes (सेवाएं और योजनाएं)',
+                        'Gallery': 'Photo Gallery (गैलरी)'
+                    };
+
+                    container.innerHTML = Object.entries(counts).map(([page, count]) => {
+                        const displayName = pageNames[page] || page;
+                        return `
+                            <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:bg-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-globe"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-black text-slate-800 uppercase tracking-wide">${displayName}</p>
+                                        <p class="text-[10px] text-slate-400 font-bold">Live Tracking Section</p>
+                                    </div>
+                                </div>
+                                <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
+                                    <span class="text-lg font-black text-emerald-700">${count}</span>
+                                    <span class="text-[9px] font-bold text-emerald-600 uppercase block">Active</span>
+                                </div>
                             </div>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
                 });
             } catch (e) {
                 console.log('Realtime analytics connection error:', e);
