@@ -6,6 +6,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Socket.io Library for Live Tracking -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
@@ -338,7 +342,16 @@
     <!-- SCRIPT -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => console.log('Tracker active'));
+            // 1. Total Visits Counter API
+            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => {});
+
+            // 2. Real-time Live Page Tracker (Socket.io)
+            try {
+                const socket = io('https://gewa-backend-live.onrender.com');
+                socket.emit('join_page', 'Services'); // 'Services' इस पेज का नाम है
+            } catch (e) {
+                console.log('Live tracking error:', e);
+            }
             
             fetchCategoryContent('live-updates', 'live-updates-container');
             fetchCategoryContent('news', 'news-container');
@@ -425,7 +438,7 @@
                     }).join('');
                 }
             } catch (error) {
-                console.error("Error loading category content:", error);
+                console.log("Error loading category content:", error);
             }
         }
     </script>

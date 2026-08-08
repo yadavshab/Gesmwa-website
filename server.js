@@ -3,9 +3,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const http = require('http');
+const { Server } = require('socket.io');
 require('dotenv').config();
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: { origin: "*" }
+});
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -51,6 +57,26 @@ const dynamicContentSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 const DynamicContent = mongoose.model('DynamicContent', dynamicContentSchema);
+
+// Real-time Page Viewers Tracking with Socket.io
+let pageViewers = {};
+
+io.on('connection', (socket) => {
+    let currentPage = '';
+
+    socket.on('join_page', (pageName) => {
+        currentPage = pageName;
+        pageViewers[currentPage] = (pageViewers[currentPage] || 0) + 1;
+        io.emit('update_counts', pageViewers);
+    });
+
+    socket.on('disconnect', () => {
+        if (currentPage && pageViewers[currentPage]) {
+            pageViewers[currentPage] = Math.max(0, pageViewers[currentPage] - 1);
+            io.emit('update_counts', pageViewers);
+        }
+    });
+});
 
 // Nodemailer Transporter Configuration for Login Alerts
 const transporter = nodemailer.createTransport({
@@ -146,7 +172,6 @@ app.post('/api/admin/login', async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid Password!" });
         }
 
-        // Email alert is triggered instantly in background
         sendLoginAlert(user.username, user.role).catch(err => console.log("Background email error:", err.message));
 
         res.json({ success: true, role: user.role, username: user.username, message: "Login successful!" });
@@ -212,7 +237,6 @@ app.post('/api/admin/verify-otp', async (req, res) => {
         admin.otpExpires = undefined;
         await admin.save();
 
-        // Email alert triggered in background
         sendLoginAlert(admin.username, admin.role).catch(err => console.log("Background email error:", err.message));
 
         res.json({ success: true, role: admin.role, username: admin.username, message: "OTP Login successful!" });
@@ -341,6 +365,6 @@ app.get('/api/visits', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

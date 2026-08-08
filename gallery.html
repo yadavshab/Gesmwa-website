@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Socket.io Library for Live Viewers Tracking -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .bg-olive-military { background-color: #2d3f29; }
@@ -171,10 +174,19 @@
 
     <!-- TRANSLATION & LIVE TRACKER SCRIPT -->
     <script>
-        // GLOBAL LIVE TRAFFIC TRACKER
+        // GLOBAL LIVE TRAFFIC & REAL-TIME TRACKER
         window.addEventListener('DOMContentLoaded', () => {
+            // 1. Total Visits Counter API Call
             fetch('https://api.counterapi.dev/v1/gesmwa/visits/up')
                 .catch(err => console.log('Live tracker active'));
+
+            // 2. Real-time Live Page Viewer Tracking via Socket.io
+            try {
+                const socket = io('https://gewa-backend-live.onrender.com');
+                socket.emit('join_page', 'Gallery'); // 'Gallery' इस पेज का नाम है
+            } catch (e) {
+                console.log('Socket connection error:', e);
+            }
         });
 
         function toggleLanguage() {

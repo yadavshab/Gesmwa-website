@@ -30,6 +30,9 @@
 
       gtag('config', 'G-C2Z3S50392');
     </script>
+    
+    <!-- Socket.io Library Added -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-300 antialiased transition-colors duration-300" data-current-lang="hi">
 
@@ -100,7 +103,7 @@
                         <img src="Grenadiers.png" alt="Grenadiers Logo" class="w-full h-full object-contain p-0.5 md:p-1">
                     </div>
 
-                    <!-- 🌟 BIG & PROMINENT ADMIN BUTTON IN MAIN HEADER 🌟 -->
+                    <!-- ADMIN BUTTON -->
                     <a href="admin-login.html" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3 md:px-5 py-2 md:py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs md:text-sm font-black tracking-wider uppercase ring-2 ring-amber-400/50 transition-all hover:scale-105">
                         <i class="fa-solid fa-user-shield text-base md:text-lg text-amber-300"></i>
                         <span class="hidden sm:inline">Admin Portal</span>
@@ -338,8 +341,6 @@
                             </blockquote>
                             <p class="font-bold text-slate-800 dark:text-slate-200">2 Guards (1 Grenadiers)प्रिय साथियों एवं समस्त सम्मानित सदस्यों,</p>
                             <p>महासचिव के रूप में मेरा यह प्राथमिक और नैतिक दायित्व है कि पलटन के उसी कड़े अनुशासन, त्वरित निर्णय क्षमता और ऑन-ग्राउंड मुस्तैदी को हम अपने सामाजिक और कल्याणकारी कार्यों में अक्षरशः लागू करें। हमारे लिए हर एक सदस्य का संदेश और उसकी समस्या सर्वोच्च प्राथमिकता है।</p>
-                            <p>GEWA की इस सांगठनिक कमान के अंतर्गत हमारा निरंतर प्रयास है कि देश के किसी भी सुदूर कोने में बैठे हमारे **2 Guards (1 Grenadiers)** के वेटरन भाई को जोड़ा जा सके और संवाद की गति को तीव्र रखा जाए। चाहे वह हमारी पर्यावरण रक्षक 'वृक्ष मित्र' योजना हो, रक्तदान के त्वरित डेटाबेस का संचालन हो, ज़िला स्तर पर पूर्व सैनिक बैठकों का समन्वय हो, या हमारे किसी साथी के आकस्मिक दुःखद निधन पर पलटन के पूर्ण मान-सम्मान के साथ अंतिम विदाई और कड़े सम्मान की व्यवस्था करना हो—हमारी कार्यकारिणी का हर सिपाही 24 घंटे मुस्तैद खड़ा है।</p>
-                            <p>आप सभी के सहयोग और विश्वास से ही यह कारवां मजबूत हो रहा है। मेरी आप सभी से सविनय आग्रह है कि स्वयं भी सक्रिय रहें और संगठन को नई बुलंदियों तक ले जाने में अपना महत्वपूर्ण योगदान दें।</p>
                         </div>
                         
                         <div data-lang="en" class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
@@ -348,7 +349,6 @@
                             </blockquote>
                             <p class="font-bold text-slate-800 dark:text-slate-200">2 Guards (1 Grenadiers)Dear comrades and respected members,</p>
                             <p>As the General Secretary, it is my absolute ethical responsibility to enforce the exact same high standard of military discipline and swift execution into our welfare activities that we practiced in our active-duty units. For us, every member's query is our immediate mission command.</p>
-                            <p>Under this organizational shield, we continuously strive to bridge the gap and integrate every single veteran brother of **2 Guards (1 Grenadiers)** across the nation. Whether executing emergency relief, coordinating district meets, or ensuring a highly dignified regimental funeral protocol with final guard of honor for our departed brothers—our executive line stands ready 24/7.</p>
                         </div>
                     </div>
                     <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-4 text-center text-xs font-black text-red-700 dark:text-red-400 uppercase tracking-widest bg-red-50 dark:bg-red-900/20 py-1 rounded-md">
@@ -378,13 +378,11 @@
                         <div data-lang="hi" class="text-xs text-slate-600 dark:text-slate-300 space-y-2 tracking-wide leading-relaxed font-medium">
                             <p class="font-bold text-slate-950 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-0.5">2 Guards (1 Grenadiers) के समस्त आदरणीय वेटरन्स, सम्माननीय मातृशक्ति एवं प्रिय बच्चों,</p>
                             <p>GEWA के राजकोष में प्राप्त होने वाला प्रत्येक योगदान केवल एक सामान्य वित्तीय अंशदान नहीं है, बल्कि वह हमारे किसी वीर सैनिक भाई की गाढ़ी कमाई और उसके परिवार के परम विश्वास का एक पवित्र प्रतीक है।</p>
-                            <p>कोषाध्यक्ष के इस अत्यंत उत्तरदायी और गरिमामयी पद पर रहते हुए, मैं यह दृढ़ संकल्प व्यक्त करती हूँ कि हमारी संस्था के इस सैनिक कल्याण कोष के एक-एक पैसे का प्रबंधन पूर्ण ईमानदारी, अत्यंत सूक्ष्म लेखा-जोखा (Micro-Audited Clarity) और उच्चतम पारदर्शिता के साथ सार्वजनिक पटल पर रखा जाएगा। मुख्य कार्यकारिणी के सामूहिक परामर्श और GEWA की कड़ाई से बनाई गई संवैधानिक नियमावली के अंतर्गत, राजकोष के प्रत्येक संसाधन को सीधे सही, लक्षित और अत्यंत जरूरतमंद परिवारों तक समयबद्ध सीमा के भीतर पहुँचाना ही मेरी सर्वोच्च और गैर-समझौतावादी प्राथमिकता है। आपका यह निष्कलंक विश्वास ही हमारी सबसे बड़ी सामर्थ्य है।</p>
                         </div>
                         
                         <div data-lang="en" class="text-xs text-slate-600 dark:text-slate-300 space-y-2 tracking-wide leading-relaxed font-medium">
                             <p class="font-bold text-slate-950 dark:text-slate-100 border-b border-slate-100 dark:border-slate-700 pb-0.5">2 Guards (1 Grenadiers) To all respected veterans, honorable families, and children of 2 Guards,</p>
                             <p>Every single contribution received by the treasury of GEWA is not just liquid currency; it is a sacred token of hard-earned military labor and deep institutional trust deposited by a soldier's family.</p>
-                            <p>Holding this deeply responsible office of Treasurer, I pledge that every rupee inside this welfare fund will be balanced with micro-audited clarity and displayed with high-visibility financial accountability. Directing resources straight to vulnerable and verified families without corporate friction remains my absolute non-negotiable target. Your clean trust is our true foundational strength.</p>
                         </div>
                     </div>
                     <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-3 text-center text-xs font-black text-emerald-800 dark:text-emerald-400 uppercase tracking-widest bg-emerald-50 dark:bg-emerald-900/20 py-1 rounded-md">
@@ -408,14 +406,12 @@
                         
                         <div data-lang="hi" class="text-xs text-slate-500 dark:text-slate-400 space-y-1.5 leading-relaxed font-medium">
                             <p class="font-bold text-slate-700 dark:text-slate-200">2 Guards (1 Grenadiers)प्रिय वीर साथियों, प्रबुद्ध वेटरन्स एवं आदरणीय माताओं-बहनों,</p>
-                            <p>सह-कोषाध्यक्ष के रूप में मेरा मुख्य दायित्व संस्था की वित्तीय व्यवस्था को सुदृढ़, त्रुटिहीन, व्यावहारिक और पूर्णतः पारदर्शी बनाए रखने में हमारी कोषाध्यक्ष और मुख्य कार्यकारिणी का पूर्ण सहयोग करना है। हमारा यह संयुक्त कोष हमारे सदस्यों की गाढ़ी कमाई का अंश है, अतः इसके एक-एक रुपये के उपयोग में सैनिक शुचिता का पालन अनिवार्य है।</p>
-                            <p>हमारा सामूहिक और दृढ़ लक्ष्य यह सुनिश्चित करना है कि बेटियों के लिए कन्यादान अनुदान राशि (₹11,000 / ₹21,000), मेधावी बच्चों के लिए छात्रवृत्ति पुरस्कार, अथवा किसी सैनिक परिवार पर आए अनपेक्षित आपातकालीन संकटों के समय राहत राशि का आवंटन बिना किसी प्रशासनिक जटिलता के सीधे और समय पर पहुँच सके। वित्तीय शुचिता और त्वरित सेवा ही हमारा मूल मंत्र है।</p>
+                            <p>सह-कोषाध्यक्ष के रूप में मेरा मुख्य दायित्व संस्था की वित्तीय व्यवस्था को सुदृढ़, त्रुटिहीन, व्यावहारिक और पूर्णतः पारदर्शी बनाए रखने में हमारी कोषाध्यक्ष और मुख्य कार्यकारिणी का पूर्ण सहयोग करना है।</p>
                         </div>
                         
                         <div data-lang="en" class="text-xs text-slate-500 dark:text-slate-400 space-y-1.5 leading-relaxed font-medium">
                             <p class="font-bold text-slate-700 dark:text-slate-200">2 Guards (1 Grenadiers)Dear brave comrades, wise veterans, and family lines,</p>
-                            <p>As the Co-Treasurer, my ultimate mission parameters dictate providing seamless assistance to preserve an absolute ironclad fiscal discipline. This consolidated fund is backed by real grit; therefore, allocating each transaction demands precise regimental oversight.</p>
-                            <p>Our combined operational target is to ensure that daughter wedding grants, academic excellence rewards, or rapid crisis mitigations are executed instantly. Eliminating bottleneck delays to dispatch liquid support during critical windows is our code.</p>
+                            <p>As the Co-Treasurer, my ultimate mission parameters dictate providing seamless assistance to preserve an absolute ironclad fiscal discipline.</p>
                         </div>
                     </div>
                     <div class="pt-2 border-t border-slate-100 dark:border-slate-700 mt-3 text-center text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest bg-slate-100 dark:bg-slate-700/50 py-1 rounded-md transition-colors">
@@ -905,17 +901,26 @@
     </footer>
 
     <script>
+        // LIVE VISITS & SOCKET INTEGRATION
         window.addEventListener('DOMContentLoaded', () => {
+            // 1. Total Visits Counter
             fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => {});
+
+            // 2. Real-time Live Page Viewer Tracking (Socket.io)
+            try {
+                const socket = io('https://gewa-backend-live.onrender.com');
+                socket.emit('join_page', 'index'); // 'index' is the page name
+            } catch (e) {
+                console.log('Socket connection error:', e);
+            }
         });
 
         function toggleDarkMode() {
             const htmlElement = document.documentElement;
             htmlElement.classList.toggle('dark');
-            const isDark = htmlElement.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
             const icon = document.getElementById('darkModeIcon');
-            if(icon) icon.className = isDark ? 'fa-solid fa-sun text-amber-400 text-xs' : 'fa-solid fa-moon text-amber-400 text-xs';
+            if(icon) icon.className = htmlElement.classList.contains('dark') ? 'fa-solid fa-sun text-amber-400 text-xs' : 'fa-solid fa-moon text-amber-400 text-xs';
         }
 
         window.addEventListener('DOMContentLoaded', () => {

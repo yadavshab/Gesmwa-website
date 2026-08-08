@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     
+    <!-- Socket.io Library for Live Viewers -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
@@ -100,6 +103,7 @@
                 </div>
 
                 <div id="analytics-content" class="space-y-6 transition-all">
+                    <!-- Top Metric Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-blue-50/50">
                             <div class="flex justify-between items-start">
@@ -146,6 +150,22 @@
                                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-indigo-100">
                                     <i class="fa-solid fa-building-columns"></i>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time Section/Page Viewers Panel -->
+                    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder text-blue-600"></i> Real-Time Active Section Viewers
+                            </h3>
+                            <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full animate-pulse">● Live Tracking Active</span>
+                        </div>
+                        <div id="realtimeSectionList" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Connecting...</p>
+                                <h4 class="text-xl font-black text-slate-800 mt-1">-</h4>
                             </div>
                         </div>
                     </div>
@@ -353,7 +373,7 @@
         </div>
     </main>
 
-    <!-- SCRIPTS FOR CASCADING SUBCATEGORIES -->
+    <!-- SCRIPTS FOR CASCADING SUBCATEGORIES & LIVE TRACKING -->
     <script>
         const subcategoryMapping = {
             welfare: [
@@ -386,11 +406,33 @@
             updateSubcategories();
             fetchSectionRecords();
             fetchTotalVisits();
+            initRealtimeAnalytics();
         });
+
+        // Real-time Page/Section Viewers Counter via Socket.io
+        function initRealtimeAnalytics() {
+            try {
+                const adminSocket = io('https://gewa-backend-live.onrender.com');
+                adminSocket.on('update_counts', (counts) => {
+                    const container = document.getElementById('realtimeSectionList');
+                    if (!counts || Object.keys(counts).length === 0) {
+                        container.innerHTML = `<div class="col-span-full p-3 text-xs text-slate-400">No active visitors online.</div>`;
+                        return;
+                    }
+                    container.innerHTML = Object.entries(counts).map(([page, count]) => `
+                        <div class="p-4 bg-blue-50/40 rounded-2xl border border-blue-100 shadow-sm transition-all hover:shadow-md">
+                            <p class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest truncate">${page}</p>
+                            <h4 class="text-2xl font-black text-blue-900 mt-1">${count} <span class="text-[10px] font-semibold text-emerald-600">Active</span></h4>
+                        </div>
+                    `).join('');
+                });
+            } catch (e) {
+                console.log('Realtime analytics connection error:', e);
+            }
+        }
 
         async function fetchTotalVisits() {
             try {
-                // सुरक्षित काउंटर एपीआई कॉल (बैकअप फॉಲ್‌बैक के साथ)
                 const res = await fetch('https://api.counterapi.dev/v1/gesmwa/visits');
                 if (res.ok) {
                     const data = await res.json();

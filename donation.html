@@ -7,6 +7,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Socket.io Library for Live Viewers Tracking -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -252,8 +256,16 @@
     <!-- SCRIPTS -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up')
-                .catch(err => console.log('Tracker active'));
+            // 1. Total Visits Counter
+            fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => {});
+
+            // 2. Real-time Live Page Tracker (Socket.io)
+            try {
+                const socket = io('https://gewa-backend-live.onrender.com');
+                socket.emit('join_page', 'Welfare'); // 'Welfare' इस पेज का नाम है
+            } catch (e) {
+                console.log('Live tracking error:', e);
+            }
             
             loadWelfareDynamicContent();
         });
@@ -280,7 +292,6 @@
                 
                 if(items && items.length > 0) {
                     items.forEach(item => {
-                        // subCategory के आधार पर सही कंटेनर ढूंढें (यानी -container जोड़कर)
                         const container = document.getElementById(item.subCategory + '-container');
                         if(container) {
                             if(item.imageUrl) {
