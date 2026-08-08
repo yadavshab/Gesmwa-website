@@ -40,34 +40,31 @@
             <p class="text-slate-600 mt-5 font-bold text-base max-w-3xl mx-auto">पूर्व सैनिकों और उनके परिवारों के लिए आवश्यक बैंकिंग निर्देश, ECHS नीतियां एवं महत्वपूर्ण मार्गदर्शन।</p>
         </div>
 
-        <!-- ================= LIVE UPDATES & NEWS (DYNAMIC SECTIONS) ================= -->
+        <!-- ================= LIVE UPDATES & NEWS ================= -->
         <div class="grid md:grid-cols-2 gap-8 mb-16">
-            <!-- Live Updates Box -->
-            <div class="bg-white p-8 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-xl border-t-8 border-t-emerald-600 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-3 mb-6 border-b-2 border-emerald-600 pb-3 inline-flex">
-                        <i class="fa-solid fa-bullhorn text-emerald-600 text-3xl animate-bounce"></i>
-                        <h2 class="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-wide">Live Updates</h2>
-                    </div>
-                    <div id="live-updates-container" class="space-y-4">
-                        <p class="text-slate-400 font-bold animate-pulse text-sm">डेटाबेस से लाइव अपडेट्स लोड हो रहे हैं...</p>
-                    </div>
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl border-t-8 border-t-emerald-600">
+                <div class="flex items-center gap-4 mb-6 border-b-2 border-emerald-600 pb-3 inline-flex">
+                    <i class="fa-solid fa-bullhorn text-emerald-600 text-3xl animate-bounce"></i>
+                    <h2 class="text-2xl font-black text-slate-900 uppercase tracking-wide">Live Updates</h2>
+                </div>
+                <div id="live-updates-container" class="space-y-4">
+                    <p class="text-slate-400 font-bold animate-pulse text-sm">Loading live updates...</p>
                 </div>
             </div>
 
-            <!-- News Box -->
-            <div class="bg-white p-8 md:p-10 rounded-[2.5rem] border border-slate-200 shadow-xl border-t-8 border-t-blue-600 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-3 mb-6 border-b-2 border-blue-600 pb-3 inline-flex">
-                        <i class="fa-solid fa-newspaper text-blue-600 text-3xl"></i>
-                        <h2 class="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-wide">News Section</h2>
-                    </div>
-                    <div id="news-container" class="space-y-4">
-                        <p class="text-slate-400 font-bold animate-pulse text-sm">डेटाबेस से ताज़ा न्यूज़ लोड हो रही हैं...</p>
-                    </div>
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl border-t-8 border-t-blue-600">
+                <div class="flex items-center gap-4 mb-6 border-b-2 border-blue-600 pb-3 inline-flex">
+                    <i class="fa-solid fa-newspaper text-blue-600 text-3xl"></i>
+                    <h2 class="text-2xl font-black text-slate-900 uppercase tracking-wide">News</h2>
+                </div>
+                <div id="news-container" class="space-y-4">
+                    <p class="text-slate-400 font-bold animate-pulse text-sm">Loading news...</p>
                 </div>
             </div>
         </div>
+
+        <!-- ================= DYNAMIC MAJOR SCHEMES (एडमिन से अपलोड किए गए बड़े कार्ड यहाँ आएंगे) ================= -->
+        <div id="major-schemes-container"></div>
 
         <!-- 1. KSB MBBS/BDS DEFENCE QUOTA -->
         <div class="bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-xl mb-16">
@@ -161,7 +158,7 @@
             </div>
         </div>
 
-        <!-- 8. ESSENTIAL GUIDES & RESOURCES (DYNAMIC & STATIC CARDS) -->
+        <!-- ================= ESSENTIAL GUIDES & RESOURCES ================= -->
         <div class="mb-16">
             <div class="text-center mb-12">
                 <span class="text-maroon-700 text-sm font-extrabold uppercase tracking-widest block mb-2"><i class="fa-solid fa-link mr-1"></i> Important Portals & Guidance</span>
@@ -169,160 +166,12 @@
                 <p class="text-slate-600 mt-2 font-medium">पूर्व सैनिकों और उनके आश्रितों के लिए करियर, पेंशन और स्वास्थ्य सुविधाओं से जुड़े विशेष लेख।</p>
             </div>
 
-            <!-- Dynamic Container for Admin Panel Data -->
-            <div id="essential-guides-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-                <!-- Data from backend will be populated here -->
-            </div>
-
-            <!-- Static Essential Veteran Guides Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-white border-t-8 border-blue-800 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-blue-100 text-blue-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-user-shield mr-1"></i> Armed Forces Career</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">Become an Officer in Armed Forces (NDA)</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            12वीं और ग्रेजुएशन के बाद भारतीय सेना में अधिकारी (Officer) बनने के इच्छुक युवाओं के लिए एनडीए (NDA), सीडीएस (CDS) और अन्य एंट्री रूट्स की पूरी चयन प्रक्रिया।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/officer-entry-in-indian-armed-forces-complete-guide/" target="_blank" class="w-full bg-blue-50 text-blue-800 border border-blue-200 hover:bg-blue-800 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Guide <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-white border-t-8 border-emerald-700 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-emerald-100 text-emerald-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-address-card mr-1"></i> ECHS Card</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">ECHS Male Child (>25 Yrs) Reactivation</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            25 वर्ष से अधिक आयु के दिव्यांग या आश्रित पुत्र (Male Dependent) के लिए ECHS मेडिकल स्मार्ट कार्ड को दोबारा सक्रिय (Reactivate) कराने की स्टेप-बाय-स्टेप प्रक्रिया।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/echs-male-child-25-card-reactivation-guide/" target="_blank" class="w-full bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-700 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-white border-t-8 border-cyan-600 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-cyan-100 text-cyan-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Pension Benefits</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">Notional Increment Benefits (पेंशन लाभ)</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            यदि किसी सैनिक की सेवानिवृत्ति वार्षिक वेतन वृद्धि (Annual Increment) से ठीक पहले हुई है, तो नोशनल इंक्रीमेंट के माध्यम से पेंशन सुधार का लाभ कैसे लें।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/notional-increment-armed-forces-pension-2026/" target="_blank" class="w-full bg-cyan-50 text-cyan-800 border border-cyan-200 hover:bg-cyan-600 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Article <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-white border-t-8 border-red-600 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-red-100 text-red-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-user-doctor mr-1"></i> Education</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">NEET 2026: AFMC Pune MBBS Admission</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            पुणे स्थित प्रतिष्ठित Armed Forces Medical College (AFMC) में एमबीबीएस प्रवेश के लिए NEET स्कोर के साथ-साथ ToELR और इंटरव्यू की पूरी जानकारी।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/afmc-pune-admission-2026-test-selection-procedure/" target="_blank" class="w-full bg-red-50 text-red-700 border border-red-200 hover:bg-red-600 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="bg-white border-t-8 border-rose-600 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-rose-100 text-rose-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-bed mr-1"></i> Transit Facility</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">Golden Palm Transit Facility (Chennai)</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            चेन्नई यात्रा के दौरान सेवारत और पूर्व सैनिकों के लिए किफायती और आरामदायक ठहरने (Transit Accommodation) की सुविधा व बुकिंग नियम।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/golden-palm-transit-facility-chennai-defence-stay/" target="_blank" class="w-full bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-600 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="bg-white border-t-8 border-indigo-600 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-indigo-100 text-indigo-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-building-columns mr-1"></i> Banking</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">Defence Banking Advisor (DBA) Support</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            सेना कर्मियों और पेंशनभोगियों के लिए बैंकों द्वारा प्रदान किए जाने वाले विशेष बैंकिंग सलाहकार (DBA) की सेवाएं और उनकी सहायता कैसे लें।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/defence-banking-advisor-veterans-support/" target="_blank" class="w-full bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-600 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 7 -->
-                <div class="bg-white border-t-8 border-amber-500 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-amber-100 text-amber-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-scale-balanced mr-1"></i> Pension Portal</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">CPENGRAMS - Grievance Redressal</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            पेंशन या स्पर्श (Sparsh) से संबंधित किसी भी शिकायत या समस्या के समाधान के लिए केंद्रीय पेंशनभोगियों की ग्रीवांस पोर्टल पर शिकायत दर्ज करने का तरीका।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/cpengrams-govt-pension-grievance-for-govt-pensioners/" target="_blank" class="w-full bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-500 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 8 -->
-                <div class="bg-white border-t-8 border-green-500 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-green-100 text-green-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-id-card mr-1"></i> CSD Card</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">How to Apply for CSD Smart Card 2026</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            नया सीएसडी कैंटीन स्मार्ट कार्ड बनवाने, रिन्यू कराने अथवा परिवार के सदस्यों के नाम जोड़ने के लिए ऑनलाइन आवेदन की पूरी गाइड।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/how-to-apply-for-a-csd-smart-card-online-easily/" target="_blank" class="w-full bg-green-50 text-green-700 border border-green-200 hover:bg-green-600 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 9 -->
-                <div class="bg-white border-t-8 border-purple-600 rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
-                    <div>
-                        <span class="bg-purple-100 text-purple-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-user-nurse mr-1"></i> Career</span>
-                        <h3 class="text-xl font-black text-slate-900 mt-4 mb-3">Military Nursing Service (MNS) Guide</h3>
-                        <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
-                            महिला उम्मीदवारों के लिए मिलिट्री नर्सिंग सर्विस में शानदार करियर, योग्यता, चयन प्रक्रिया, ट्रेनिंग और सैलरी की विस्तृत जानकारी।
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100">
-                        <a href="https://esmcorner.com/military-nursing-service-mns-a-complete-guide/" target="_blank" class="w-full bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-600 hover:text-white font-extrabold py-3 rounded-xl transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                            Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                </div>
+            <div id="essential-guides-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamic Guides -->
             </div>
         </div>
 
-        <!-- ================= CONTACT & HELPDESK SECTION ================= -->
+        <!-- ================= CONTACT & HELPDESK ================= -->
         <div class="bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-xl mb-16 text-center">
             <h2 class="text-2xl md:text-3xl font-black text-slate-900 uppercase mb-4">GEWA Helpdesk & Contact Info</h2>
             <p class="text-slate-600 font-bold mb-8 max-w-xl mx-auto">किसी भी सहायता, सुझाव या जानकारी के लिए आप नीचे दिए गए माध्यमों से संपर्क कर सकते हैं:</p>
@@ -345,10 +194,10 @@
         window.addEventListener('DOMContentLoaded', () => {
             fetch('https://api.counterapi.dev/v1/gesmwa/visits/up').catch(err => console.log('Tracker active'));
             
-            // तीनों डायनामिक सेक्शन्स को अलग-अलग लोड करें
             fetchCategoryContent('live-updates', 'live-updates-container');
             fetchCategoryContent('news', 'news-container');
             fetchCategoryContent('essential-guides', 'essential-guides-container');
+            fetchCategoryContent('major-schemes', 'major-schemes-container');
         });
 
         async function fetchCategoryContent(subCat, containerId) {
@@ -358,18 +207,34 @@
                 const container = document.getElementById(containerId);
                 
                 if (!data || data.length === 0) {
-                    if (subCat === 'essential-guides') {
-                        container.innerHTML = ''; // यदि एडमिन से कोई नया कार्ड न हो तो खाली रखें ताकि नीचे के स्टैटिक कार्ड दिखें
-                    } else if (subCat === 'live-updates') {
-                        container.innerHTML = '<p class="text-xs text-slate-400 italic">No live updates available currently.</p>';
-                    } else {
-                        container.innerHTML = '<p class="text-xs text-slate-400 italic">No news available currently.</p>';
-                    }
+                    if (subCat === 'live-updates') container.innerHTML = '<p class="text-xs text-slate-400 italic">No live updates available currently.</p>';
+                    else if (subCat === 'news') container.innerHTML = '<p class="text-xs text-slate-400 italic">No news available currently.</p>';
                     return;
                 }
 
-                // यदि एडमिन पैनल से कोई नया गाइड/आर्टिकल डाला गया है
-                if (subCat === 'essential-guides') {
+                // अगर यह Major Scheme Banners वाला सेक्शन है (बड़े कार्ड्स)
+                if (subCat === 'major-schemes') {
+                    container.innerHTML = data.map(item => `
+                        <div class="bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-xl mb-16">
+                            <div class="flex items-center gap-4 mb-8 border-b-2 border-blue-600 pb-4 inline-flex">
+                                <i class="fa-solid fa-file-shield text-blue-600 text-3xl"></i>
+                                <h2 class="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-wide">${item.title}</h2>
+                            </div>
+                            <p class="text-slate-700 font-bold text-base mb-8 leading-relaxed">${item.description || ''}</p>
+                            ${item.imageUrl ? `
+                            <div class="rounded-3xl overflow-hidden shadow-lg border-4 border-slate-100 bg-slate-50 p-4">
+                                <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-auto object-contain hover:scale-105 transition duration-500">
+                            </div>` : ''}
+                            ${item.linkUrl ? `
+                            <div class="mt-6 pt-4 border-t border-slate-100">
+                                <a href="${item.linkUrl}" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider hover:bg-blue-700 transition">
+                                    Read Full Details <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>` : ''}
+                        </div>
+                    `).join('');
+                } 
+                else if (subCat === 'essential-guides') {
                     const borderColors = ['border-blue-800', 'border-cyan-600', 'border-rose-600', 'border-emerald-700', 'border-red-600', 'border-indigo-600', 'border-amber-500', 'border-green-500', 'border-purple-600'];
                     const bgColors = ['bg-blue-100 text-blue-900', 'bg-cyan-100 text-cyan-900', 'bg-rose-100 text-rose-900', 'bg-emerald-100 text-emerald-900', 'bg-red-100 text-red-800', 'bg-indigo-100 text-indigo-800', 'bg-amber-100 text-amber-800', 'bg-green-100 text-green-800', 'bg-purple-100 text-purple-800'];
                     const btnColors = ['bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-800', 'bg-cyan-50 text-cyan-800 border-cyan-200 hover:bg-cyan-600', 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-600', 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-700', 'bg-red-50 text-red-700 border-red-200 hover:bg-red-600', 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-600', 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-500', 'bg-green-50 text-green-700 border-green-200 hover:bg-green-600', 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-600'];
@@ -383,7 +248,7 @@
                             <div class="bg-white border-t-8 ${bColor} rounded-3xl p-8 shadow-xl flex flex-col justify-between hover:shadow-2xl transition">
                                 <div>
                                     <span class="${badgeColor} text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-3">
-                                        <i class="fa-solid fa-link mr-1"></i> Admin Published
+                                        <i class="fa-solid fa-link mr-1"></i> Guide / Info
                                     </span>
                                     <h3 class="text-xl font-black text-slate-900 mt-2 mb-3">${item.title}</h3>
                                     <p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed mb-4">
@@ -415,7 +280,7 @@
                     }).join('');
                 }
             } catch (error) {
-                document.getElementById(containerId).innerHTML = '<p class="text-red-500 text-xs font-bold text-center">Error loading data.</p>';
+                console.error("Error loading category content:", error);
             }
         }
     </script>
