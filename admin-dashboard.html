@@ -369,7 +369,7 @@
                 { value: 'live-updates', label: 'Live Updates' },
                 { value: 'news', label: 'News' },
                 { value: 'essential-guides', label: 'Essential Guides & Links' },
-                { value: 'major-schemes', label: 'Major Scheme Banners (बड़े नोटिस/योजना कार्ड)' }
+                { value: 'major-schemes', label: 'Major Scheme Banners (बड़े नोटिस/योजना कार्ड)' }
             ],
             main: [
                 { value: 'history-overview', label: 'Main / History Overview' }
@@ -385,7 +385,22 @@
         document.addEventListener('DOMContentLoaded', async function() {
             updateSubcategories();
             fetchSectionRecords();
+            fetchTotalVisits();
         });
+
+        async function fetchTotalVisits() {
+            try {
+                const res = await fetch('https://api.counterapi.dev/v1/gesmwa/visits');
+                const data = await res.json();
+                if (data && data.count !== undefined) {
+                    document.getElementById('totalVisitsCount').innerText = data.count.toLocaleString('en-IN');
+                } else {
+                    document.getElementById('totalVisitsCount').innerText = '0';
+                }
+            } catch (err) {
+                document.getElementById('totalVisitsCount').innerText = 'N/A';
+            }
+        }
 
         function updateSubcategories() {
             const sectionSelect = document.getElementById('pubSection');
@@ -482,11 +497,12 @@
                 imageUrl = await toBase64(fileInput.files[0]);
             }
 
-            const endpoint = recordId ? `https://gewa-backend-live.onrender.com/api/admin/update-dynamic/${recordId}` : 'https://gewa-backend-live.onrender.com/api/admin/upload-dynamic';
+            const endpoint = recordId ? `https://gewa-backend-live.onrender.com/api/admin/update-dynamic/${recordId}` : 'https://gewa-backend-live.onrender.com/api/admin/update-dynamic'; // Wait, let's keep original endpoint check
             const method = recordId ? 'PUT' : 'POST';
 
             try {
-                const res = await fetch(endpoint, {
+                const actualEndpoint = recordId ? `https://gewa-backend-live.onrender.com/api/admin/update-dynamic/${recordId}` : 'https://gewa-backend-live.onrender.com/api/admin/upload-dynamic';
+                const res = await fetch(actualEndpoint, {
                     method: method,
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ section, subCategory, title, imageUrl, linkUrl, description })
