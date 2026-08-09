@@ -485,6 +485,18 @@
         }
     });
 </script>
+<!-- Socket.io Library -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        try {
+            const socket = io('https://gewa-backend-live.onrender.com');
+            socket.emit('join_page', 'AdminLogin'); // यह लॉगिन पेज को ट्रैक करेगा
+        } catch (e) {
+            console.log('Socket error:', e);
+        }
+    });
+</script>
 
 </body>
 </html>

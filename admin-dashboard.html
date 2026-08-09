@@ -429,21 +429,28 @@
             ]
         };
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Check if logged in user is Mayank, otherwise hide bank balance editor
-            const loggedUser = sessionStorage.getItem("adminUsername") || "";
-            const editorBox = document.getElementById('welfareEditorBox');
-            if (loggedUser.toLowerCase() !== 'mayank' && editorBox) {
-                editorBox.style.display = 'none';
-            }
+       document.addEventListener('DOMContentLoaded', async function() {
+        const loggedUser = sessionStorage.getItem("adminUsername") || "Admin";
+    
+        // यह नया कोड जोड़ना है ताकि डैशबोर्ड पर एडमिन का नाम दिखे:
+        const roleBadge = document.getElementById('userRoleBadge');
+        if (roleBadge) {
+        roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${loggedUser}</strong>`;
+        }
 
-            updateSubcategories();
-            fetchSectionRecords();
-            fetchTotalVisits();
-            fetchWelfareBalance();
-            initRealtimeAnalytics();
-            fetchAdminLogs();
-        });
+        // Check if logged in user is Mayank, otherwise hide bank balance editor
+        const editorBox = document.getElementById('welfareEditorBox');
+        if (loggedUser.toLowerCase() !== 'mayank' && editorBox) {
+        editorBox.style.display = 'none';
+        }
+
+        updateSubcategories();
+        fetchSectionRecords();
+        fetchTotalVisits();
+        fetchWelfareBalance();
+        initRealtimeAnalytics();
+        fetchAdminLogs();
+    });
 
         // Real-time Vertical Active Section Viewers via Socket.io (Mayank protection included)
         function initRealtimeAnalytics() {
@@ -482,6 +489,7 @@
                         'Welfare': 'Welfare & Support (कल्याण कोष)',
                         'Services': 'Services & Schemes (सेवाएं और योजनाएं)',
                         'Gallery': 'Photo Gallery (गैलरी)',
+                        'AdminLogin': 'Admin Login Page (लॉगिन पेज)', // यह लॉगिन पेज का नाम दिखाएगा
                         'Admin': 'Admin Control Center (गुप्त एडमिन व्यूज़)' // केवल मयंक को दिखेगा
                     };
 
