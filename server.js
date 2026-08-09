@@ -52,26 +52,34 @@ const welfareBalanceSchema = new mongoose.Schema({
 });
 const WelfareBalance = mongoose.model('WelfareBalance', welfareBalanceSchema);
 
-// Dynamic Content Schema (Updated with linkUrl for Guide/External links)
+// Activity Log Schema
+const activityLogSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    action: { type: String, required: true },
+    details: { type: String },
+    date: { type: Date, default: Date.now }
+});
+const ActivityLog = mongoose.model('ActivityLog', activityLogSchema);
+
+// Dynamic Content Schema
 const dynamicContentSchema = new mongoose.Schema({
     section: { type: String, required: true, lowercase: true, trim: true },
     subCategory: { type: String, lowercase: true, trim: true },
     title: { type: String, required: true },
     imageUrl: { type: String },
-    linkUrl: { type: String }, // <--- बाहरी लिंक (जैसे Read Full Guide/Article के लिए)
+    linkUrl: { type: String },
     description: { type: String },
     date: { type: Date, default: Date.now }
 });
 const DynamicContent = mongoose.model('DynamicContent', dynamicContentSchema);
 
-// Real-time Page Viewers Tracking with Socket.io
+// ================= REAL-TIME SOCKET.IO INTEGRATION ================= //
 let pageViewers = {};
 
 io.on('connection', (socket) => {
     let currentPage = '';
 
     socket.on('join_page', (pageName) => {
-        // If the socket was already tracking a page, decrement it first
         if (currentPage && pageViewers[currentPage]) {
             pageViewers[currentPage] = Math.max(0, pageViewers[currentPage] - 1);
         }
@@ -79,7 +87,6 @@ io.on('connection', (socket) => {
         currentPage = pageName;
         pageViewers[currentPage] = (pageViewers[currentPage] || 0) + 1;
         
-        // Broadcast updated counts to all connected clients (including the Admin Dashboard)
         io.emit('update_counts', pageViewers);
     });
 
@@ -87,7 +94,6 @@ io.on('connection', (socket) => {
         if (currentPage && pageViewers[currentPage]) {
             pageViewers[currentPage] = Math.max(0, pageViewers[currentPage] - 1);
             
-            // Clean up empty categories from memory if count drops to 0
             if (pageViewers[currentPage] === 0) {
                 delete pageViewers[currentPage];
             }
@@ -96,8 +102,9 @@ io.on('connection', (socket) => {
         }
     });
 });
+// ================================================================= //
 
-// Nodemailer Transporter Configuration for Login Alerts
+// Nodemailer Transporter Configuration
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -106,7 +113,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Function to Send Login Notification Email (Background)
 async function sendLoginAlert(username, role) {
     try {
         const mailOptions = {
@@ -116,13 +122,11 @@ async function sendLoginAlert(username, role) {
             text: `Hello Mayank,\n\nAdmin user "${username}" (${role}) successfully logged in to the GEWA Admin Control Center at ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}.\n\n- GEWA Enterprise Security Gateway`
         };
         await transporter.sendMail(mailOptions);
-        console.log(`Login alert email sent successfully for user: ${username}`);
     } catch (err) {
         console.error("Error sending login alert email:", err.message);
     }
 }
 
-// Helper to format mobile number
 function formatMobile(num) {
     if (!num) return "";
     let cleaned = num.trim();
@@ -266,7 +270,6 @@ app.post('/api/admin/verify-otp', async (req, res) => {
 
 // ================= WELFARE BANK BALANCE ROUTES ================= //
 
-// 1. Get Welfare Bank Balance
 app.get('/api/welfare/balance', async (req, res) => {
     try {
         let bData = await WelfareBalance.findOne();
@@ -280,10 +283,14 @@ app.get('/api/welfare/balance', async (req, res) => {
     }
 });
 
-// 2. Update Welfare Bank Balance (Admin Dashboard)
 app.post('/api/admin/update-balance', async (req, res) => {
     try {
-        const { balance } = req.body;
+        const { balance, username } = req.body;
+        
+        if (!username || username.toLowerCase() !== 'mayank') {
+            return res.status(403).json({ success: false, message: "Access Denied: Only Main Admin (Mayank) can update the balance!" });
+        }
+
         if (!balance) {
             return res.status(400).json({ success: false, message: "Balance is required!" });
         }
@@ -296,10 +303,35 @@ app.post('/api/admin/update-balance', async (req, res) => {
         }
         await bData.save();
 
-        // Broadcast balance update in real-time via Socket.io if needed
+        // Broadcast balance update via Socket.io
         io.emit('balance_updated', balance);
 
-        res.json({ success: true, message: "Balance updated successfully!" });
+        await ActivityLog.create({ username: 'mayank', action: 'Updated Bank Balance', details: `New Balance: ₹${balance}` });
+
+        res.json({ success: true, message: "Welfare bank balance updated successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ================= ADMIN ACTIVITY LOG ROUTES ================= //
+app.get('/api/admin/logs', async (req, res) => {
+    try {
+        const logs = await ActivityLog.find({}).sort({ date: -1 }).limit(25);
+        res.json({ success: true, logs });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/log-action', async (req, res) => {
+    try {
+        const { username, action, details } = req.body;
+        if (!username || !action) {
+            return res.status(400).json({ success: false, message: "Username and action are required!" });
+        }
+        await ActivityLog.create({ username, action, details });
+        res.json({ success: true });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
@@ -309,7 +341,7 @@ app.post('/api/admin/update-balance', async (req, res) => {
 
 app.post('/api/admin/upload-dynamic', async (req, res) => {
     try {
-        const { section, subCategory, title, imageUrl, description, linkUrl } = req.body;
+        const { section, subCategory, title, imageUrl, description, linkUrl, username } = req.body;
         if (!section || !subCategory || !title) {
             return res.status(400).json({ success: false, message: "Section, Sub-category, and Title are required!" });
         }
@@ -322,6 +354,11 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
             description 
         });
         await newContent.save();
+
+        if (username) {
+            await ActivityLog.create({ username, action: 'Published New Content', details: `Section: ${section} | Title: ${title}` });
+        }
+
         res.json({ success: true, message: "Content uploaded and live successfully!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -331,7 +368,7 @@ app.post('/api/admin/upload-dynamic', async (req, res) => {
 app.put('/api/admin/update-dynamic/:id', async (req, res) => {
     try {
         const recordId = req.params.id;
-        const { section, subCategory, title, imageUrl, description, linkUrl } = req.body;
+        const { section, subCategory, title, imageUrl, description, linkUrl, username } = req.body;
         
         const updatedContent = await DynamicContent.findByIdAndUpdate(
             recordId,
@@ -350,6 +387,10 @@ app.put('/api/admin/update-dynamic/:id', async (req, res) => {
             return res.status(404).json({ success: false, message: "Record not found!" });
         }
 
+        if (username) {
+            await ActivityLog.create({ username, action: 'Updated Content', details: `Title: ${title || 'Record'}` });
+        }
+
         res.json({ success: true, message: "Updated successfully!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -365,7 +406,7 @@ app.delete('/api/admin/delete-dynamic/:id', async (req, res) => {
             return res.status(404).json({ success: false, message: "Record not found!" });
         }
 
-        res.json({ success: true, message: "Deleted successfully!" });
+        res.json({ success: true, message: "Deleted a content record" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
@@ -403,7 +444,7 @@ app.get('/api/content/:section/:subCategory', async (req, res) => {
     }
 });
 
-// Visit Count API Route (Auto incrementing total views)
+// Visit Count API Route
 app.get('/api/visits', async (req, res) => {
     try {
         let visitData = await Visit.findOne();
