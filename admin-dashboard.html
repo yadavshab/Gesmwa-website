@@ -452,72 +452,73 @@
         fetchAdminLogs();
     });
 
-        // Real-time Vertical Active Section Viewers via Socket.io (Mayank protection included)
-        function initRealtimeAnalytics() {
-            try {
+       // Real-time Vertical Active Section Viewers via Socket.io (Mayank protection included)
+         function initRealtimeAnalytics() {
+             try {
                 const adminSocket = io('https://gewa-backend-live.onrender.com');
-                
+        
                 // एडमिन पेज खुद को 'Admin' के रूप में ट्रैक करेगा
                 adminSocket.emit('join_page', 'Admin');
 
                 adminSocket.on('update_counts', (counts) => {
                     const container = document.getElementById('realtimeSectionList');
-                    if (!container) return;
+                if (!container) return;
 
-                    if (!counts || Object.keys(counts).length === 0) {
-                        container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
-                        return;
-                    }
+                if (!counts || Object.keys(counts).length === 0) {
+                    container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
+                    return;
+                }
 
-                    const loggedUser = sessionStorage.getItem("adminUsername") || "";
-                    const isMayank = loggedUser.toLowerCase() === 'mayank';
+                // यहाँ सुधार कर दिया गया है ताकि यह 'username' और 'adminUsername' दोनों को सपोर्ट करे
+                const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "";
+                const isMayank = loggedUser.toLowerCase() === 'mayank';
 
-                    // यदि यूजर मयंक नहीं है, तो 'Admin' पेज के व्यूज़ को counts से छिपा दें
-                    let displayCounts = { ...counts };
-                    if (!isMayank) {
-                        delete displayCounts['Admin'];
-                    }
+                // यदि यूजर मयंक नहीं है, तो 'Admin' पेज के व्यूज़ को counts से छिपा दें
+                let displayCounts = { ...counts };
+                if (!isMayank) {
+                    delete displayCounts['Admin'];
+                }
 
-                    if (Object.keys(displayCounts).length === 0) {
-                        container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
-                        return;
-                    }
-
-                    const pageNames = {
-                        'Main': 'Main / History (होमपेज)',
-                        'Members': 'Members & Laws (सदस्य और नियम)',
-                        'Welfare': 'Welfare & Support (कल्याण कोष)',
-                        'Services': 'Services & Schemes (सेवाएं और योजनाएं)',
-                        'Gallery': 'Photo Gallery (गैलरी)',
-                        'AdminLogin': 'Admin Login Page (लॉगिन पेज)', // यह लॉगिन पेज का नाम दिखाएगा
-                        'Admin': 'Admin Control Center (गुप्त एडमिन व्यूज़)' // केवल मयंक को दिखेगा
-                    };
-
-                    container.innerHTML = Object.entries(displayCounts).map(([page, count]) => {
-                        const displayName = pageNames[page] || page;
-                        return `
-                            <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:bg-slate-100">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
-                                        <i class="fa-solid fa-globe"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-black text-slate-800 uppercase tracking-wide">${displayName}</p>
-                                        <p class="text-[10px] text-slate-400 font-bold">Live Tracking Section</p>
-                                    </div>
-                                </div>
-                                <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
-                                    <span class="text-lg font-black text-emerald-700">${count}</span>
-                                    <span class="text-[9px] font-bold text-emerald-600 uppercase block">Active</span>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                });
-            } catch (e) {
-                console.log('Realtime analytics connection error:', e);
+               if (Object.keys(displayCounts).length === 0) {
+                   container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
+                   return;
             }
-        }
+
+            const pageNames = {
+                'Main': 'Main / History (होमपेज)',
+                'Members': 'Members & Laws (सदस्य और नियम)',
+                'Welfare': 'Welfare & Support (कल्याण कोष)',
+                'Services': 'Services & Schemes (सेवाएं और योजनाएं)',
+                'Gallery': 'Photo Gallery (गैलरी)',
+                'AdminLogin': 'Admin Login Page (लॉगिन पेज)', // यह लॉगिन पेज का नाम दिखाएगा
+                'Admin': 'Admin Control Center (गुप्त एडमिन व्यूज़)' // केवल मयंक को दिखेगा
+            };
+
+            container.innerHTML = Object.entries(displayCounts).map(([page, count]) => {
+                const displayName = pageNames[page] || page;
+                return `
+                    <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:bg-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-black text-slate-800 uppercase tracking-wide">${displayName}</p>
+                                <p class="text-[10px] text-slate-400 font-bold">Live Tracking Section</p>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
+                            <span class="text-lg font-black text-emerald-700">${count}</span>
+                            <span class="text-[9px] font-bold text-emerald-600 uppercase block">Active</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        });
+    } catch (e) {
+        console.log('Realtime analytics connection error:', e);
+    }
+}
 
         // Fetch Admin Activity History (Who changed what)
         async function fetchAdminLogs() {
