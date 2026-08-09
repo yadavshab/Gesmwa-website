@@ -73,6 +73,16 @@ const dynamicContentSchema = new mongoose.Schema({
 });
 const DynamicContent = mongoose.model('DynamicContent', dynamicContentSchema);
 
+// 👉 [NEW ADDITION] Volunteer Schema & Model
+const volunteerSchema = new mongoose.Schema({
+    serialNo: Number,
+    name: { type: String, required: true },
+    address: { type: String, required: true },
+    occupation: { type: String, required: true },
+    designation: { type: String, required: true }
+});
+const Volunteer = mongoose.model('Volunteer', volunteerSchema);
+
 // ================= REAL-TIME SOCKET.IO INTEGRATION ================= //
 let pageViewers = {};
 
@@ -303,7 +313,6 @@ app.post('/api/admin/update-balance', async (req, res) => {
         }
         await bData.save();
 
-        // Broadcast balance update via Socket.io
         io.emit('balance_updated', balance);
 
         await ActivityLog.create({ username: 'mayank', action: 'Updated Bank Balance', details: `New Balance: ₹${balance}` });
@@ -443,6 +452,83 @@ app.get('/api/content/:section/:subCategory', async (req, res) => {
         res.status(500).json({ success: false, error: err.message });
     }
 });
+
+// ================= [NEW ADDITION] VOLUNTEERS API ROUTES (STRICTLY FOR MAYANK) ================= //
+
+// 1. Get All Volunteers (डेटाबेस खाली होने पर 12 डिफ़ॉल्ट अधिकारी ऑटो-लोड हो जाएंगे)
+app.get('/api/volunteers', async (req, res) => {
+    try {
+        let list = await Volunteer.find({}).sort({ serialNo: 1 });
+        if (list.length === 0) {
+            const defaultOfficials = [
+                { serialNo: 1, name: 'Lt.Col. (Retd) Phool Kumar Mor', address: 'Tau Devi Lal Colony, Hissar Cantt, Haryana', occupation: 'Pensioner', designation: 'President' },
+                { serialNo: 2, name: 'Hony.Sub Maj (Retd.) Ramniwas', address: 'Village Malikpur, Jhajjar, Haryana', occupation: 'Pensioner', designation: 'Vice President' },
+                { serialNo: 3, name: 'H/Sub Maj (Retd.) Jagvir Singh', address: 'VPO Kakrola, Delhi', occupation: 'Pensioner', designation: 'Gen-Secretary' },
+                { serialNo: 4, name: 'Sub Ramesh Singh', address: 'Village Kalwa, Jind, Haryana', occupation: 'Pensioner', designation: 'Joint Secretary' },
+                { serialNo: 5, name: 'Smt. Pushpa W/O (Retd.) Satish Kumar', address: 'VPO Chhuchhkwas, Jhajjar, Haryana', occupation: 'Housewife', designation: 'Treasurer' },
+                { serialNo: 6, name: 'Hav. (Retd.) Sunil Kumar Ahlawat', address: 'VPO Dighal, Jhajjar, Haryana', occupation: 'Pensioner', designation: 'Joint-Treasurer' },
+                { serialNo: 7, name: 'Smt. Ritu W/O (Retd.) Rajbir Malik', address: 'Gram Sabha, Pooth Kalan, Delhi', occupation: 'Housewife', designation: 'Founder / Advisor' },
+                { serialNo: 8, name: 'Hony.Capt (Retd.) Parma Ram', address: 'Nagri, Nagour, Rajasthan', occupation: 'Pensioner', designation: 'Advisor' },
+                { serialNo: 9, name: 'Hav (Retd.) Parmod Kumar', address: 'Village Bupania, Bahadurgarh, Haryana', occupation: 'Pensioner', designation: 'Exe-Member' },
+                { serialNo: 10, name: 'Hav (Retd.) Balwan', address: 'Tajnagar, Gurgaon, Haryana', occupation: 'Pensioner', designation: 'Exe-Member' },
+                { serialNo: 11, name: 'Hav. (Retd.) Parveen Kumar', address: 'Amadalshahpur, Jhajjar, Haryana', occupation: 'Pensioner', designation: 'Exe-Member' },
+                { serialNo: 12, name: 'Hav (Retd.) Deep Chand', address: 'Naveen Vihar, Begampur, Delhi', occupation: 'Pensioner', designation: 'Exe-Member' }
+            ];
+            await Volunteer.insertMany(defaultOfficials);
+            list = await Volunteer.find({}).sort({ serialNo: 1 });
+        }
+        res.json({ success: true, volunteers: list });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 2. Add Volunteer (केवल मयंक के लिए)
+app.post('/api/admin/volunteer', async (req, res) => {
+    try {
+        const { username, serialNo, name, address, occupation, designation } = req.body;
+        if (!username || username.toLowerCase() !== 'mayank') {
+            return res.status(403).json({ success: false, message: "Access Denied: Only Mayank can add volunteers!" });
+        }
+        const newVol = new Volunteer({ serialNo, name, address, occupation, designation });
+        await newVol.save();
+        await ActivityLog.create({ username: 'mayank', action: 'Added Volunteer', details: `Name: ${name}` });
+        res.json({ success: true, message: "Volunteer added successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 3. Update Volunteer (केवल मयंक के लिए)
+app.put('/api/admin/volunteer/:id', async (req, res) => {
+    try {
+        const { username, serialNo, name, address, occupation, designation } = req.body;
+        if (!username || username.toLowerCase() !== 'mayank') {
+            return res.status(403).json({ success: false, message: "Access Denied: Only Mayank can update volunteers!" });
+        }
+        await Volunteer.findByIdAndUpdate(req.params.id, { serialNo, name, address, occupation, designation });
+        await ActivityLog.create({ username: 'mayank', action: 'Updated Volunteer', details: `Name: ${name}` });
+        res.json({ success: true, message: "Volunteer updated successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 4. Delete Volunteer (केवल मयंक के लिए)
+app.delete('/api/admin/volunteer/:id', async (req, res) => {
+    try {
+        const username = req.headers['x-username'] || '';
+        if (!username || username.toLowerCase() !== 'mayank') {
+            return res.status(403).json({ success: false, message: "Access Denied: Only Mayank can delete volunteers!" });
+        }
+        await Volunteer.findByIdAndDelete(req.params.id);
+        await ActivityLog.create({ username: 'mayank', action: 'Deleted Volunteer', details: `ID: ${req.params.id}` });
+        res.json({ success: true, message: "Volunteer deleted successfully!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+// =========================================================================================
 
 // Visit Count API Route
 app.get('/api/visits', async (req, res) => {
