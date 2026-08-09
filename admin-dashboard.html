@@ -429,29 +429,54 @@
             ]
         };
 
-       document.addEventListener('DOMContentLoaded', async function() {
-       const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "Admin";
-    
-        // यह नया कोड जोड़ना है ताकि डैशबोर्ड पर एडमिन का नाम दिखे:
-        const roleBadge = document.getElementById('userRoleBadge');
-        if (roleBadge) {
-        roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${loggedUser}</strong>`;
+         document.addEventListener('DOMContentLoaded', async function() {
+            // 1. वर्तमान एडमिन का यूजरनेम पता करें
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "";
+            const isMayank = loggedUser.toLowerCase() === 'mayank';
+
+            // 2. साइडबार में एडमिन का असली नाम दिखाएं
+            const roleBadge = document.getElementById('userRoleBadge');
+            if (roleBadge) {
+                roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${loggedUser}</strong>`;
         }
 
-        // Check if logged in user is Mayank, otherwise hide bank balance editor
-        const editorBox = document.getElementById('welfareEditorBox');
-        if (loggedUser.toLowerCase() !== 'mayank' && editorBox) {
-        editorBox.style.display = 'none';
-        }
+        // =========================================================
+        // 3. STRICT RESTRICTION: केवल मयंक के लिए एडिटिंग और मैनेजमेंट टूल्स दिखेंगे
+        // =========================================================
+        if (!isMayank) {
+            // (क) Welfare Bank Balance Editor छिपाएं
+            const editorBox = document.getElementById('welfareEditorBox');
+            if (editorBox) editorBox.style.display = 'none';
 
+            // (ख) Smart Content & Photo Publisher (अपलोड, एडिट, डिलीट) छिपाएं
+            const publisherSection = document.getElementById('publisher-content');
+            if (publisherSection) {
+            publisherSection.closest('.mb-6').style.display = 'none';
+            }
+
+            // (ग) Secondary Admins Activity History छिपाएं
+            const logsSection = document.getElementById('logs-content');
+            if (logsSection) {
+                logsSection.closest('.mb-6').style.display = 'none';
+            }
+
+            // (घ) Volunteers DB में यदि कोई एडिट बटन हो तो उसे छिपाएं (या पूरा सेक्शन व्यू-ओनली रखें)
+            // (नोट: आपकी टेबल अभी केवल देखने के लिए है, इसलिए दूसरे एडमिन केवल देख पाएंगे, बदल नहीं पाएंगे)
+        }
+        // =========================================================
+
+        // सामान्य डेटा लोड करें जो सभी एडमिन देख सकते हैं (जैसे विजिटर्स काउंट आदि)
         updateSubcategories();
         fetchSectionRecords();
         fetchTotalVisits();
         fetchWelfareBalance();
         initRealtimeAnalytics();
-        fetchAdminLogs();
+    
+        // Activity logs केवल मयंक के लिए लोड होंगे
+        if (isMayank) {
+            fetchAdminLogs();
+        }
     });
-
        // Real-time Vertical Active Section Viewers via Socket.io (Mayank protection included)
          function initRealtimeAnalytics() {
              try {
