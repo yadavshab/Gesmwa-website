@@ -430,7 +430,7 @@
         };
 
        document.addEventListener('DOMContentLoaded', async function() {
-        const loggedUser = sessionStorage.getItem("adminUsername") || "Admin";
+       const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "Admin";
     
         // यह नया कोड जोड़ना है ताकि डैशबोर्ड पर एडमिन का नाम दिखे:
         const roleBadge = document.getElementById('userRoleBadge');
