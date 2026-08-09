@@ -35,7 +35,7 @@
             </div>
             <div>
                 <h2 class="font-black text-white text-lg tracking-wide leading-tight">GEWA Panel</h2>
-                <p id="userRoleBadge" class="text-[9px] text-emerald-400 font-bold tracking-widest uppercase">
+                <p id="userRoleBadge" class="text-[9px] text-emerald-400 font-bold tracking-widest uppercase mt-1">
                     <i class="fa-solid fa-circle text-[6px] animate-pulse relative -top-[1px]"></i> Active
                 </p>
             </div>
@@ -46,7 +46,7 @@
                 <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5"></i> Live Analytics</span>
                 <i class="fa-solid fa-chevron-down text-xs"></i>
             </button>
-            <button onclick="toggleSection('publisher-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+            <button id="navPublisherBtn" onclick="toggleSection('publisher-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
                 <span class="flex items-center gap-3"><i class="fa-solid fa-cloud-arrow-up w-5"></i> Smart Publisher</span>
                 <i class="fa-solid fa-chevron-down text-xs"></i>
             </button>
@@ -56,6 +56,10 @@
             </button>
             <button onclick="toggleSection('welfare-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
                 <span class="flex items-center gap-3"><i class="fa-solid fa-hand-holding-dollar w-5"></i> Welfare Funds</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button id="navLogsBtn" onclick="toggleSection('logs-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-clock-rotate-left w-5"></i> Activity Logs</span>
                 <i class="fa-solid fa-chevron-down text-xs"></i>
             </button>
             <button onclick="toggleSection('settings-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
@@ -163,7 +167,6 @@
                             </h3>
                             <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full animate-pulse">● Live Tracking Active</span>
                         </div>
-                        <!-- Vertical Container -->
                         <div id="realtimeSectionList" class="space-y-3">
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
                                 <span class="text-xs font-bold text-slate-400 uppercase">Connecting to live network...</span>
@@ -175,7 +178,7 @@
             </div>
 
             <!-- ================= 2. SMART CASCADING PUBLISHER SECTION ================= -->
-            <div class="mb-6">
+            <div id="publisherWrapper" class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('publisher-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-blue-400"></i> Smart Content & Photo Publisher</h2>
                     <i class="fa-solid fa-chevron-down"></i>
@@ -283,35 +286,12 @@
                     </div>
 
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs whitespace-nowrap">
-                            <thead class="bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px]">
-                                <tr>
-                                    <th class="px-4 py-3 text-center">S/No</th>
-                                    <th class="px-4 py-3">Name & Address</th>
-                                    <th class="px-4 py-3">Occupation</th>
-                                    <th class="px-4 py-3 text-right">Designation</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-slate-700 font-medium divide-y divide-slate-100">
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">1</td><td class="px-4 py-3"><strong>Lt.Col. (Retd) Phool Kumar Mor</strong><br><span class="text-[10px] text-slate-400">Tau Devi Lal Colony, Hissar Cantt, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-amber-600">President</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">2</td><td class="px-4 py-3"><strong>Hony.Sub Maj (Retd.) Ramniwas</strong><br><span class="text-[10px] text-slate-400">Village Malikpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-blue-600">Vice President</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">3</td><td class="px-4 py-3"><strong>H/Sub Maj (Retd.) Jagvir Singh</strong><br><span class="text-[10px] text-slate-400">VPO Kakrola, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-red-600">Gen-Secretary</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">4</td><td class="px-4 py-3"><strong>Sub Ramesh Singh</strong><br><span class="text-[10px] text-slate-400">Village Kalwa, Jind, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint Secretary</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">5</td><td class="px-4 py-3"><strong>Smt. Pushpa W/O (Retd.) Satish Kumar</strong><br><span class="text-[10px] text-slate-400">VPO Chhuchhkwas, Jhajjar, Haryana</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-700">Treasurer</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">6</td><td class="px-4 py-3"><strong>Hav. (Retd.) Sunil Kumar Ahlawat</strong><br><span class="text-[10px] text-slate-400">VPO Dighal, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Joint-Treasurer</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">7</td><td class="px-4 py-3"><strong>Smt. Ritu W/O (Retd.) Rajbir Malik</strong><br><span class="text-[10px] text-slate-400">Gram Sabha, Pooth Kalan, Delhi</span></td><td class="px-4 py-3">Housewife</td><td class="px-4 py-3 text-right font-bold text-emerald-600">Founder / Advisor</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">8</td><td class="px-4 py-3"><strong>Hony.Capt (Retd.) Parma Ram</strong><br><span class="text-[10px] text-slate-400">Nagri, Nagour, Rajasthan</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-800">Advisor</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">9</td><td class="px-4 py-3"><strong>Hav (Retd.) Parmod Kumar</strong><br><span class="text-[10px] text-slate-400">Village Bupania, Bahadurgarh, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">10</td><td class="px-4 py-3"><strong>Hav (Retd.) Balwan</strong><br><span class="text-[10px] text-slate-400">Tajnagar, Gurgaon, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">11</td><td class="px-4 py-3"><strong>Hav. (Retd.) Parveen Kumar</strong><br><span class="text-[10px] text-slate-400">Amadalshahpur, Jhajjar, Haryana</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 text-center font-bold">12</td><td class="px-4 py-3"><strong>Hav (Retd.) Deep Chand</strong><br><span class="text-[10px] text-slate-400">Naveen Vihar, Begampur, Delhi</span></td><td class="px-4 py-3">Pensioner</td><td class="px-4 py-3 text-right font-bold text-slate-600">Exe-Member</td></tr>
-                            </tbody>
-                        </table>
+                        <p class="text-xs text-slate-400 text-center py-4">Loading volunteers database...</p>
                     </div>
                 </div>
             </div>
 
-            <!-- ================= 4. WELFARE FUNDS SECTION (WITH LIVE EDITOR FOR MAYANK) ================= -->
+            <!-- ================= 4. WELFARE FUNDS SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds & Bank Editor</h2>
@@ -344,8 +324,8 @@
                 </div>
             </div>
 
-            <!-- ================= 5. ADMIN ACTIVITY LOGS (WHO DID WHAT) ================= -->
-            <div class="mb-6">
+            <!-- ================= 5. ADMIN ACTIVITY LOGS ================= -->
+            <div id="logsWrapper" class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('logs-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Secondary Admins Activity History</h2>
                     <i class="fa-solid fa-chevron-down"></i>
@@ -429,123 +409,249 @@
             ]
         };
 
-         document.addEventListener('DOMContentLoaded', async function() {
-            // 1. वर्तमान एडमिन का यूजरनेम पता करें
-            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "";
+        document.addEventListener('DOMContentLoaded', async function() {
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "Admin";
             const isMayank = loggedUser.toLowerCase() === 'mayank';
 
-            // 2. साइडबार में एडमिन का असली नाम दिखाएं
+            // Show current logged in user in sidebar badge
             const roleBadge = document.getElementById('userRoleBadge');
             if (roleBadge) {
                 roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${loggedUser}</strong>`;
-        }
-
-        // =========================================================
-        // 3. STRICT RESTRICTION: केवल मयंक के लिए एडिटिंग और मैनेजमेंट टूल्स दिखेंगे
-        // =========================================================
-        if (!isMayank) {
-            // (क) Welfare Bank Balance Editor छिपाएं
-            const editorBox = document.getElementById('welfareEditorBox');
-            if (editorBox) editorBox.style.display = 'none';
-
-            // (ख) Smart Content & Photo Publisher (अपलोड, एडिट, डिलीट) छिपाएं
-            const publisherSection = document.getElementById('publisher-content');
-            if (publisherSection) {
-            publisherSection.closest('.mb-6').style.display = 'none';
             }
 
-            // (ग) Secondary Admins Activity History छिपाएं
-            const logsSection = document.getElementById('logs-content');
-            if (logsSection) {
-                logsSection.closest('.mb-6').style.display = 'none';
+            // STRICT RESTRICTION: Hide sensitive sections for secondary admins
+            if (!isMayank) {
+                const editorBox = document.getElementById('welfareEditorBox');
+                if (editorBox) editorBox.style.display = 'none';
+
+                const publisherWrapper = document.getElementById('publisherWrapper');
+                if (publisherWrapper) publisherWrapper.style.display = 'none';
+
+                const logsWrapper = document.getElementById('logsWrapper');
+                if (logsWrapper) logsWrapper.style.display = 'none';
+
+                // Hide Activity Logs sidebar button
+                const navLogsBtn = document.getElementById('navLogsBtn');
+                if (navLogsBtn) navLogsBtn.style.display = 'none';
+
+                // Hide Smart Publisher sidebar button
+                const navPublisherBtn = document.getElementById('navPublisherBtn');
+                if (navPublisherBtn) navPublisherBtn.style.display = 'none';
             }
 
-            // (घ) Volunteers DB में यदि कोई एडिट बटन हो तो उसे छिपाएं (या पूरा सेक्शन व्यू-ओनली रखें)
-            // (नोट: आपकी टेबल अभी केवल देखने के लिए है, इसलिए दूसरे एडमिन केवल देख पाएंगे, बदल नहीं पाएंगे)
-        }
-        // =========================================================
+            updateSubcategories();
+            fetchSectionRecords();
+            fetchTotalVisits();
+            fetchWelfareBalance();
+            initRealtimeAnalytics();
+            fetchVolunteersData(isMayank);
 
-        // सामान्य डेटा लोड करें जो सभी एडमिन देख सकते हैं (जैसे विजिटर्स काउंट आदि)
-        updateSubcategories();
-        fetchSectionRecords();
-        fetchTotalVisits();
-        fetchWelfareBalance();
-        initRealtimeAnalytics();
-    
-        // Activity logs केवल मयंक के लिए लोड होंगे
-        if (isMayank) {
-            fetchAdminLogs();
-        }
-    });
-       // Real-time Vertical Active Section Viewers via Socket.io (Mayank protection included)
-         function initRealtimeAnalytics() {
-             try {
+            if (isMayank) {
+                fetchAdminLogs();
+            }
+        });
+
+        // Real-time Vertical Active Section Viewers via Socket.io (AdminLogin & Admin visible ONLY to Mayank)
+        function initRealtimeAnalytics() {
+            try {
                 const adminSocket = io('https://gewa-backend-live.onrender.com');
-        
-                // एडमिन पेज खुद को 'Admin' के रूप में ट्रैक करेगा
                 adminSocket.emit('join_page', 'Admin');
 
                 adminSocket.on('update_counts', (counts) => {
                     const container = document.getElementById('realtimeSectionList');
+                    if (!container) return;
+
+                    if (!counts || Object.keys(counts).length === 0) {
+                        container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
+                        return;
+                    }
+
+                    const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "";
+                    const isMayank = loggedUser.toLowerCase() === 'mayank';
+
+                    let displayCounts = { ...counts };
+                    
+                    // 🛡️ सुरक्षा नियम: यदि लॉगिन करने वाला यूजर मयंक नहीं है, तो एडमिन से जुड़े पेजों को छिपा दें
+                    if (!isMayank) {
+                        delete displayCounts['AdminLogin'];
+                        delete displayCounts['Admin'];
+                    }
+
+                    if (Object.keys(displayCounts).length === 0) {
+                        container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
+                        return;
+                    }
+
+                    const pageNames = {
+                        'Main': 'Main / History (होमपेज)',
+                        'Members': 'Members & Laws (सदस्य और नियम)',
+                        'Welfare': 'Welfare & Support (कल्याण कोष)',
+                        'Services': 'Services & Schemes (सेवाएं और योजनाएं)',
+                        'Gallery': 'Photo Gallery (गैलरी)',
+                        'AdminLogin': '🔑 Admin Login Page (लॉगिन पेज)',
+                        'Admin': '🛡️ Admin Dashboard (डैशबोर्ड व्यूज़)'
+                    };
+
+                    container.innerHTML = Object.entries(displayCounts).map(([page, count]) => {
+                        const displayName = pageNames[page] || page;
+                        return `
+                            <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:bg-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-globe"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-black text-slate-800 uppercase tracking-wide">${displayName}</p>
+                                        <p class="text-[10px] text-slate-400 font-bold">Live Tracking Section</p>
+                                    </div>
+                                </div>
+                                <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
+                                    <span class="text-lg font-black text-emerald-700">${count}</span>
+                                    <span class="text-[9px] font-bold text-emerald-600 uppercase block">Active</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                });
+            } catch (e) {
+                console.log('Realtime analytics connection error:', e);
+            }
+        }
+
+        // Fetch Volunteers Data & Render Add/Edit Form for Mayank
+        async function fetchVolunteersData(isMayank) {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/volunteers');
+                const data = await res.json();
+                
+                const container = document.querySelector('#volunteers-content .overflow-x-auto');
                 if (!container) return;
 
-                if (!counts || Object.keys(counts).length === 0) {
-                    container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
-                    return;
+                let html = '';
+                
+                if (isMayank) {
+                    html += `
+                        <div class="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                            <h4 class="text-xs font-black text-slate-900 uppercase mb-3"><i class="fa-solid fa-user-plus text-blue-600 mr-1"></i> Add / Edit Official</h4>
+                            <form id="volunteerForm" onsubmit="saveVolunteer(event)" class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                                <input type="hidden" id="volId">
+                                <input type="number" id="volSNo" placeholder="S/No" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <input type="text" id="volName" placeholder="Full Name" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <input type="text" id="volAddress" placeholder="Address" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <input type="text" id="volOccupation" placeholder="Occupation" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <div class="flex gap-2">
+                                    <input type="text" id="volDesignation" placeholder="Designation" class="bg-white border rounded-xl p-2.5 text-xs font-bold flex-1" required>
+                                    <button type="submit" class="bg-blue-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs uppercase shadow">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
                 }
 
-                // यहाँ सुधार कर दिया गया है ताकि यह 'username' और 'adminUsername' दोनों को सपोर्ट करे
-                const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "";
-                const isMayank = loggedUser.toLowerCase() === 'mayank';
-
-                // यदि यूजर मयंक नहीं है, तो 'Admin' पेज के व्यूज़ को counts से छिपा दें
-                let displayCounts = { ...counts };
-                if (!isMayank) {
-                    delete displayCounts['Admin'];
-                }
-
-               if (Object.keys(displayCounts).length === 0) {
-                   container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
-                   return;
-            }
-
-            const pageNames = {
-                'Main': 'Main / History (होमपेज)',
-                'Members': 'Members & Laws (सदस्य और नियम)',
-                'Welfare': 'Welfare & Support (कल्याण कोष)',
-                'Services': 'Services & Schemes (सेवाएं और योजनाएं)',
-                'Gallery': 'Photo Gallery (गैलरी)',
-                'AdminLogin': 'Admin Login Page (लॉगिन पेज)', // यह लॉगिन पेज का नाम दिखाएगा
-                'Admin': 'Admin Control Center (गुप्त एडमिन व्यूज़)' // केवल मयंक को दिखेगा
-            };
-
-            container.innerHTML = Object.entries(displayCounts).map(([page, count]) => {
-                const displayName = pageNames[page] || page;
-                return `
-                    <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:bg-slate-100">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
-                                <i class="fa-solid fa-globe"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-black text-slate-800 uppercase tracking-wide">${displayName}</p>
-                                <p class="text-[10px] text-slate-400 font-bold">Live Tracking Section</p>
-                            </div>
-                        </div>
-                        <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
-                            <span class="text-lg font-black text-emerald-700">${count}</span>
-                            <span class="text-[9px] font-bold text-emerald-600 uppercase block">Active</span>
-                        </div>
-                    </div>
+                html += `
+                    <table class="w-full text-left text-xs whitespace-nowrap">
+                        <thead class="bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px]">
+                            <tr>
+                                <th class="px-4 py-3 text-center">S/No</th>
+                                <th class="px-4 py-3">Name & Address</th>
+                                <th class="px-4 py-3">Occupation</th>
+                                <th class="px-4 py-3">Designation</th>
+                                ${isMayank ? '<th class="px-4 py-3 text-right">Actions</th>' : ''}
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-700 font-medium divide-y divide-slate-100">
                 `;
-            }).join('');
-        });
-    } catch (e) {
-        console.log('Realtime analytics connection error:', e);
-    }
-}
 
-        // Fetch Admin Activity History (Who changed what)
+                if (data.success && data.volunteers.length > 0) {
+                    data.volunteers.forEach(v => {
+                        html += `
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3 text-center font-bold">${v.serialNo}</td>
+                                <td class="px-4 py-3"><strong>${v.name}</strong><br><span class="text-[10px] text-slate-400">${v.address}</span></td>
+                                <td class="px-4 py-3">${v.occupation}</td>
+                                <td class="px-4 py-3 font-bold text-amber-600">${v.designation}</td>
+                                ${isMayank ? `
+                                    <td class="px-4 py-3 text-right space-x-2">
+                                        <button type="button" onclick="editVolunteer('${v._id}', '${v.serialNo}', '${escapeHtml(v.name)}', '${escapeHtml(v.address)}', '${escapeHtml(v.occupation)}', '${escapeHtml(v.designation)}')" class="text-blue-600 font-bold hover:underline">Edit</button>
+                                        <button type="button" onclick="deleteVolunteer('${v._id}')" class="text-red-600 font-bold hover:underline">Delete</button>
+                                    </td>
+                                ` : ''}
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html += `<tr><td colspan="5" class="p-4 text-center text-slate-400">No officials found.</td></tr>`;
+                }
+
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+            } catch(e) {
+                console.log("Error loading volunteers");
+            }
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+        }
+
+        async function saveVolunteer(e) {
+            e.preventDefault();
+            const id = document.getElementById('volId').value;
+            const serialNo = document.getElementById('volSNo').value;
+            const name = document.getElementById('volName').value;
+            const address = document.getElementById('volAddress').value;
+            const occupation = document.getElementById('volOccupation').value;
+            const designation = document.getElementById('volDesignation').value;
+            const username = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
+
+            const payload = { username, serialNo, name, address, occupation, designation };
+            const url = id ? `https://gewa-backend-live.onrender.com/api/admin/volunteer/${id}` : 'https://gewa-backend-live.onrender.com/api/admin/volunteer';
+            const method = id ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                alert(data.message || "Saved successfully!");
+                document.getElementById('volunteerForm').reset();
+                document.getElementById('volId').value = '';
+                fetchVolunteersData(true);
+            } catch(err) {
+                alert("Error saving volunteer!");
+            }
+        }
+
+        function editVolunteer(id, serialNo, name, address, occupation, designation) {
+            document.getElementById('volId').value = id;
+            document.getElementById('volSNo').value = serialNo;
+            document.getElementById('volName').value = name;
+            document.getElementById('volAddress').value = address;
+            document.getElementById('volOccupation').value = occupation;
+            document.getElementById('volDesignation').value = designation;
+            window.scrollTo({ top: document.querySelector('#volunteers-content').offsetTop, behavior: 'smooth' });
+        }
+
+        async function deleteVolunteer(id) {
+            if(!confirm("Are you sure you want to delete this official?")) return;
+            const username = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
+
+            try {
+                const res = await fetch(`https://gewa-backend-live.onrender.com/api/admin/volunteer/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'x-username': username }
+                });
+                const data = await res.json();
+                alert(data.message || "Deleted successfully!");
+                fetchVolunteersData(true);
+            } catch(err) {
+                alert("Error deleting volunteer!");
+            }
+        }
+
+        // Fetch Admin Activity History
         async function fetchAdminLogs() {
             try {
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/logs');
@@ -605,10 +711,10 @@
             }
         }
 
-        // Update Welfare Bank Balance (Restricted to Mayank)
+        // Update Welfare Bank Balance
         async function updateWelfareBalance() {
             const newBalance = document.getElementById('editBalanceInput').value.trim();
-            const loggedUser = sessionStorage.getItem("adminUsername") || "mayank";
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
 
             if(!newBalance) return alert("Please enter the balance amount!");
 
@@ -708,7 +814,7 @@
             const title = document.getElementById('pubTitle').value.trim();
             const linkUrl = document.getElementById('pubLinkUrl').value.trim();
             const description = document.getElementById('pubDescription').value.trim();
-            const loggedUser = sessionStorage.getItem("adminUsername") || "admin";
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
             
             const fileInput = document.getElementById('pubImageFile');
             let imageUrl = document.getElementById('existingImageUrl').value;
@@ -750,12 +856,11 @@
 
         async function deleteRecord(id) {
             if(!confirm("Are you sure you want to delete this record?")) return;
-            const loggedUser = sessionStorage.getItem("adminUsername") || "admin";
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
             try {
                 const res = await fetch(`https://gewa-backend-live.onrender.com/api/admin/delete-dynamic/${id}`, { method: 'DELETE' });
                 const data = await res.json();
                 
-                // Log deletion
                 await fetch('https://gewa-backend-live.onrender.com/api/admin/log-action', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
