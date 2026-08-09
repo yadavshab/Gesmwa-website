@@ -865,7 +865,6 @@
 <!-- ... (Emergency Help and Contact Sections remain the same) ... -->
 
 <script>
-    // WhatsApp Sender Function
     function sendToWhatsApp() {
         const name = document.getElementById('donorName').value.trim();
         const amount = document.getElementById('donorAmount').value.trim();
@@ -876,13 +875,14 @@
             return;
         }
 
-        const adminWhatsApp = "918287744626"; 
-        const message = `Hello GEWA Team,%0A%0AMaine Welfare Fund ke liye donation kiya hai.%0A%0A*Name:* ${encodeURIComponent(name)}%0A*Amount:* ${encodeURIComponent(amount)}%0A*Transaction ID:* ${encodeURIComponent(txn || 'N/A')}%0A%0A(Screenshot attached below)`;
+        // 💡 यह यूजर को याद दिलाएगा कि स्क्रीनशॉट भेजना है
+        alert("अब WhatsApp खुलेगा। कृपया पेमेंट का स्क्रीनशॉट (Screenshot) गैलरी से चुनकर साथ में जरूर भेजें!");
+
+        const adminWhatsApp = "918287744626"; // GEWA Admin WhatsApp Number
+        const message = `Hello GEWA Team,%0A%0AMaine Welfare Fund ke liye donation kiya hai.%0A%0A*Name:* ${encodeURIComponent(name)}%0A*Amount:* ${encodeURIComponent(amount)}%0A*Transaction ID:* ${encodeURIComponent(txn || 'N/A')}%0A%0A*(Neeche payment ka screenshot bhej raha hu)*`;
 
         window.open(`https://wa.me/${adminWhatsApp}?text=${message}`, '_blank');
     }
-
-    // Existing Scripts...
 </script>
 <section id="emergency-help" class="py-16 bg-gradient-to-br from-maroon-military to-slate-950 text-white px-4 text-center relative border-t-4 border-red-600">
         <div class="max-w-3xl mx-auto space-y-4">
