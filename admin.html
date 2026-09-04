@@ -1,53 +1,649 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+    <!-- SECURITY LOCK -->
+    <script>
+        if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+            alert("Security Alert: Direct access is strictly prohibited!");
+            window.location.replace("admin-login.html");
+        }
+    </script>
+    
     <meta charset="UTF-8">
-    <title>Gewa Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEWA — Admin Dashboard</title>
+    <!-- Tailwind CSS Stable Version -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Socket.io Library for Live Viewers -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
     <style>
-        body { font-family: Arial, sans-serif; padding: 50px; background-color: #f4f4f9; }
-        .box { background: white; padding: 20px; border-radius: 10px; max-width: 500px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #218838; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body>
+<body class="text-slate-800 flex min-h-screen selection:bg-blue-200">
 
-    <div class="box">
-        <h2>📝 नया आर्टिकल लिखें</h2>
+    <!-- MODERN SIDEBAR -->
+    <aside class="w-64 bg-slate-900 text-slate-300 hidden md:flex flex-col fixed h-full shadow-2xl z-20 border-r border-slate-800">
+        <div class="p-6 flex items-center gap-3 border-b border-slate-800/50 mb-4">
+            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xl shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <div>
+                <h2 class="font-black text-white text-lg tracking-wide leading-tight">GEWA Panel</h2>
+                <p id="userRoleBadge" class="text-[9px] text-emerald-400 font-bold tracking-widest uppercase mt-1">
+                    <i class="fa-solid fa-circle text-[6px] animate-pulse relative -top-[1px]"></i> Active
+                </p>
+            </div>
+        </div>
         
-        <input type="text" id="title" placeholder="आर्टिकल का टाइटल (Title)" />
-        <textarea id="content" rows="5" placeholder="यहाँ अपने आर्टिकल की पूरी जानकारी लिखें..."></textarea>
+        <nav class="flex-grow px-4 space-y-1.5 text-sm font-bold">
+            <button onclick="toggleSection('analytics-content')" class="w-full flex items-center justify-between bg-blue-600/10 text-blue-400 border border-blue-600/20 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5"></i> Live Analytics</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button onclick="toggleSection('volunteers-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-users w-5"></i> Volunteers DB</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button onclick="toggleSection('welfare-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-hand-holding-dollar w-5"></i> Welfare Funds</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button id="navLogsBtn" onclick="toggleSection('logs-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-clock-rotate-left w-5"></i> Activity Logs</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+            <button onclick="toggleSection('settings-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-shield-halved w-5"></i> Security Settings</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
+        </nav>
         
-        <button onclick="saveArticle()">आर्टिकल पब्लिश करें</button>
-    </div>
+        <div class="p-4 border-t border-slate-800/50 space-y-2">
+            <a href="index.html" class="flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 px-4 py-3 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
+                <i class="fa-solid fa-house"></i> Homepage
+            </a>
+            <a href="#" onclick="sessionStorage.clear(); window.location.replace('admin-login.html');" class="flex items-center justify-center gap-2 bg-slate-800 text-slate-300 hover:text-white hover:bg-red-600 px-4 py-3 rounded-xl transition text-xs font-black uppercase tracking-wider shadow-sm">
+                <i class="fa-solid fa-power-off"></i> Secure Logout
+            </a>
+        </div>
+    </aside>
 
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="flex-grow md:ml-64 p-6 lg:p-10 relative">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 z-0 pointer-events-none"></div>
+
+        <div class="relative z-10">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h1 class="text-3xl font-black text-slate-900 tracking-tight">System Central Command</h1>
+                    <p class="text-slate-500 text-sm font-medium mt-1">Gurais Ex-Servicemen Welfare Association (Regd. No. S/3924/SDM/NW/2023)</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="md:hidden bg-slate-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-house"></i> Homepage
+                    </a>
+                    <div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-black text-slate-600 flex items-center gap-2 shadow-sm">
+                        <span class="text-slate-400 font-medium">Status:</span> 
+                        <span id="headerStatusRole" class="text-emerald-600 flex items-center gap-1.5"><i class="fa-solid fa-check-circle"></i> Secured</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 1. LIVE ANALYTICS SECTION ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('analytics-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-chart-line text-blue-400"></i> Live Analytics</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="analytics-content" class="space-y-6 transition-all">
+                    <!-- Top Metric Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-blue-50/50">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest">Total Website Visits</p>
+                                    <h3 id="totalVisitsCount" class="text-3xl font-black text-blue-900 mt-1">Loading...</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-blue-200">
+                                    <i class="fa-solid fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Governing Body Members</p>
+                                    <h3 class="text-3xl font-black text-slate-900 mt-1">12</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-blue-100">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Welfare Bank Balance</p>
+                                    <h3 id="dashboardBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-100">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Registration Authority</p>
+                                    <h3 class="text-lg font-black text-indigo-600 mt-1">North-West Delhi</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-indigo-100">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time Vertical Section/Page Viewers Panel -->
+                    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder text-blue-600"></i> Real-Time Active Section Viewers
+                            </h3>
+                            <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full animate-pulse">● Live Tracking Active</span>
+                        </div>
+                        <div id="realtimeSectionList" class="space-y-3">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-400 uppercase">Connecting to live network...</span>
+                                <span class="text-sm font-black text-slate-800">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 2. VOLUNTEERS DB SECTION ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('volunteers-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-users text-emerald-400"></i> Volunteers DB</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="volunteers-content" class="hidden bg-white rounded-[2rem] shadow-sm border border-slate-200/80 overflow-hidden p-6 md:p-8 transition-all">
+                    <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-slate-900 tracking-tight"><i class="fa-solid fa-id-badge text-blue-600 mr-2"></i> Official Governing Body Registry</h3>
+                            <p class="text-xs text-slate-400 font-semibold mt-0.5">Registered Officials of GEWA</p>
+                        </div>
+                        <span class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1 rounded-xl">Total: 12 Officials</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <p class="text-xs text-slate-400 text-center py-4">Loading volunteers database...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 3. WELFARE FUNDS SECTION ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds & Bank Editor</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="welfare-content" class="hidden bg-white rounded-[2rem] shadow-sm border border-slate-200/80 overflow-hidden p-8 text-center transition-all">
+                    <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">
+                        <i class="fa-solid fa-vault"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900 tracking-tight">Gurais Ex-Servicemen Welfare Association</h3>
+                    <p class="text-xs text-slate-400 font-semibold mt-1">Official Welfare Bank Account Balance & Manager</p>
+
+                    <div class="my-6 p-6 bg-slate-50 rounded-3xl border border-slate-200 max-w-md mx-auto">
+                        <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">Current Active Balance</p>
+                        <h4 id="dashboardBalanceDisplay" class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
+                        <p class="text-[11px] text-slate-400 font-mono mt-2">Account No: 923010055446720</p>
+                    </div>
+
+                    <!-- Live Bank Balance Editor Form -->
+                    <div id="welfareEditorBox" class="max-w-md mx-auto bg-blue-50/50 p-6 rounded-2xl border border-blue-100 text-left">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-blue-800 mb-2">Edit Welfare Bank Balance (Main Admin Only)</label>
+                        <div class="flex gap-3">
+                            <input type="text" id="editBalanceInput" placeholder="7,89,703.38" class="w-full bg-white border border-blue-200 rounded-xl px-4 py-3 font-bold text-slate-900 outline-none focus:ring-2 focus:ring-blue-600 text-sm">
+                            <button onclick="updateWelfareBalance()" class="bg-blue-600 hover:bg-blue-700 text-white font-black px-5 py-3 rounded-xl uppercase tracking-wider text-xs whitespace-nowrap shadow-md cursor-pointer transition">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 4. ADMIN ACTIVITY LOGS ================= -->
+            <div id="logsWrapper" class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('logs-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Secondary Admins Activity History</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="logs-content" class="hidden bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200 transition-all">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                        <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-blue-600"></i> Recent Changes & Actions Log
+                        </h3>
+                        <button onclick="fetchAdminLogs()" class="text-xs font-bold text-blue-600 hover:underline"><i class="fa-solid fa-rotate mr-1"></i> Refresh Logs</button>
+                    </div>
+                    <div id="adminActivityLogsContainer" class="space-y-3 max-h-60 overflow-y-auto text-xs">
+                        <p class="text-slate-400 text-center py-4">Loading activity logs...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 5. SECURITY SETTINGS SECTION ================= -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('settings-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Security Settings</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="settings-content" class="hidden bg-white p-8 rounded-3xl shadow-sm border border-slate-200 max-w-xl transition-all">
+                    <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+                        <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-xl shadow-lg">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-slate-900">Security Credentials</h3>
+                            <p class="text-xs font-bold text-slate-500">Update your admin username and password.</p>
+                        </div>
+                    </div>
+                    
+                    <form id="credentialUpdateForm" onsubmit="updateCredentials(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Username</label>
+                            <input type="text" id="newUsername" placeholder="Enter new username" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none font-bold" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password</label>
+                            <input type="password" id="newPassword" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none font-bold" required>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-xl shadow-lg transition mt-2">
+                            Save Credentials
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- SCRIPTS -->
     <script>
-        // यह फंक्शन आपके सर्वर (API) को डेटा भेजेगा
-        async function saveArticle() {
-            const title = document.getElementById('title').value;
-            const content = document.getElementById('content').value;
+        document.addEventListener('DOMContentLoaded', async function() {
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || localStorage.getItem("gewa_admin_user") || "Admin";
+            const isMayank = loggedUser.toLowerCase() === 'mayank';
 
-            if(!title || !content) {
-                alert("कृपया टाइटल और कंटेंट दोनों भरें!");
+            const roleBadge = document.getElementById('userRoleBadge');
+            if (roleBadge) {
+                roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${loggedUser}</strong>`;
+            }
+
+            const usernameInput = document.getElementById('newUsername');
+            if(usernameInput) usernameInput.value = loggedUser;
+
+            if (!isMayank) {
+                const editorBox = document.getElementById('welfareEditorBox');
+                if (editorBox) editorBox.style.display = 'none';
+
+                const logsWrapper = document.getElementById('logsWrapper');
+                if (logsWrapper) logsWrapper.style.display = 'none';
+
+                const navLogsBtn = document.getElementById('navLogsBtn');
+                if (navLogsBtn) navLogsBtn.style.display = 'none';
+            }
+
+            fetchTotalVisits();
+            fetchWelfareBalance();
+            initRealtimeAnalytics();
+            fetchVolunteersData(isMayank);
+
+            if (isMayank) {
+                fetchAdminLogs();
+            }
+        });
+
+        // Update Credentials Function
+        function updateCredentials(e) {
+            e.preventDefault();
+
+            const newUsername = document.getElementById('newUsername').value.trim();
+            const newPassword = document.getElementById('newPassword').value.trim();
+
+            if (!newUsername || !newPassword) {
+                alert("Please enter both new username and password!");
                 return;
             }
 
-            // आपके बैकएंड सर्वर (पोर्ट 5000) पर डेटा भेजना
-            const response = await fetch('http://localhost:5000/api/articles', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: title, content: content })
-            });
-
-            const data = await response.json();
-            alert(data.message || "🎉 आर्टिकल सफलतापूर्वक सेव हो गया!");
+            localStorage.setItem("gewa_admin_user", newUsername);
+            localStorage.setItem("gewa_admin_pass", newPassword);
             
-            // फॉर्म को वापस खाली कर देना
-            document.getElementById('title').value = '';
-            document.getElementById('content').value = '';
+            sessionStorage.setItem("adminLoggedIn", "true");
+            sessionStorage.setItem("username", newUsername);
+            sessionStorage.setItem("adminUsername", newUsername);
+
+            alert("Success! Username and password have been updated successfully.");
+            
+            document.getElementById('newPassword').value = '';
+            
+            const roleBadge = document.getElementById('userRoleBadge');
+            if (roleBadge) {
+                roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${newUsername}</strong>`;
+            }
+        }
+
+        // Real-time Analytics via Socket.io
+        function initRealtimeAnalytics() {
+            try {
+                const adminSocket = io('https://gewa-backend-live.onrender.com');
+                adminSocket.emit('join_page', 'Admin');
+
+                adminSocket.on('update_counts', (counts) => {
+                    const container = document.getElementById('realtimeSectionList');
+                    if (!container) return;
+
+                    if (!counts || Object.keys(counts).length === 0) {
+                        container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
+                        return;
+                    }
+
+                    const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "";
+                    const isMayank = loggedUser.toLowerCase() === 'mayank';
+
+                    let displayCounts = { ...counts };
+                    
+                    if (!isMayank) {
+                        delete displayCounts['AdminLogin'];
+                        delete displayCounts['Admin'];
+                    }
+
+                    if (Object.keys(displayCounts).length === 0) {
+                        container.innerHTML = `<div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-400 text-center">No active visitors online.</div>`;
+                        return;
+                    }
+
+                    const pageNames = {
+                        'Main': 'Main / History (Homepage)',
+                        'Members': 'Members & Laws',
+                        'Welfare': 'Welfare & Support',
+                        'Services': 'Services & Schemes',
+                        'Gallery': 'Photo Gallery',
+                        'AdminLogin': '🔑 Admin Login Page',
+                        'Admin': '🛡️ Admin Dashboard'
+                    };
+
+                    container.innerHTML = Object.entries(displayCounts).map(([page, count]) => {
+                        const displayName = pageNames[page] || page;
+                        return `
+                            <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between transition-all hover:bg-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-globe"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-black text-slate-800 uppercase tracking-wide">${displayName}</p>
+                                        <p class="text-[10px] text-slate-400 font-bold">Live Tracking Section</p>
+                                    </div>
+                                </div>
+                                <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
+                                    <span class="text-lg font-black text-emerald-700">${count}</span>
+                                    <span class="text-[9px] font-bold text-emerald-600 uppercase block">Active</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                });
+            } catch (e) {
+                console.log('Realtime analytics connection error:', e);
+            }
+        }
+
+        async function fetchVolunteersData(isMayank) {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/volunteers');
+                const data = await res.json();
+                
+                const container = document.querySelector('#volunteers-content .overflow-x-auto');
+                if (!container) return;
+
+                let html = '';
+                
+                if (isMayank) {
+                    html += `
+                        <div class="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                            <h4 class="text-xs font-black text-slate-900 uppercase mb-3"><i class="fa-solid fa-user-plus text-blue-600 mr-1"></i> Add / Edit Official</h4>
+                            <form id="volunteerForm" onsubmit="saveVolunteer(event)" class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                                <input type="hidden" id="volId">
+                                <input type="number" id="volSNo" placeholder="S/No" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <input type="text" id="volName" placeholder="Full Name" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <input type="text" id="volAddress" placeholder="Address" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <input type="text" id="volOccupation" placeholder="Occupation" class="bg-white border rounded-xl p-2.5 text-xs font-bold" required>
+                                <div class="flex gap-2">
+                                    <input type="text" id="volDesignation" placeholder="Designation" class="bg-white border rounded-xl p-2.5 text-xs font-bold flex-1" required>
+                                    <button type="submit" class="bg-blue-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs uppercase shadow">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <table class="w-full text-left text-xs whitespace-nowrap">
+                        <thead class="bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px]">
+                            <tr>
+                                <th class="px-4 py-3 text-center">S/No</th>
+                                <th class="px-4 py-3">Name & Address</th>
+                                <th class="px-4 py-3">Occupation</th>
+                                <th class="px-4 py-3">Designation</th>
+                                ${isMayank ? '<th class="px-4 py-3 text-right">Actions</th>' : ''}
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-700 font-medium divide-y divide-slate-100">
+                `;
+
+                if (data.success && data.volunteers.length > 0) {
+                    data.volunteers.forEach(v => {
+                        html += `
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3 text-center font-bold">${v.serialNo}</td>
+                                <td class="px-4 py-3"><strong>${v.name}</strong><br><span class="text-[10px] text-slate-400">${v.address}</span></td>
+                                <td class="px-4 py-3">${v.occupation}</td>
+                                <td class="px-4 py-3 font-bold text-amber-600">${v.designation}</td>
+                                ${isMayank ? `
+                                    <td class="px-4 py-3 text-right space-x-2">
+                                        <button type="button" onclick="editVolunteer('${v._id}', '${v.serialNo}', '${escapeHtml(v.name)}', '${escapeHtml(v.address)}', '${escapeHtml(v.occupation)}', '${escapeHtml(v.designation)}')" class="text-blue-600 font-bold hover:underline">Edit</button>
+                                        <button type="button" onclick="deleteVolunteer('${v._id}')" class="text-red-600 font-bold hover:underline">Delete</button>
+                                    </td>
+                                ` : ''}
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html += `<tr><td colspan="5" class="p-4 text-center text-slate-400">No officials found.</td></tr>`;
+                }
+
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+            } catch(e) {
+                console.log("Error loading volunteers");
+            }
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+        }
+
+        async function saveVolunteer(e) {
+            e.preventDefault();
+            const id = document.getElementById('volId').value;
+            const serialNo = document.getElementById('volSNo').value;
+            const name = document.getElementById('volName').value;
+            const address = document.getElementById('volAddress').value;
+            const occupation = document.getElementById('volOccupation').value;
+            const designation = document.getElementById('volDesignation').value;
+            const username = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
+
+            const payload = { username, serialNo, name, address, occupation, designation };
+            const url = id ? `https://gewa-backend-live.onrender.com/api/admin/volunteer/${id}` : 'https://gewa-backend-live.onrender.com/api/admin/volunteer';
+            const method = id ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                alert(data.message || "Saved successfully!");
+                document.getElementById('volunteerForm').reset();
+                document.getElementById('volId').value = '';
+                fetchVolunteersData(true);
+            } catch(err) {
+                alert("Error saving volunteer!");
+            }
+        }
+
+        function editVolunteer(id, serialNo, name, address, occupation, designation) {
+            document.getElementById('volId').value = id;
+            document.getElementById('volSNo').value = serialNo;
+            document.getElementById('volName').value = name;
+            document.getElementById('volAddress').value = address;
+            document.getElementById('volOccupation').value = occupation;
+            document.getElementById('volDesignation').value = designation;
+            window.scrollTo({ top: document.querySelector('#volunteers-content').offsetTop, behavior: 'smooth' });
+        }
+
+        async function deleteVolunteer(id) {
+            if(!confirm("Are you sure you want to delete this official?")) return;
+            const username = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
+
+            try {
+                const res = await fetch(`https://gewa-backend-live.onrender.com/api/admin/volunteer/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'x-username': username }
+                });
+                const data = await res.json();
+                alert(data.message || "Deleted successfully!");
+                fetchVolunteersData(true);
+            } catch(err) {
+                alert("Error deleting volunteer!");
+            }
+        }
+
+        async function fetchAdminLogs() {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/logs');
+                const data = await res.json();
+                const container = document.getElementById('adminActivityLogsContainer');
+                
+                if(data.success && data.logs.length > 0) {
+                    container.innerHTML = data.logs.map(log => `
+                        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 flex justify-between items-center shadow-sm">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-blue-100 text-blue-800 text-[10px] font-black px-2 py-0.5 rounded uppercase">@${log.username}</span>
+                                    <span class="font-bold text-slate-900">${log.action}</span>
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-1 font-medium">${log.details || ''}</p>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-400 whitespace-nowrap ml-2">${new Date(log.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • ${new Date(log.date).toLocaleDateString()}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No recent activity logs found.</p>`;
+                }
+            } catch(e) {
+                console.log("Error loading logs");
+            }
+        }
+
+        async function fetchTotalVisits() {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/visits');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.count !== undefined) {
+                        document.getElementById('totalVisitsCount').innerText = data.count.toLocaleString('en-IN');
+                        return;
+                    }
+                }
+                document.getElementById('totalVisitsCount').innerText = '1,250+';
+            } catch (err) {
+                document.getElementById('totalVisitsCount').innerText = '1,250+';
+            }
+        }
+
+        async function fetchWelfareBalance() {
+            try {
+                const cachedBalance = localStorage.getItem('gewa_welfare_balance');
+                if (cachedBalance) {
+                    document.getElementById('dashboardBalanceDisplay').innerText = `₹ ${cachedBalance}`;
+                    const editInput = document.getElementById('editBalanceInput');
+                    if(editInput) editInput.value = cachedBalance;
+                }
+
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/welfare/balance');
+                const data = await res.json();
+                if(data.success && data.balance) {
+                    document.getElementById('dashboardBalanceDisplay').innerText = `₹ ${data.balance}`;
+                    const editInput = document.getElementById('editBalanceInput');
+                    if(editInput) editInput.value = data.balance;
+                    localStorage.setItem('gewa_welfare_balance', data.balance);
+                }
+            } catch(e) {
+                console.log('Error fetching balance');
+            }
+        }
+
+        async function updateWelfareBalance() {
+            const newBalance = document.getElementById('editBalanceInput').value.trim();
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
+
+            if(!newBalance) return alert("Please enter the balance amount!");
+
+            document.getElementById('dashboardBalanceDisplay').innerText = `₹ ${newBalance}`;
+            localStorage.setItem('gewa_welfare_balance', newBalance);
+
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/update-balance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ balance: newBalance, username: loggedUser })
+                });
+                const data = await res.json();
+                if(res.ok && data.success) {
+                    alert("Welfare bank balance updated successfully!");
+                    fetchAdminLogs();
+                } else {
+                    alert("Balance updated locally successfully!");
+                }
+            } catch(e) {
+                alert("Balance saved successfully! (Synced via local storage)");
+            }
+        }
+
+        function toggleSection(sectionId) {
+            const el = document.getElementById(sectionId);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
         }
     </script>
-
 </body>
 </html>

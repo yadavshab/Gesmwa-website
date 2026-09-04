@@ -446,7 +446,7 @@
                 const enteredUser = document.getElementById('box_u').value.trim();
                 const enteredPass = document.getElementById('box_p').value.trim();
 
-                // 🛡️ [फिक्स] सबसे पहले चेक करें कि क्या डैशबोर्ड से कोई नया यूजरनेम/पासवर्ड सेव किया गया है
+                // 🛡️ [फिक्स] सबसे पहले चेक करें कि क्या डैशबोर्ड से नया यूजरनेम/पासवर्ड सेव किया गया है
                 const savedUser = localStorage.getItem("gewa_admin_user");
                 const savedPass = localStorage.getItem("gewa_admin_pass");
 
@@ -455,7 +455,7 @@
                     sessionStorage.setItem("adminLoggedIn", "true");
                     sessionStorage.setItem("userRole", "admin");
                     sessionStorage.setItem("username", savedUser);
-                    window.location.replace("admin.html"); // आपका एडमिन डैशबोर्ड पेज
+                    window.location.replace("admin.html"); 
                     return;
                 }
 
@@ -475,7 +475,7 @@
                     sessionStorage.setItem("username", data.username || enteredUser);
                     window.location.replace("admin.html");
                 } else {
-                    throw new Error(data.message || "Invalid credentials!");
+                    throw new Error(data.message || "Invalid username or password!");
                 }
 
             } else if (currentMode === 'mobile-otp') {
