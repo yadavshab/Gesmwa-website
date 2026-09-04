@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <!-- SECURITY LOCK -->
     <script>
         if (sessionStorage.getItem("adminLoggedIn") !== "true") {
             alert("Security Alert: Direct access is strictly prohibited!");
@@ -12,12 +11,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEWA - Admin Dashboard</title>
-    <!-- Tailwind CSS Stable Version -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     
-    <!-- Socket.io Library for Live Viewers -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     
     <style>
@@ -27,7 +24,6 @@
 </head>
 <body class="text-slate-800 flex min-h-screen selection:bg-blue-200">
 
-    <!-- MODERN SIDEBAR -->
     <aside class="w-64 bg-slate-900 text-slate-300 hidden md:flex flex-col fixed h-full shadow-2xl z-20 border-r border-slate-800">
         <div class="p-6 flex items-center gap-3 border-b border-slate-800/50 mb-4">
             <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xl shadow-[0_0_15px_rgba(59,130,246,0.5)]">
@@ -301,7 +297,7 @@
 
                     <div class="my-6 p-6 bg-slate-50 rounded-3xl border border-slate-200 max-w-md mx-auto">
                         <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">Current Active Balance</p>
-                        <h4 id="welfareBalanceLarge" class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
+                        <h4 id="dashboardBalanceDisplay" class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
                         <p class="text-[11px] text-slate-400 font-mono mt-2">Account No: 923010055446720</p>
                     </div>
 
@@ -337,7 +333,7 @@
                 </div>
             </div>
 
-            <!-- 6. SECURITY SETTINGS (FIXED WITH USERNAME & PASSWORD FIELDS) -->
+            <!-- 6. SECURITY SETTINGS (FIXED WITH BACKEND API CONNECTION) -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('settings-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Security Settings</h2>
@@ -406,17 +402,14 @@
             const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || localStorage.getItem("gewa_admin_user") || "Admin";
             const isMayank = loggedUser.toLowerCase() === 'mayank';
 
-            // Show current logged in user in sidebar badge
             const roleBadge = document.getElementById('userRoleBadge');
             if (roleBadge) {
                 roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${loggedUser}</strong>`;
             }
 
-            // Prefill current username in settings if possible
             const usernameInput = document.getElementById('newUsername');
             if(usernameInput) usernameInput.value = loggedUser;
 
-            // STRICT RESTRICTION: Hide sensitive sections for secondary admins
             if (!isMayank) {
                 const editorBox = document.getElementById('welfareEditorBox');
                 if (editorBox) editorBox.style.display = 'none';
@@ -446,35 +439,67 @@
             }
         });
 
-        // 🛡️ [फिक्स] यूजरनेम और पासवर्ड परमानेंट सेव करने का फंक्शन (बिना पेज रिफ्रेश हुए)
-        function updateCredentials(e) {
-            e.preventDefault(); // फॉर्म रीलोड होने से रोकता है
+        // 🛡️ [फिक्स] बैकएंड सर्वर और लोकल स्टोरेज पर परमानेंट क्रेडेंशियल्स अपडेट करने का फंक्शन
+        async function updateCredentials(e) {
+            e.preventDefault(); // पेज रीलोड होने से रोकता है
 
             const newUsername = document.getElementById('newUsername').value.trim();
             const newPassword = document.getElementById('newPassword').value.trim();
+            const currentLoggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
 
             if (!newUsername || !newPassword) {
-                alert("कृपया यूजरनेम और पासवर्ड दोनों दर्ज करें!");
+                alert("कृपया नया यूजरनेम और पासवर्ड दोनों दर्ज करें!");
                 return;
             }
 
-            // LocalStorage और SessionStorage दोनों में परमानेंट सेव करें
-            localStorage.setItem("gewa_admin_user", newUsername);
-            localStorage.setItem("gewa_admin_pass", newPassword);
-            
-            sessionStorage.setItem("adminLoggedIn", "true");
-            sessionStorage.setItem("username", newUsername);
-            sessionStorage.setItem("adminUsername", newUsername);
+            try {
+                // 1. सर्वर / बैकएंड API पर क्रेडेंशियल्स अपडेट करने की रिक्वेस्ट भेजें
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/update-credentials', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        currentUsername: currentLoggedUser, 
+                        newUsername: newUsername, 
+                        newPassword: newPassword 
+                    })
+                });
 
-            alert("सफलतापूर्वक! यूजरनेम और पासवर्ड अपडेट हो गए हैं।");
-            
-            // पासवर्ड फील्ड खाली करें
-            document.getElementById('newPassword').value = '';
-            
-            // साइडबार पर नाम अपडेट करें
-            const roleBadge = document.getElementById('userRoleBadge');
-            if (roleBadge) {
-                roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${newUsername}</strong>`;
+                const data = await res.json();
+
+                // 2. ब्राउज़र के LocalStorage और SessionStorage में भी सेव करें ताकि तुरंत प्रभाव दिखे
+                localStorage.setItem("gewa_admin_user", newUsername);
+                localStorage.setItem("gewa_admin_pass", newPassword);
+                
+                sessionStorage.setItem("adminLoggedIn", "true");
+                sessionStorage.setItem("username", newUsername);
+                sessionStorage.setItem("adminUsername", newUsername);
+
+                alert(data.message || "सफलतापूर्वक! यूजरनेम और पासवर्ड अपडेट हो गए हैं।");
+                
+                // पासवर्ड फील्ड खाली करें
+                document.getElementById('newPassword').value = '';
+                
+                // साइडबार पर नाम अपडेट करें
+                const roleBadge = document.getElementById('userRoleBadge');
+                if (roleBadge) {
+                    roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${newUsername}</strong>`;
+                }
+
+                // एक्टिविटी लॉग में सेव करें
+                await fetch('https://gewa-backend-live.onrender.com/api/admin/log-action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: newUsername, action: 'Updated Admin Credentials', details: `Username changed to @${newUsername}` })
+                });
+
+            } catch (err) {
+                // अगर सर्वर डाउन हो या API रूट अलग हो, तब भी लोकल स्टोरेज में सेव करके सिक्योर रखेंगे
+                localStorage.setItem("gewa_admin_user", newUsername);
+                localStorage.setItem("gewa_admin_pass", newPassword);
+                sessionStorage.setItem("username", newUsername);
+                
+                alert("क्रेडेंशियल्स सफलतापूर्वक लोकल रूप से अपडेट हो गए हैं!");
+                document.getElementById('newPassword').value = '';
             }
         }
 
