@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+    <!-- SECURITY LOCK -->
     <script>
         if (sessionStorage.getItem("adminLoggedIn") !== "true") {
             alert("Security Alert: Direct access is strictly prohibited!");
@@ -11,10 +12,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEWA - Admin Dashboard</title>
+    <!-- Tailwind CSS Stable Version -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     
+    <!-- Socket.io Library for Live Viewers -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     
     <style>
@@ -24,6 +27,7 @@
 </head>
 <body class="text-slate-800 flex min-h-screen selection:bg-blue-200">
 
+    <!-- MODERN SIDEBAR -->
     <aside class="w-64 bg-slate-900 text-slate-300 hidden md:flex flex-col fixed h-full shadow-2xl z-20 border-r border-slate-800">
         <div class="p-6 flex items-center gap-3 border-b border-slate-800/50 mb-4">
             <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xl shadow-[0_0_15px_rgba(59,130,246,0.5)]">
@@ -94,6 +98,7 @@
                 </div>
             </div>
 
+            <!-- 1. LIVE ANALYTICS -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('analytics-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-chart-line text-blue-400"></i> Live Analytics</h2>
@@ -168,6 +173,7 @@
                 </div>
             </div>
 
+            <!-- 2. SMART PUBLISHER -->
             <div id="publisherWrapper" class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('publisher-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-blue-400"></i> Smart Content & Photo Publisher</h2>
@@ -202,7 +208,7 @@
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">2. Select Subcategory / Option</label>
                             <select id="pubSubCategory" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500" required>
-                                </select>
+                            </select>
                         </div>
 
                         <div>
@@ -257,6 +263,7 @@
                 </div>
             </div>
 
+            <!-- 3. VOLUNTEERS DB -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('volunteers-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-users text-emerald-400"></i> Volunteers DB</h2>
@@ -278,6 +285,7 @@
                 </div>
             </div>
 
+            <!-- 4. WELFARE FUNDS -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds & Bank Editor</h2>
@@ -309,6 +317,7 @@
                 </div>
             </div>
 
+            <!-- 5. ACTIVITY LOGS -->
             <div id="logsWrapper" class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('logs-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Secondary Admins Activity History</h2>
@@ -328,6 +337,7 @@
                 </div>
             </div>
 
+            <!-- 6. SECURITY SETTINGS (FIXED WITH USERNAME & PASSWORD FIELDS) -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('settings-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Security Settings</h2>
@@ -363,6 +373,7 @@
         </div>
     </main>
 
+    <!-- SCRIPTS -->
     <script>
         const subcategoryMapping = {
             welfare: [
@@ -392,7 +403,7 @@
         };
 
         document.addEventListener('DOMContentLoaded', async function() {
-            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "Admin";
+            const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || localStorage.getItem("gewa_admin_user") || "Admin";
             const isMayank = loggedUser.toLowerCase() === 'mayank';
 
             // Show current logged in user in sidebar badge
@@ -416,11 +427,9 @@
                 const logsWrapper = document.getElementById('logsWrapper');
                 if (logsWrapper) logsWrapper.style.display = 'none';
 
-                // Hide Activity Logs sidebar button
                 const navLogsBtn = document.getElementById('navLogsBtn');
                 if (navLogsBtn) navLogsBtn.style.display = 'none';
 
-                // Hide Smart Publisher sidebar button
                 const navPublisherBtn = document.getElementById('navPublisherBtn');
                 if (navPublisherBtn) navPublisherBtn.style.display = 'none';
             }
@@ -437,9 +446,9 @@
             }
         });
 
-        // 🛡️ [नया] क्रेडेंशियल्स अपडेट करने का फंक्शन (बिना पेज रिफ्रेश हुए सेव होगा)
+        // 🛡️ [फिक्स] यूजरनेम और पासवर्ड परमानेंट सेव करने का फंक्शन (बिना पेज रिफ्रेश हुए)
         function updateCredentials(e) {
-            e.preventDefault(); // पेज को रीलोड होने से रोकता है
+            e.preventDefault(); // फॉर्म रीलोड होने से रोकता है
 
             const newUsername = document.getElementById('newUsername').value.trim();
             const newPassword = document.getElementById('newPassword').value.trim();
@@ -449,18 +458,20 @@
                 return;
             }
 
-            // Session Storage में नए क्रेडेंशियल्स सेव करना
+            // LocalStorage और SessionStorage दोनों में परमानेंट सेव करें
+            localStorage.setItem("gewa_admin_user", newUsername);
+            localStorage.setItem("gewa_admin_pass", newPassword);
+            
+            sessionStorage.setItem("adminLoggedIn", "true");
             sessionStorage.setItem("username", newUsername);
             sessionStorage.setItem("adminUsername", newUsername);
-            sessionStorage.setItem("adminPassword", newPassword);
 
-            // अगर आप सर्वर/बैकएंड पर भी भेजना चाहें तो यहाँ API कॉल कर सकते हैं
             alert("सफलतापूर्वक! यूजरनेम और पासवर्ड अपडेट हो गए हैं।");
             
-            // फॉर्म को रीसेट या पासवर्ड फील्ड को खाली करना
+            // पासवर्ड फील्ड खाली करें
             document.getElementById('newPassword').value = '';
             
-            // साइडबार पर नाम अपडेट करना
+            // साइडबार पर नाम अपडेट करें
             const roleBadge = document.getElementById('userRoleBadge');
             if (roleBadge) {
                 roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${newUsername}</strong>`;
@@ -533,7 +544,6 @@
             }
         }
 
-        // Fetch Volunteers Data & Render Add/Edit Form for Mayank
         async function fetchVolunteersData(isMayank) {
             try {
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/volunteers');
