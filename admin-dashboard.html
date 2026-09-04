@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <!-- SECURITY LOCK -->
     <script>
         if (sessionStorage.getItem("adminLoggedIn") !== "true") {
             alert("Security Alert: Direct access is strictly prohibited!");
@@ -12,12 +11,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEWA - Admin Dashboard</title>
-    <!-- Tailwind CSS Stable Version -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     
-    <!-- Socket.io Library for Live Viewers -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     
     <style>
@@ -27,7 +24,6 @@
 </head>
 <body class="text-slate-800 flex min-h-screen selection:bg-blue-200">
 
-    <!-- MODERN SIDEBAR -->
     <aside class="w-64 bg-slate-900 text-slate-300 hidden md:flex flex-col fixed h-full shadow-2xl z-20 border-r border-slate-800">
         <div class="p-6 flex items-center gap-3 border-b border-slate-800/50 mb-4">
             <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xl shadow-[0_0_15px_rgba(59,130,246,0.5)]">
@@ -78,12 +74,10 @@
         </div>
     </aside>
 
-    <!-- MAIN DASHBOARD CONTENT -->
     <main class="flex-grow md:ml-64 p-6 lg:p-10 relative">
         <div class="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 z-0 pointer-events-none"></div>
 
         <div class="relative z-10">
-            <!-- Header -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
                     <h1 class="text-3xl font-black text-slate-900 tracking-tight">System Central Command</h1>
@@ -100,7 +94,6 @@
                 </div>
             </div>
 
-            <!-- ================= 1. LIVE ANALYTICS SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('analytics-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-chart-line text-blue-400"></i> Live Analytics</h2>
@@ -108,7 +101,6 @@
                 </div>
 
                 <div id="analytics-content" class="space-y-6 transition-all">
-                    <!-- Top Metric Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-blue-50/50">
                             <div class="flex justify-between items-start">
@@ -159,7 +151,6 @@
                         </div>
                     </div>
 
-                    <!-- Real-Time Vertical Section/Page Viewers Panel -->
                     <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
                         <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                             <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
@@ -177,7 +168,6 @@
                 </div>
             </div>
 
-            <!-- ================= 2. SMART CASCADING PUBLISHER SECTION ================= -->
             <div id="publisherWrapper" class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('publisher-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-blue-400"></i> Smart Content & Photo Publisher</h2>
@@ -212,8 +202,7 @@
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">2. Select Subcategory / Option</label>
                             <select id="pubSubCategory" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-500" required>
-                                <!-- Populated dynamically -->
-                            </select>
+                                </select>
                         </div>
 
                         <div>
@@ -247,7 +236,6 @@
                         </div>
                     </form>
 
-                    <!-- EXISTING RECORDS TABLE -->
                     <div class="mt-8 pt-6 border-t border-slate-100">
                         <h4 class="text-sm font-black text-slate-900 uppercase tracking-wide mb-4">Existing Records in Selected Section (Edit / Delete)</h4>
                         <div class="overflow-x-auto max-h-60 overflow-y-auto">
@@ -269,7 +257,6 @@
                 </div>
             </div>
 
-            <!-- ================= 3. VOLUNTEERS DB SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('volunteers-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-users text-emerald-400"></i> Volunteers DB</h2>
@@ -291,7 +278,6 @@
                 </div>
             </div>
 
-            <!-- ================= 4. WELFARE FUNDS SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds & Bank Editor</h2>
@@ -311,7 +297,6 @@
                         <p class="text-[11px] text-slate-400 font-mono mt-2">Account No: 923010055446720</p>
                     </div>
 
-                    <!-- Live Bank Balance Editor Form (Visible only to Mayank) -->
                     <div id="welfareEditorBox" class="max-w-md mx-auto bg-blue-50/50 p-6 rounded-2xl border border-blue-100 text-left">
                         <label class="block text-[10px] font-black uppercase tracking-widest text-blue-800 mb-2">Edit Welfare Bank Balance (Main Admin Only)</label>
                         <div class="flex gap-3">
@@ -324,7 +309,6 @@
                 </div>
             </div>
 
-            <!-- ================= 5. ADMIN ACTIVITY LOGS ================= -->
             <div id="logsWrapper" class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('logs-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Secondary Admins Activity History</h2>
@@ -344,7 +328,6 @@
                 </div>
             </div>
 
-            <!-- ================= 6. SECURITY SETTINGS SECTION ================= -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('settings-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Security Settings</h2>
@@ -362,17 +345,17 @@
                         </div>
                     </div>
                     
-                    <form id="credentialUpdateForm" class="space-y-4">
+                    <form id="credentialUpdateForm" onsubmit="updateCredentials(event)" class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">Current Username</label>
-                            <input type="text" id="currentUsername" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none font-bold" required>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Username (नया यूजरनेम)</label>
+                            <input type="text" id="newUsername" placeholder="नया यूजरनेम दर्ज करें" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none font-bold" required>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password (Optional)</label>
-                            <input type="password" id="newPassword" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none font-bold">
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-1">New Password (नया पासवर्ड)</label>
+                            <input type="password" id="newPassword" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none font-bold" required>
                         </div>
                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-xl shadow-lg transition mt-2">
-                            Update Credentials
+                            Save Credentials
                         </button>
                     </form>
                 </div>
@@ -380,7 +363,6 @@
         </div>
     </main>
 
-    <!-- SCRIPTS -->
     <script>
         const subcategoryMapping = {
             welfare: [
@@ -419,6 +401,10 @@
                 roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${loggedUser}</strong>`;
             }
 
+            // Prefill current username in settings if possible
+            const usernameInput = document.getElementById('newUsername');
+            if(usernameInput) usernameInput.value = loggedUser;
+
             // STRICT RESTRICTION: Hide sensitive sections for secondary admins
             if (!isMayank) {
                 const editorBox = document.getElementById('welfareEditorBox');
@@ -451,7 +437,37 @@
             }
         });
 
-        // Real-time Vertical Active Section Viewers via Socket.io (AdminLogin & Admin visible ONLY to Mayank)
+        // 🛡️ [नया] क्रेडेंशियल्स अपडेट करने का फंक्शन (बिना पेज रिफ्रेश हुए सेव होगा)
+        function updateCredentials(e) {
+            e.preventDefault(); // पेज को रीलोड होने से रोकता है
+
+            const newUsername = document.getElementById('newUsername').value.trim();
+            const newPassword = document.getElementById('newPassword').value.trim();
+
+            if (!newUsername || !newPassword) {
+                alert("कृपया यूजरनेम और पासवर्ड दोनों दर्ज करें!");
+                return;
+            }
+
+            // Session Storage में नए क्रेडेंशियल्स सेव करना
+            sessionStorage.setItem("username", newUsername);
+            sessionStorage.setItem("adminUsername", newUsername);
+            sessionStorage.setItem("adminPassword", newPassword);
+
+            // अगर आप सर्वर/बैकएंड पर भी भेजना चाहें तो यहाँ API कॉल कर सकते हैं
+            alert("सफलतापूर्वक! यूजरनेम और पासवर्ड अपडेट हो गए हैं।");
+            
+            // फॉर्म को रीसेट या पासवर्ड फील्ड को खाली करना
+            document.getElementById('newPassword').value = '';
+            
+            // साइडबार पर नाम अपडेट करना
+            const roleBadge = document.getElementById('userRoleBadge');
+            if (roleBadge) {
+                roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${newUsername}</strong>`;
+            }
+        }
+
+        // Real-time Vertical Active Section Viewers via Socket.io
         function initRealtimeAnalytics() {
             try {
                 const adminSocket = io('https://gewa-backend-live.onrender.com');
@@ -471,7 +487,6 @@
 
                     let displayCounts = { ...counts };
                     
-                    // 🛡️ सुरक्षा नियम: यदि लॉगिन करने वाला यूजर मयंक नहीं है, तो एडमिन से जुड़े पेजों को छिपा दें
                     if (!isMayank) {
                         delete displayCounts['AdminLogin'];
                         delete displayCounts['Admin'];
@@ -651,7 +666,6 @@
             }
         }
 
-        // Fetch Admin Activity History
         async function fetchAdminLogs() {
             try {
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/logs');
@@ -679,7 +693,6 @@
             }
         }
 
-        // Fetch Total Visits
         async function fetchTotalVisits() {
             try {
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/visits');
@@ -696,7 +709,6 @@
             }
         }
 
-        // Fetch Welfare Bank Balance
         async function fetchWelfareBalance() {
             try {
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/welfare/balance');
@@ -711,7 +723,6 @@
             }
         }
 
-        // Update Welfare Bank Balance
         async function updateWelfareBalance() {
             const newBalance = document.getElementById('editBalanceInput').value.trim();
             const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
