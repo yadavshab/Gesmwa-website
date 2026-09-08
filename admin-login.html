@@ -446,7 +446,6 @@
                 const enteredUser = document.getElementById('box_u').value.trim();
                 const enteredPass = document.getElementById('box_p').value.trim();
 
-                // 🛡️ [फिक्स] सबसे पहले चेक करें कि क्या डैशबोर्ड से नया यूजरनेम/पासवर्ड सेव किया गया है
                 const savedUser = localStorage.getItem("gewa_admin_user");
                 const savedPass = localStorage.getItem("gewa_admin_pass");
 
@@ -455,11 +454,10 @@
                     sessionStorage.setItem("adminLoggedIn", "true");
                     sessionStorage.setItem("userRole", "admin");
                     sessionStorage.setItem("username", savedUser);
-                    window.location.replace("admin.html"); 
+                    window.location.replace("admin-dashboard.html"); // 👈 सीधा डैशबोर्ड खुलेगा
                     return;
                 }
 
-                // अगर लोकल स्टोरेज से मैच न हो, तो बैकएंड सर्वर API को कॉल करें
                 const response = await fetch('https://gewa-backend-live.onrender.com/api/admin/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -473,7 +471,7 @@
                     sessionStorage.setItem("adminLoggedIn", "true");
                     sessionStorage.setItem("userRole", data.role || "admin");
                     sessionStorage.setItem("username", data.username || enteredUser);
-                    window.location.replace("admin.html");
+                    window.location.replace("admin-dashboard.html"); // 👈 सीधा डैशबोर्ड खुलेगा
                 } else {
                     throw new Error(data.message || "Invalid username or password!");
                 }
@@ -495,7 +493,7 @@
                     sessionStorage.setItem("adminLoggedIn", "true");
                     sessionStorage.setItem("userRole", data.role || "admin");
                     sessionStorage.setItem("username", data.username || "admin");
-                    window.location.replace("admin.html");
+                    window.location.replace("admin-dashboard.html"); // 👈 सीधा डैशबोर्ड खुलेगा
                 } else {
                     throw new Error(data.message || "OTP verification failed!");
                 }

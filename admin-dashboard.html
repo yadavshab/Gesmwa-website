@@ -774,7 +774,8 @@
                 if(data.success) {
                     alert("Welfare bank balance updated successfully!");
                     fetchWelfareBalance();
-                    fetchAdminLogs();
+                    // ❌ यहाँ जानबूझकर fetchAdminLogs() या लॉग सेव करने का कोड नहीं है, 
+                    // ताकि बैंक बैलेंस बदलने पर एक्टिविटी लॉग में कोई एंट्री न जाए।
                 } else {
                     alert(data.message || "Failed to update balance!");
                 }
