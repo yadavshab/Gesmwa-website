@@ -127,11 +127,11 @@
                             </div>
                         </div>
                         
-                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60"><h3 id="analyticsBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
                             <div class="flex justify-between items-start">
                                 <div>
                                     <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Welfare Bank Balance</p>
-                                    <h3 id="dashboardBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
+                                   <h3 id="analyticsBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
                                 </div>
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-100">
                                     <i class="fa-solid fa-wallet"></i>
@@ -297,7 +297,7 @@
 
                     <div class="my-6 p-6 bg-slate-50 rounded-3xl border border-slate-200 max-w-md mx-auto">
                         <p class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1">Current Active Balance</p>
-                        <h4 id="dashboardBalanceDisplay" class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
+                        <h4 id="welfareBalanceDisplay" class="text-4xl font-black text-emerald-600">₹ 7,89,703.38</h4>
                         <p class="text-[11px] text-slate-400 font-mono mt-2">Account No: 923010055446720</p>
                     </div>
 
@@ -744,12 +744,18 @@
             }
         }
 
-        async function fetchWelfareBalance() {
+       async function fetchWelfareBalance() {
             try {
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/welfare/balance');
                 const data = await res.json();
                 if(data.success && data.balance) {
-                    document.getElementById('dashboardBalanceDisplay').innerText = `₹ ${data.balance}`;
+                    // दोनों जगहों की ID पर एक साथ वैल्यू सेट करें
+                    const el1 = document.getElementById('analyticsBalanceDisplay');
+                    const el2 = document.getElementById('welfareBalanceDisplay');
+                    
+                    if(el1) el1.innerText = `₹ ${data.balance}`;
+                    if(el2) el2.innerText = `₹ ${data.balance}`;
+
                     const editInput = document.getElementById('editBalanceInput');
                     if(editInput) editInput.value = data.balance;
                 }
@@ -757,7 +763,6 @@
                 console.log('Error fetching balance');
             }
         }
-
         async function updateWelfareBalance() {
             const newBalance = document.getElementById('editBalanceInput').value.trim();
             const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
