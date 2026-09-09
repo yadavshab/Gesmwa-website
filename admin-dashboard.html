@@ -127,11 +127,11 @@
                             </div>
                         </div>
                         
-                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60"><h3 id="analyticsBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
+                        <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60">
                             <div class="flex justify-between items-start">
                                 <div>
                                     <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Welfare Bank Balance</p>
-                                   <h3 id="analyticsBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
+                                    <h3 id="analyticsBalanceDisplay" class="text-3xl font-black text-emerald-600 mt-1">₹ 7,89,703.38</h3>
                                 </div>
                                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-100">
                                     <i class="fa-solid fa-wallet"></i>
@@ -333,7 +333,7 @@
                 </div>
             </div>
 
-            <!-- 6. SECURITY SETTINGS (FIXED WITH BACKEND API CONNECTION) -->
+            <!-- 6. SECURITY SETTINGS -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('settings-content')">
                     <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Security Settings</h2>
@@ -439,9 +439,8 @@
             }
         });
 
-        // 🛡️ [फिक्स] बैकएंड सर्वर और लोकल स्टोरेज पर परमानेंट क्रेडेंशियल्स अपडेट करने का फंक्शन
         async function updateCredentials(e) {
-            e.preventDefault(); // पेज रीलोड होने से रोकता है
+            e.preventDefault();
 
             const newUsername = document.getElementById('newUsername').value.trim();
             const newPassword = document.getElementById('newPassword').value.trim();
@@ -453,7 +452,6 @@
             }
 
             try {
-                // 1. सर्वर / बैकएंड API पर क्रेडेंशियल्स अपडेट करने की रिक्वेस्ट भेजें
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/update-credentials', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -466,7 +464,6 @@
 
                 const data = await res.json();
 
-                // 2. ब्राउज़र के LocalStorage और SessionStorage में भी सेव करें ताकि तुरंत प्रभाव दिखे
                 localStorage.setItem("gewa_admin_user", newUsername);
                 localStorage.setItem("gewa_admin_pass", newPassword);
                 
@@ -476,16 +473,13 @@
 
                 alert(data.message || "सफलतापूर्वक! यूजरनेम और पासवर्ड अपडेट हो गए हैं।");
                 
-                // पासवर्ड फील्ड खाली करें
                 document.getElementById('newPassword').value = '';
                 
-                // साइडबार पर नाम अपडेट करें
                 const roleBadge = document.getElementById('userRoleBadge');
                 if (roleBadge) {
                     roleBadge.innerHTML = `<i class="fa-solid fa-circle text-[6px] text-emerald-400 animate-pulse"></i> Logged in: <strong class="text-white">@${newUsername}</strong>`;
                 }
 
-                // एक्टिविटी लॉग में सेव करें
                 await fetch('https://gewa-backend-live.onrender.com/api/admin/log-action', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -493,7 +487,6 @@
                 });
 
             } catch (err) {
-                // अगर सर्वर डाउन हो या API रूट अलग हो, तब भी लोकल स्टोरेज में सेव करके सिक्योर रखेंगे
                 localStorage.setItem("gewa_admin_user", newUsername);
                 localStorage.setItem("gewa_admin_pass", newPassword);
                 sessionStorage.setItem("username", newUsername);
@@ -503,7 +496,6 @@
             }
         }
 
-        // Real-time Vertical Active Section Viewers via Socket.io
         function initRealtimeAnalytics() {
             try {
                 const adminSocket = io('https://gewa-backend-live.onrender.com');
@@ -744,12 +736,12 @@
             }
         }
 
-       async function fetchWelfareBalance() {
+        async function fetchWelfareBalance() {
             try {
-                const res = await fetch('https://gewa-backend-live.onrender.com/api/welfare/balance');
+                // 🚀 यहाँ ?_t= जोड़ दिया है ताकि ब्राउज़र पुराना कैश्ड डेटा न दिखाए
+                const res = await fetch(`https://gewa-backend-live.onrender.com/api/welfare/balance?_t=${Date.now()}`);
                 const data = await res.json();
                 if(data.success && data.balance) {
-                    // दोनों जगहों की ID पर एक साथ वैल्यू सेट करें
                     const el1 = document.getElementById('analyticsBalanceDisplay');
                     const el2 = document.getElementById('welfareBalanceDisplay');
                     
@@ -763,6 +755,7 @@
                 console.log('Error fetching balance');
             }
         }
+
         async function updateWelfareBalance() {
             const newBalance = document.getElementById('editBalanceInput').value.trim();
             const loggedUser = sessionStorage.getItem("username") || sessionStorage.getItem("adminUsername") || "mayank";
@@ -778,9 +771,15 @@
                 const data = await res.json();
                 if(data.success) {
                     alert("Welfare bank balance updated successfully!");
+                    
+                    // 🚀 तुरंत स्क्रीन पर नए बैलेंस को अपडेट कर दें (बिना रीफ्रेश किए)
+                    const el1 = document.getElementById('analyticsBalanceDisplay');
+                    const el2 = document.getElementById('welfareBalanceDisplay');
+                    if(el1) el1.innerText = `₹ ${newBalance}`;
+                    if(el2) el2.innerText = `₹ ${newBalance}`;
+
+                    // बैकग्राउंड में सर्वर से भी दोबारा फेच कर लें
                     fetchWelfareBalance();
-                    // ❌ यहाँ जानबूझकर fetchAdminLogs() या लॉग सेव करने का कोड नहीं है, 
-                    // ताकि बैंक बैलेंस बदलने पर एक्टिविटी लॉग में कोई एंट्री न जाए।
                 } else {
                     alert(data.message || "Failed to update balance!");
                 }

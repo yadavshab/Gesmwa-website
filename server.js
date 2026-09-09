@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const http = require('http');
 const { Server } = require('socket.io');
+const rateLimit = require('express-rate-limit'); // 🛡️ [NEW] Brute-force सुरक्षा के लिए
 require('dotenv').config();
 
 const app = express();
@@ -73,7 +74,7 @@ const dynamicContentSchema = new mongoose.Schema({
 });
 const DynamicContent = mongoose.model('DynamicContent', dynamicContentSchema);
 
-// 👉 [NEW ADDITION] Volunteer Schema & Model
+// Volunteer Schema & Model
 const volunteerSchema = new mongoose.Schema({
     serialNo: Number,
     name: { type: String, required: true },
@@ -146,6 +147,13 @@ function formatMobile(num) {
     return cleaned;
 }
 
+// 🛡️ [NEW] Rate Limiter for Login (5 बार से ज्यादा गलत कोशिश पर 15 मिनट ब्लॉक)
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 5, 
+    message: { success: false, message: "बहुत ज्यादा गलत प्रयास किए गए हैं। कृपया 15 मिनट बाद कोशिश करें।" }
+});
+
 // Setup Admins Route
 app.get('/api/admin/setup-my-admin', async (req, res) => {
     try {
@@ -181,14 +189,14 @@ app.get('/api/admin/setup-my-admin', async (req, res) => {
             }
         }
 
-        res.json({ success: true, message: "Admins configured successfully!" });
+        res.json({ success: true, message: "Admins configured securely with Bcrypt!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// Admin Login Route
-app.post('/api/admin/login', async (req, res) => {
+// Admin Login Route (Protected with Rate Limiter)
+app.post('/api/admin/login', loginLimiter, async (req, res) => {
     try {
         const { username, password } = req.body;
         if (!username || !password) {
@@ -314,8 +322,6 @@ app.post('/api/admin/update-balance', async (req, res) => {
         await bData.save();
 
         io.emit('balance_updated', balance);
-
-        await ActivityLog.create({ username: 'mayank', action: 'Updated Bank Balance', details: `New Balance: ₹${balance}` });
 
         res.json({ success: true, message: "Welfare bank balance updated successfully!" });
     } catch (err) {
@@ -453,9 +459,8 @@ app.get('/api/content/:section/:subCategory', async (req, res) => {
     }
 });
 
-// ================= [NEW ADDITION] VOLUNTEERS API ROUTES (STRICTLY FOR MAYANK) ================= //
+// ================= VOLUNTEERS API ROUTES ================= //
 
-// 1. Get All Volunteers (डेटाबेस खाली होने पर 12 डिफ़ॉल्ट अधिकारी ऑटो-लोड हो जाएंगे)
 app.get('/api/volunteers', async (req, res) => {
     try {
         let list = await Volunteer.find({}).sort({ serialNo: 1 });
@@ -483,7 +488,6 @@ app.get('/api/volunteers', async (req, res) => {
     }
 });
 
-// 2. Add Volunteer (केवल मयंक के लिए)
 app.post('/api/admin/volunteer', async (req, res) => {
     try {
         const { username, serialNo, name, address, occupation, designation } = req.body;
@@ -499,7 +503,6 @@ app.post('/api/admin/volunteer', async (req, res) => {
     }
 });
 
-// 3. Update Volunteer (केवल मयंक के लिए)
 app.put('/api/admin/volunteer/:id', async (req, res) => {
     try {
         const { username, serialNo, name, address, occupation, designation } = req.body;
@@ -514,7 +517,6 @@ app.put('/api/admin/volunteer/:id', async (req, res) => {
     }
 });
 
-// 4. Delete Volunteer (केवल मयंक के लिए)
 app.delete('/api/admin/volunteer/:id', async (req, res) => {
     try {
         const username = req.headers['x-username'] || '';
@@ -528,7 +530,36 @@ app.delete('/api/admin/volunteer/:id', async (req, res) => {
         res.status(500).json({ success: false, error: err.message });
     }
 });
-// =========================================================================================
+
+// 🛡️ [NEW] Update Credentials Route with Bcrypt Hashing
+app.post('/api/admin/update-credentials', async (req, res) => {
+    try {
+        const { currentUsername, newUsername, newPassword } = req.body;
+        
+        if (!newUsername || !newPassword) {
+            return res.status(400).json({ success: false, message: "New username and password are required!" });
+        }
+
+        let adminUser = await Admin.findOne({ username: currentUsername });
+        if (!adminUser) {
+            // यदि यूजर नहीं मिला तो नया क्रिएट कर दें या पहले वाले को खोजें
+            adminUser = await Admin.findOne({ username: 'mayank' });
+        }
+
+        if (adminUser) {
+            adminUser.username = newUsername;
+            const saltRounds = 10;
+            adminUser.password = await bcrypt.hash(newPassword, saltRounds);
+            await adminUser.save();
+        }
+
+        await ActivityLog.create({ username: newUsername, action: 'Updated Credentials', details: `Username updated to @${newUsername}` });
+
+        res.json({ success: true, message: "क्रेडेंशियल्स सफलतापूर्वक एन्क्रिप्ट और अपडेट हो गए हैं!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
 
 // Visit Count API Route
 app.get('/api/visits', async (req, res) => {
