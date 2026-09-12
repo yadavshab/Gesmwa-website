@@ -382,26 +382,6 @@ app.post('/api/admin/log-action', async (req, res) => {
     }
 });
 
-// 🧹 [ONE-TIME PURGE ROUTE] डेटाबेस से पुराने सभी बैंक बैलेंस वाले लॉग्स हमेशा के लिए हटाने के लिए
-app.get('/api/admin/purge-balance-logs', async (req, res) => {
-    try {
-        const result = await ActivityLog.deleteMany({
-            $or: [
-                { action: /balance/i },
-                { details: /balance/i },
-                { details: /₹/i },
-                { details: /New Balance/i }
-            ]
-        });
-        res.json({ 
-            success: true, 
-            message: `सफलतापूर्वक! डेटाबेस से ${result.deletedCount} पुराने बैलेंस लॉग्स हमेशा के लिए डिलीट कर दिए गए हैं। अब रिफ्रेश करके चेक कर लें।` 
-        });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    }
-});
-
 // ================= GRIEVANCE & SUPPORT API ROUTES ================= //
 
 app.post('/api/grievance/submit', async (req, res) => {
@@ -412,6 +392,17 @@ app.post('/api/grievance/submit', async (req, res) => {
         }
         const newG = new Grievance({ name, unitNumber, mobile, category, description });
         await newG.save();
+
+        // 📧 [NEW] Send Email Alert to Admin when a new grievance is submitted
+        const mailOptions = {
+            from: process.env.EMAIL_USER || "yadavshab793@gmail.com",
+            to: "yadavshab793@gmail.com",
+            subject: `🚨 GEWA Alert: New Support Request from ${name} (${category})`,
+            text: `Hello Mayank,\n\nA new veteran grievance or support request has been submitted on the GEWA Portal:\n\n- Name: ${name}\n- Mobile: ${mobile}\n- Unit: ${unitNumber}\n- Category: ${category}\n- Description: ${description}\n- Time: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}\n\nPlease check your Admin Dashboard Grievances Inbox to take action.\n\n- GEWA Enterprise Security Gateway`
+        };
+
+        transporter.sendMail(mailOptions).catch(err => console.log("Grievance email alert error:", err.message));
+
         res.json({ success: true, message: "आपकी शिकायत/सहायता अनुरोध सफलतापूर्वक दर्ज कर लिया गया है।" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -689,6 +680,36 @@ app.get('/api/admin/today-page-stats', async (req, res) => {
         });
 
         res.json({ success: true, stats });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 📊 [NEW] Traffic Stats Endpoint for Chart.js Graph
+app.get('/api/admin/traffic-stats', async (req, res) => {
+    try {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        sevenDaysAgo.setHours(0, 0, 0, 0);
+
+        const logs = await PageVisitLog.find({ timestamp: { $gte: sevenDaysAgo } });
+        
+        let dailyStats = {};
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const dateKey = d.toISOString().split('T')[0];
+            dailyStats[dateKey] = 0;
+        }
+
+        logs.forEach(log => {
+            const dateStr = log.timestamp.toISOString().split('T')[0];
+            if (dailyStats[dateStr] !== undefined) {
+                dailyStats[dateStr] += 1;
+            }
+        });
+
+        res.json({ success: true, dailyStats });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }

@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     
+    <!-- Socket.io & Chart.js Libraries -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
@@ -54,7 +56,6 @@
                 <span class="flex items-center gap-3"><i class="fa-solid fa-hand-holding-dollar w-5"></i> Welfare Funds</span>
                 <i class="fa-solid fa-chevron-down text-xs"></i>
             </button>
-            <!-- 📋 [NEW] Grievances Sidebar Button -->
             <button onclick="toggleSection('grievances-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
                 <span class="flex items-center gap-3"><i class="fa-solid fa-file-waveform w-5 text-amber-400"></i> Grievances Inbox</span>
                 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -157,7 +158,20 @@
                         </div>
                     </div>
 
-                    <!-- 📊 [NEW] Today's Page Visits Box -->
+                    <!-- 📈 [NEW] Visual Traffic Graph Section -->
+                    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fa-solid fa-chart-area text-blue-600"></i> पिछले 7 दिनों का वेबसाइट ट्रैफिक ग्राफ (Traffic Analytics)
+                            </h3>
+                            <span class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full">Weekly Trend</span>
+                        </div>
+                        <div class="relative h-64 w-full">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Today's Page Visits Box -->
                     <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
                         <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                             <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
@@ -339,12 +353,15 @@
                 </div>
 
                 <div id="grievances-content" class="hidden bg-white rounded-[2rem] shadow-sm border border-slate-200/80 overflow-hidden p-6 md:p-8 transition-all">
-                    <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-slate-100 pb-4 gap-3">
                         <div>
                             <h3 class="text-xl font-black text-slate-900 tracking-tight">वेटरन्स एवं परिवारों से प्राप्त सहायता अनुरोध</h3>
                             <p class="text-xs text-slate-400 font-semibold mt-0.5">वेबसाइट से आने वाली सभी शिकायतें यहाँ दिखाई देंगी</p>
                         </div>
-                        <button onclick="fetchGrievances()" class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-2 rounded-xl hover:bg-blue-100 cursor-pointer"><i class="fa-solid fa-rotate mr-1"></i> Refresh Inbox</button>
+                        <div class="flex gap-2">
+                            <button onclick="downloadGrievancesCSV()" class="bg-emerald-50 text-emerald-700 font-bold text-xs px-3 py-2 rounded-xl hover:bg-emerald-100 cursor-pointer"><i class="fa-solid fa-file-excel mr-1"></i> Download CSV</button>
+                            <button onclick="fetchGrievances()" class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-2 rounded-xl hover:bg-blue-100 cursor-pointer"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                        </div>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -488,7 +505,8 @@
             fetchTotalVisits();
             fetchTodayStats();
             fetchWelfareBalance();
-            fetchGrievances(); // 👈 Load Grievances Inbox
+            fetchGrievances();
+            initTrafficChart();
             initRealtimeAnalytics();
             fetchVolunteersData(isMayank);
 
@@ -496,6 +514,66 @@
                 fetchAdminLogs();
             }
         });
+
+        // 📈 [NEW] Load and Render Chart.js Traffic Graph
+        async function initTrafficChart() {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/traffic-stats');
+                const data = await res.json();
+
+                if (data.success && data.dailyStats) {
+                    const labels = Object.keys(data.dailyStats).map(dateStr => {
+                        const parts = dateStr.split('-');
+                        return `${parts[2]}/${parts[1]}`;
+                    });
+                    const values = Object.values(data.dailyStats);
+
+                    const ctx = document.getElementById('trafficChart').getContext('2d');
+                    
+                    let gradient = ctx.createLinearGradient(0, 0, 0, 250);
+                    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.4)');
+                    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Page Visits',
+                                data: values,
+                                borderColor: '#2563eb',
+                                backgroundColor: gradient,
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: '#2563eb',
+                                pointRadius: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: '#f1f5f9' },
+                                    ticks: { font: { weight: 'bold', size: 10 } }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { weight: 'bold', size: 10 } }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch(e) {
+                console.log("Error loading traffic chart data:", e);
+            }
+        }
 
         // 📋 [NEW] Fetch Grievances from Backend
         async function fetchGrievances() {
@@ -527,6 +605,43 @@
                 }
             } catch(e) {
                 console.log("Error loading grievances");
+            }
+        }
+
+        // 📥 [NEW] Download Grievances as CSV/Excel File
+        async function downloadGrievancesCSV() {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/grievances');
+                const data = await res.json();
+                
+                if (data.success && data.grievances && data.grievances.length > 0) {
+                    let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                    csvContent += "Date,Name,Mobile,Unit,Category,Description,Status\n";
+                    
+                    data.grievances.forEach(g => {
+                        const date = new Date(g.date).toLocaleDateString();
+                        const name = `"${(g.name || '').replace(/"/g, '""')}"`;
+                        const mobile = `"${g.mobile || ''}"`;
+                        const unit = `"${(g.unitNumber || '').replace(/"/g, '""')}"`;
+                        const category = `"${g.category || ''}"`;
+                        const desc = `"${(g.description || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+                        const status = `"${g.status || 'Pending'}"`;
+                        
+                        csvContent += [date, name, mobile, unit, category, desc, status].join(",") + "\n";
+                    });
+                    
+                    const encodedUri = encodeURI(csvContent);
+                    const link = document.createElement("a");
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", `GEWA_Grievances_${new Date().toISOString().split('T')[0]}.csv`);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert("डाउनलोड करने के लिए कोई शिकायत डेटा उपलब्ध नहीं है!");
+                }
+            } catch(e) {
+                alert("CSV डाउनलोड करने में एरर आ गई!");
             }
         }
 
