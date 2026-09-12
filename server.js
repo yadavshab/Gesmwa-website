@@ -84,7 +84,7 @@ const volunteerSchema = new mongoose.Schema({
 });
 const Volunteer = mongoose.model('Volunteer', volunteerSchema);
 
-// 📋 [NEW] Grievance & Support Schema & Model
+// 📋 Grievance & Support Schema & Model
 const grievanceSchema = new mongoose.Schema({
     name: { type: String, required: true },
     unitNumber: { type: String, required: true },
@@ -96,12 +96,34 @@ const grievanceSchema = new mongoose.Schema({
 });
 const Grievance = mongoose.model('Grievance', grievanceSchema);
 
-// 📊 [NEW] Today Page Visit Log Schema & Model
+// 📊 Today Page Visit Log Schema & Model
 const pageVisitLogSchema = new mongoose.Schema({
     pageName: { type: String, required: true },
     timestamp: { type: Date, default: Date.now }
 });
 const PageVisitLog = mongoose.model('PageVisitLog', pageVisitLogSchema);
+
+// ================= [NEW] GALLERY & TRIBUTE WALL SCHEMAS ================= //
+
+// 🖼️ Gallery Schema & Model
+const gallerySchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    imageUrl: { type: String, required: true },
+    category: { type: String, default: 'general' },
+    date: { type: Date, default: Date.now }
+});
+const GalleryPhoto = mongoose.model('GalleryPhoto', gallerySchema);
+
+// 🎖️ Tribute Wall Schema & Model (Martyrs & Veer Naris)
+const tributeSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    relation: { type: String, required: true }, // e.g., Martyr / Veer Nari
+    unit: { type: String, default: '2 Guards (1 Grenadiers)' },
+    imageUrl: { type: String },
+    citation: { type: String, required: true },
+    date: { type: Date, default: Date.now }
+});
+const Tribute = mongoose.model('Tribute', tributeSchema);
 
 // ================= REAL-TIME SOCKET.IO INTEGRATION ================= //
 let pageViewers = {};
@@ -166,7 +188,7 @@ function formatMobile(num) {
     return cleaned;
 }
 
-// 🛡️ [NEW] Rate Limiter for Login (5 बार से ज्यादा गलत कोशिश पर 15 मिनट ब्लॉक)
+// 🛡️ Rate Limiter for Login (5 बार से ज्यादा गलत कोशिश पर 15 मिनट ब्लॉक)
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, 
     max: 5, 
@@ -351,7 +373,6 @@ app.post('/api/admin/update-balance', async (req, res) => {
 // ================= ADMIN ACTIVITY LOG ROUTES ================= //
 app.get('/api/admin/logs', async (req, res) => {
     try {
-        // 🛡️ [STRICT FILTER] बैंक, बैलेंस या रुपयों से जुड़े किसी भी लॉग को एडमिन पैनल में कभी न दिखने के लिए
         const rawLogs = await ActivityLog.find({}).sort({ date: -1 }).limit(100);
         
         const logs = rawLogs.filter(log => {
@@ -393,7 +414,6 @@ app.post('/api/grievance/submit', async (req, res) => {
         const newG = new Grievance({ name, unitNumber, mobile, category, description });
         await newG.save();
 
-        // 📧 [NEW] Send Email Alert to Admin when a new grievance is submitted
         const mailOptions = {
             from: process.env.EMAIL_USER || "yadavshab793@gmail.com",
             to: "yadavshab793@gmail.com",
@@ -418,11 +438,118 @@ app.get('/api/admin/grievances', async (req, res) => {
     }
 });
 
+// 📱 [UPDATED] Update Grievance Status with Automatic SMS Notification via Fast2SMS
 app.put('/api/admin/grievance/:id', async (req, res) => {
     try {
         const { status } = req.body;
-        await Grievance.findByIdAndUpdate(req.params.id, { status });
-        res.json({ success: true, message: "शिकायत का स्टेटस अपडेट हो गया है!" });
+        const grievance = await Grievance.findByIdAndUpdate(req.params.id, { status }, { new: true });
+        
+        if (!grievance) {
+            return res.status(404).json({ success: false, message: "Grievance not found!" });
+        }
+
+        // अगर स्टेटस 'Resolved' किया गया है, तो वेटरन को ऑटोमैटिक SMS भेजें
+        if (status === 'Resolved' && grievance.mobile) {
+            const apiKey = process.env.FAST2SMS_API_KEY;
+            const tenDigitNumber = grievance.mobile.replace('+91', '').trim();
+
+            if (apiKey && tenDigitNumber.length === 10) {
+                fetch('https://www.fast2sms.com/dev/bulkV2', {
+                    method: 'POST',
+                    headers: {
+                        'authorization': apiKey,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        route: 'q',
+                        message: `प्रिय ${grievance.name}, GEWA पोर्टल पर दर्ज आपकी शिकायत/सहायता अनुरोध का समाधान (Resolved) कर दिया गया है। - GEWA HQ`,
+                        language: 'english',
+                        flash: 0,
+                        numbers: tenDigitNumber
+                    })
+                }).catch(err => console.log("SMS notification error:", err.message));
+            }
+        }
+
+        res.json({ success: true, message: "शिकायत का स्टेटस अपडेट हो गया है और वेटरन को सूचित कर दिया गया है!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ================= [NEW] GALLERY & TRIBUTE WALL API ROUTES ================= //
+
+// 🖼️ Gallery Routes
+app.get('/api/gallery', async (req, res) => {
+    try {
+        const photos = await GalleryPhoto.find({}).sort({ date: -1 });
+        res.json({ success: true, photos });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/gallery/upload', async (req, res) => {
+    try {
+        const { title, imageUrl, category, username } = req.body;
+        if (!title || !imageUrl) {
+            return res.status(400).json({ success: false, message: "Title and Image are required!" });
+        }
+        const newPhoto = new GalleryPhoto({ title, imageUrl, category });
+        await newPhoto.save();
+
+        if (username) {
+            await ActivityLog.create({ username, action: 'Uploaded Gallery Photo', details: `Title: ${title}` });
+        }
+
+        res.json({ success: true, message: "फोटो सफलतापूर्वक गैलरी में अपलोड हो गई है!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.delete('/api/admin/gallery/:id', async (req, res) => {
+    try {
+        await GalleryPhoto.findByIdAndDelete(req.params.id);
+        res.json({ success: true, message: "फोटो डिलीट कर दी गई है!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 🎖️ Tribute Wall Routes (शहीद एवं वीर नारी दीवार)
+app.get('/api/tributes', async (req, res) => {
+    try {
+        const tributes = await Tribute.find({}).sort({ date: -1 });
+        res.json({ success: true, tributes });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/tribute/add', async (req, res) => {
+    try {
+        const { name, relation, unit, imageUrl, citation, username } = req.body;
+        if (!name || !citation) {
+            return res.status(400).json({ success: false, message: "Name and Citation are required!" });
+        }
+        const newTribute = new Tribute({ name, relation, unit, imageUrl, citation });
+        await newTribute.save();
+
+        if (username) {
+            await ActivityLog.create({ username, action: 'Added Tribute Record', details: `Name: ${name}` });
+        }
+
+        res.json({ success: true, message: "ट्रिब्यूट रिकॉर्ड सफलतापूर्वक जोड़ दिया गया है!" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.delete('/api/admin/tribute/:id', async (req, res) => {
+    try {
+        await Tribute.findByIdAndDelete(req.params.id);
+        res.json({ success: true, message: "ट्रिब्यूट रिकॉर्ड डिलीट कर दिया गया है!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
@@ -607,7 +734,7 @@ app.delete('/api/admin/volunteer/:id', async (req, res) => {
     }
 });
 
-// 🛡️ [NEW] Update Credentials Route with Bcrypt Hashing
+// Update Credentials Route with Bcrypt Hashing
 app.post('/api/admin/update-credentials', async (req, res) => {
     try {
         const { currentUsername, newUsername, newPassword } = req.body;
@@ -653,7 +780,7 @@ app.get('/api/visits', async (req, res) => {
     }
 });
 
-// ================= [NEW] TODAY PAGE VISIT TRACKING APIS ================= //
+// ================= TODAY PAGE VISIT TRACKING APIS ================= //
 
 app.post('/api/track-visit', async (req, res) => {
     try {
@@ -670,7 +797,7 @@ app.post('/api/track-visit', async (req, res) => {
 app.get('/api/admin/today-page-stats', async (req, res) => {
     try {
         const startOfDay = new Date();
-        startOfDay.setHours(0, 0, 0, 0); // आज रात 12 बजे से शुरू
+        startOfDay.setHours(0, 0, 0, 0);
 
         const visits = await PageVisitLog.find({ timestamp: { $gte: startOfDay } });
         
@@ -685,7 +812,7 @@ app.get('/api/admin/today-page-stats', async (req, res) => {
     }
 });
 
-// 📊 [NEW] Traffic Stats Endpoint for Chart.js Graph
+// Traffic Stats Endpoint for Chart.js Graph
 app.get('/api/admin/traffic-stats', async (req, res) => {
     try {
         const sevenDaysAgo = new Date();
