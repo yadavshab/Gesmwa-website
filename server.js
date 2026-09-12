@@ -339,12 +339,16 @@ app.post('/api/admin/update-balance', async (req, res) => {
 // ================= ADMIN ACTIVITY LOG ROUTES ================= //
 app.get('/api/admin/logs', async (req, res) => {
     try {
-        // 🛡️ [PERFECT FILTER] बैंक, बैलेंस या रुपयों (₹) से जुड़े किसी भी लॉग को कभी न दिखने के लिए
+        // 🛡️ [STRICT FILTER] बैंक, बैलेंस या रुपयों से जुड़े किसी भी लॉग को एडमिन पैनल में कभी न दिखने के लिए
         const rawLogs = await ActivityLog.find({}).sort({ date: -1 }).limit(100);
         
         const logs = rawLogs.filter(log => {
             const text = (log.action + ' ' + (log.details || '')).toLowerCase();
-            return !text.includes('balance') && !text.includes('bank') && !text.includes('₹') && !text.includes('new balance');
+            return !text.includes('balance') && 
+                   !text.includes('bank') && 
+                   !text.includes('₹') && 
+                   !text.includes('new balance') && 
+                   !text.includes('amount');
         }).slice(0, 25);
 
         res.json({ success: true, logs });
