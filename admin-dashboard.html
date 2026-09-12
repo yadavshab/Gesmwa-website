@@ -54,6 +54,11 @@
                 <span class="flex items-center gap-3"><i class="fa-solid fa-hand-holding-dollar w-5"></i> Welfare Funds</span>
                 <i class="fa-solid fa-chevron-down text-xs"></i>
             </button>
+            <!-- 📋 [NEW] Grievances Sidebar Button -->
+            <button onclick="toggleSection('grievances-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
+                <span class="flex items-center gap-3"><i class="fa-solid fa-file-waveform w-5 text-amber-400"></i> Grievances Inbox</span>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </button>
             <button id="navLogsBtn" onclick="toggleSection('logs-content')" class="w-full flex items-center justify-between hover:text-white hover:bg-slate-800 px-4 py-3.5 rounded-xl transition text-left cursor-pointer">
                 <span class="flex items-center gap-3"><i class="fa-solid fa-clock-rotate-left w-5"></i> Activity Logs</span>
                 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -326,6 +331,43 @@
                 </div>
             </div>
 
+            <!-- 📋 [NEW] GRIEVANCES & SUPPORT INBOX -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('grievances-content')">
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-file-waveform text-amber-400"></i> Veteran Grievances & Support Inbox</h2>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div id="grievances-content" class="hidden bg-white rounded-[2rem] shadow-sm border border-slate-200/80 overflow-hidden p-6 md:p-8 transition-all">
+                    <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-slate-900 tracking-tight">वेटरन्स एवं परिवारों से प्राप्त सहायता अनुरोध</h3>
+                            <p class="text-xs text-slate-400 font-semibold mt-0.5">वेबसाइट से आने वाली सभी शिकायतें यहाँ दिखाई देंगी</p>
+                        </div>
+                        <button onclick="fetchGrievances()" class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-2 rounded-xl hover:bg-blue-100 cursor-pointer"><i class="fa-solid fa-rotate mr-1"></i> Refresh Inbox</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs whitespace-nowrap">
+                            <thead class="bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px]">
+                                <tr>
+                                    <th class="px-4 py-3">Date / Time</th>
+                                    <th class="px-4 py-3">Name & Mobile</th>
+                                    <th class="px-4 py-3">Unit</th>
+                                    <th class="px-4 py-3">Category</th>
+                                    <th class="px-4 py-3">Description</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grievancesTableBody" class="divide-y divide-slate-100 font-medium">
+                                <tr><td colspan="7" class="p-4 text-center text-slate-400">Loading grievances...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- 5. ACTIVITY LOGS -->
             <div id="logsWrapper" class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('logs-content')">
@@ -399,7 +441,7 @@
                 { value: 'news', label: 'News' },
                 { value: 'essential-guides', label: 'Essential Guides & Links' },
                 { value: 'major-schemes', label: 'Major Scheme Banners' },
-                { value: 'service-photos', label: 'Service Photos & Updates (सेवाएं फोटो)' } // 👈 [NEW] सेवाओं के लिए नया विकल्प
+                { value: 'service-photos', label: 'Service Photos & Updates (सेवाएं फोटो)' }
             ],
             main: [
                 { value: 'history-overview', label: 'Main / History Overview' }
@@ -444,8 +486,9 @@
             updateSubcategories();
             fetchSectionRecords();
             fetchTotalVisits();
-            fetchTodayStats(); // 👈 [NEW] आज की विज़िट्स लोड करने के लिए
+            fetchTodayStats();
             fetchWelfareBalance();
+            fetchGrievances(); // 👈 Load Grievances Inbox
             initRealtimeAnalytics();
             fetchVolunteersData(isMayank);
 
@@ -454,7 +497,54 @@
             }
         });
 
-        // 📊 [NEW] आज की पेज विज़िट्स फेच करने का फंक्शन
+        // 📋 [NEW] Fetch Grievances from Backend
+        async function fetchGrievances() {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/grievances');
+                const data = await res.json();
+                const tbody = document.getElementById('grievancesTableBody');
+
+                if (data.success && data.grievances && data.grievances.length > 0) {
+                    tbody.innerHTML = data.grievances.map(g => `
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-4 py-3 font-mono text-slate-500">${new Date(g.date).toLocaleDateString()} • ${new Date(g.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                            <td class="px-4 py-3"><strong>${g.name}</strong><br><span class="text-blue-600 font-mono">${g.mobile}</span></td>
+                            <td class="px-4 py-3">${g.unitNumber}</td>
+                            <td class="px-4 py-3"><span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-lg font-bold">${g.category}</span></td>
+                            <td class="px-4 py-3 max-w-xs truncate" title="${g.description}">${g.description}</td>
+                            <td class="px-4 py-3">
+                                <span class="px-2.5 py-1 rounded-lg font-bold ${g.status === 'Resolved' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+                                    ${g.status || 'Pending'}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-right space-x-2">
+                                <button onclick="updateGrievanceStatus('${g._id}', 'Resolved')" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold hover:bg-emerald-700 cursor-pointer">Mark Resolved</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">No grievances or support requests found.</td></tr>`;
+                }
+            } catch(e) {
+                console.log("Error loading grievances");
+            }
+        }
+
+        async function updateGrievanceStatus(id, status) {
+            try {
+                const res = await fetch(`https://gewa-backend-live.onrender.com/api/admin/grievance/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                alert(data.message || "Status updated!");
+                fetchGrievances();
+            } catch(e) {
+                alert("Error updating status!");
+            }
+        }
+
         async function fetchTodayStats() {
             try {
                 const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/today-page-stats');

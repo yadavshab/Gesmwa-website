@@ -84,6 +84,18 @@ const volunteerSchema = new mongoose.Schema({
 });
 const Volunteer = mongoose.model('Volunteer', volunteerSchema);
 
+// 📋 [NEW] Grievance & Support Schema & Model
+const grievanceSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    unitNumber: { type: String, required: true },
+    mobile: { type: String, required: true },
+    category: { type: String, required: true }, 
+    description: { type: String, required: true },
+    status: { type: String, default: 'Pending' },
+    date: { type: Date, default: Date.now }
+});
+const Grievance = mongoose.model('Grievance', grievanceSchema);
+
 // 📊 [NEW] Today Page Visit Log Schema & Model
 const pageVisitLogSchema = new mongoose.Schema({
     pageName: { type: String, required: true },
@@ -365,6 +377,61 @@ app.post('/api/admin/log-action', async (req, res) => {
         }
         await ActivityLog.create({ username, action, details });
         res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// 🧹 [ONE-TIME PURGE ROUTE] डेटाबेस से पुराने सभी बैंक बैलेंस वाले लॉग्स हमेशा के लिए हटाने के लिए
+app.get('/api/admin/purge-balance-logs', async (req, res) => {
+    try {
+        const result = await ActivityLog.deleteMany({
+            $or: [
+                { action: /balance/i },
+                { details: /balance/i },
+                { details: /₹/i },
+                { details: /New Balance/i }
+            ]
+        });
+        res.json({ 
+            success: true, 
+            message: `सफलतापूर्वक! डेटाबेस से ${result.deletedCount} पुराने बैलेंस लॉग्स हमेशा के लिए डिलीट कर दिए गए हैं। अब रिफ्रेश करके चेक कर लें।` 
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ================= GRIEVANCE & SUPPORT API ROUTES ================= //
+
+app.post('/api/grievance/submit', async (req, res) => {
+    try {
+        const { name, unitNumber, mobile, category, description } = req.body;
+        if (!name || !mobile || !description) {
+            return res.status(400).json({ success: false, message: "Required fields missing!" });
+        }
+        const newG = new Grievance({ name, unitNumber, mobile, category, description });
+        await newG.save();
+        res.json({ success: true, message: "आपकी शिकायत/सहायता अनुरोध सफलतापूर्वक दर्ज कर लिया गया है।" });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.get('/api/admin/grievances', async (req, res) => {
+    try {
+        const grievances = await Grievance.find({}).sort({ date: -1 });
+        res.json({ success: true, grievances });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.put('/api/admin/grievance/:id', async (req, res) => {
+    try {
+        const { status } = req.body;
+        await Grievance.findByIdAndUpdate(req.params.id, { status });
+        res.json({ success: true, message: "शिकायत का स्टेटस अपडेट हो गया है!" });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }

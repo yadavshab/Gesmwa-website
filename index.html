@@ -826,6 +826,57 @@
         </div>
     </section>
 
+    <!-- GRIEVANCE & SUPPORT SECTION -->
+    <section id="grievance-form-section" class="py-16 bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+                <div class="text-center mb-8">
+                    <span class="text-emerald-600 font-extrabold text-xs uppercase tracking-widest block mb-1">Direct Assistance Desk</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">वेटरन शिकायत एवं सहायता पोर्टल</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">पेंशन, मेडिकल या अन्य किसी भी सहायता के लिए यहाँ फॉर्म भरें।</p>
+                </div>
+
+                <form id="grievanceForm" onsubmit="submitGrievance(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">पूरा नाम (Full Name)</label>
+                            <input type="text" id="gName" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-xs font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500" placeholder="अपना नाम दर्ज करें">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">मोबाइल नंबर (Mobile Number)</label>
+                            <input type="tel" id="gMobile" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-xs font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500" placeholder="+91...">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">यूनिट / रेजिमेंट (Unit)</label>
+                            <input type="text" id="gUnit" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-xs font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500" placeholder="2 Guards / 1 Grenadiers">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">समस्या की श्रेणी (Category)</label>
+                            <select id="gCategory" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-xs font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="Pension">पेंशन संबंधी (Pension Issue)</option>
+                                <option value="Medical">मेडिकल सहायता (Medical Support)</option>
+                                <option value="Family">पारिवारिक/वीर नारी सहायता (Family Support)</option>
+                                <option value="Other">अन्य प्रशासनिक सहायता (Other)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">समस्या का विवरण (Description)</label>
+                        <textarea id="gDesc" rows="4" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-xs font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500" placeholder="अपनी समस्या विस्तार से लिखें..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black uppercase tracking-widest text-xs py-4 rounded-xl shadow-lg transition cursor-pointer">
+                        सहायता अनुरोध सबमिट करें (Submit Request)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- EMERGENCY HELP -->
     <section id="emergency-help" class="py-16 bg-gradient-to-br from-maroon-military to-slate-950 text-white px-4 text-center relative border-t-4 border-red-600">
         <div class="max-w-3xl mx-auto space-y-4">
@@ -997,6 +1048,31 @@
                     alert("Form submitted successfully!");
                 }).catch((error) => console.error("Transmission notice:", error));
             });
+        }
+
+        // Grievance Form Submit Function
+        async function submitGrievance(e) {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('gName').value,
+                mobile: document.getElementById('gMobile').value,
+                unitNumber: document.getElementById('gUnit').value,
+                category: document.getElementById('gCategory').value,
+                description: document.getElementById('gDesc').value
+            };
+
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/grievance/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                alert(data.message || "सफलतापूर्वक दर्ज हो गया है!");
+                document.getElementById('grievanceForm').reset();
+            } catch(err) {
+                alert("सर्वर एरर! कृपया बाद में प्रयास करें।");
+            }
         }
 
         // WhatsApp Receipt Sender Function
