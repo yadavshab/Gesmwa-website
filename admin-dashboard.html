@@ -152,6 +152,19 @@
                         </div>
                     </div>
 
+                    <!-- 📊 [NEW] Today's Page Visits Box -->
+                    <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fa-solid fa-calendar-day text-blue-600"></i> Today's Total Page Visits (आज की कुल विज़िट्स)
+                            </h3>
+                            <button onclick="fetchTodayStats()" class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full hover:bg-blue-100 cursor-pointer"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                        </div>
+                        <div id="todayStatsContainer" class="space-y-3">
+                            <p class="text-xs text-slate-400 text-center py-2">Loading today's stats...</p>
+                        </div>
+                    </div>
+
                     <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200/60 bg-white">
                         <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                             <h3 class="text-xs font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
@@ -196,7 +209,7 @@
                                 <option value="main">Main / History</option>
                                 <option value="members">Member and Laws</option>
                                 <option value="welfare">Welfare</option>
-                                <option value="services">Services</option>
+                                <option value="services">Services (सेवाएं)</option>
                                 <option value="gallery">Gallery</option>
                             </select>
                         </div>
@@ -284,7 +297,7 @@
             <!-- 4. WELFARE FUNDS -->
             <div class="mb-6">
                 <div class="flex items-center justify-between cursor-pointer bg-slate-900 text-white p-4 rounded-2xl shadow-md mb-4" onclick="toggleSection('welfare-content')">
-                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds & Bank Editor</h2>
+                    <h2 class="text-lg font-black uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-amber-400"></i> Welfare Funds and Balance Ledger</h2>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
 
@@ -385,7 +398,8 @@
                 { value: 'live-updates', label: 'Live Updates' },
                 { value: 'news', label: 'News' },
                 { value: 'essential-guides', label: 'Essential Guides & Links' },
-                { value: 'major-schemes', label: 'Major Scheme Banners' }
+                { value: 'major-schemes', label: 'Major Scheme Banners' },
+                { value: 'service-photos', label: 'Service Photos & Updates (सेवाएं फोटो)' } // 👈 [NEW] सेवाओं के लिए नया विकल्प
             ],
             main: [
                 { value: 'history-overview', label: 'Main / History Overview' }
@@ -430,6 +444,7 @@
             updateSubcategories();
             fetchSectionRecords();
             fetchTotalVisits();
+            fetchTodayStats(); // 👈 [NEW] आज की विज़िट्स लोड करने के लिए
             fetchWelfareBalance();
             initRealtimeAnalytics();
             fetchVolunteersData(isMayank);
@@ -438,6 +453,28 @@
                 fetchAdminLogs();
             }
         });
+
+        // 📊 [NEW] आज की पेज विज़िट्स फेच करने का फंक्शन
+        async function fetchTodayStats() {
+            try {
+                const res = await fetch('https://gewa-backend-live.onrender.com/api/admin/today-page-stats');
+                const data = await res.json();
+                const container = document.getElementById('todayStatsContainer');
+
+                if (data.success && data.stats && Object.keys(data.stats).length > 0) {
+                    container.innerHTML = Object.entries(data.stats).map(([page, count]) => `
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-700 uppercase"><i class="fa-solid fa-file-lines text-blue-500 mr-2"></i> ${page}</span>
+                            <span class="text-xs font-black bg-emerald-100 text-emerald-800 px-3 py-1 rounded-lg">${count} Visits Today</span>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">No visits recorded for today yet.</p>`;
+                }
+            } catch(e) {
+                console.log("Error loading today's stats");
+            }
+        }
 
         async function updateCredentials(e) {
             e.preventDefault();
@@ -738,7 +775,6 @@
 
         async function fetchWelfareBalance() {
             try {
-                // 🚀 यहाँ ?_t= जोड़ दिया है ताकि ब्राउज़र पुराना कैश्ड डेटा न दिखाए
                 const res = await fetch(`https://gewa-backend-live.onrender.com/api/welfare/balance?_t=${Date.now()}`);
                 const data = await res.json();
                 if(data.success && data.balance) {
@@ -772,13 +808,11 @@
                 if(data.success) {
                     alert("Welfare bank balance updated successfully!");
                     
-                    // 🚀 तुरंत स्क्रीन पर नए बैलेंस को अपडेट कर दें (बिना रीफ्रेश किए)
                     const el1 = document.getElementById('analyticsBalanceDisplay');
                     const el2 = document.getElementById('welfareBalanceDisplay');
                     if(el1) el1.innerText = `₹ ${newBalance}`;
                     if(el2) el2.innerText = `₹ ${newBalance}`;
 
-                    // बैकग्राउंड में सर्वर से भी दोबारा फेच कर लें
                     fetchWelfareBalance();
                 } else {
                     alert(data.message || "Failed to update balance!");

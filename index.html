@@ -774,7 +774,6 @@
                     Every coin managed within the welfare fund pool maps straight to public logs. Monthly financial sheets, annual audit reports, and executive committee resolutions are tracked here to preserve absolute organizational clarity.
                 </p>
                 <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center gap-4 shadow-sm transition-colors">
-                    <!-- 💡 यहाँ QR पर onclick और hover इफ़ेक्ट जोड़ दिया गया है -->
                     <div class="w-24 h-24 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-1 shrink-0 cursor-pointer transition transform hover:scale-105" onclick="openQrModal()" title="बड़ा करने के लिए क्लिक करें">
                         <img src="Gures QR.jpeg" alt="Gurais Bank Fund QR Standee" class="w-full h-full object-contain">
                     </div>
@@ -791,7 +790,7 @@
                 <div class="pt-4 flex justify-center">
                      <a href="upi://pay?pa=mab.037213026670026@axisbank&pn=Gurais%20Ex-Servicemen%20Welfare%20Association&cu=INR" 
                         class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-3.5 rounded-xl shadow-lg inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider transition">
-                          <i class="fa-solid fa-qrcode text-base"></i> Donate Now (Gures Ex-Servicemen Welfare Association)
+                          <i class="fa-solid fa-qrcode text-base"></i> Donate Now (Gurais Ex-Servicemen Welfare Association)
                     </a>
                 </div>
 
@@ -888,7 +887,6 @@
     <!-- FOOTER -->
     <footer class="bg-slate-950 text-white pt-12 pb-8 px-4 border-t-4 border-amber-500 relative">
         <div class="text-center space-y-2 max-w-7xl mx-auto text-[11px] font-medium text-slate-500">
-            <!-- Footer में इस लाइन को अपडेट करें -->
         <p>
         &copy; 2026 Gurais Ex-Servicemen Welfare Association (GEWA). All Rights Reserved.
         <!-- 🤫 Hidden Admin Dot -->
@@ -934,6 +932,13 @@
             } catch (e) {
                 console.log('Socket connection error:', e);
             }
+
+            // 3. Track Daily Page Visit for Admin Dashboard Analytics
+            fetch('https://gewa-backend-live.onrender.com/api/track-visit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pageName: 'Main' })
+            }).catch(err => console.log('Track visit error:', err));
         });
 
         function toggleDarkMode() {

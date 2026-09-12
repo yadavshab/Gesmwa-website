@@ -84,6 +84,13 @@ const volunteerSchema = new mongoose.Schema({
 });
 const Volunteer = mongoose.model('Volunteer', volunteerSchema);
 
+// 📊 [NEW] Today Page Visit Log Schema & Model
+const pageVisitLogSchema = new mongoose.Schema({
+    pageName: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now }
+});
+const PageVisitLog = mongoose.model('PageVisitLog', pageVisitLogSchema);
+
 // ================= REAL-TIME SOCKET.IO INTEGRATION ================= //
 let pageViewers = {};
 
@@ -332,7 +339,14 @@ app.post('/api/admin/update-balance', async (req, res) => {
 // ================= ADMIN ACTIVITY LOG ROUTES ================= //
 app.get('/api/admin/logs', async (req, res) => {
     try {
-        const logs = await ActivityLog.find({}).sort({ date: -1 }).limit(25);
+        // 🛡️ [PERFECT FILTER] बैंक, बैलेंस या रुपयों (₹) से जुड़े किसी भी लॉग को कभी न दिखने के लिए
+        const rawLogs = await ActivityLog.find({}).sort({ date: -1 }).limit(100);
+        
+        const logs = rawLogs.filter(log => {
+            const text = (log.action + ' ' + (log.details || '')).toLowerCase();
+            return !text.includes('balance') && !text.includes('bank') && !text.includes('₹') && !text.includes('new balance');
+        }).slice(0, 25);
+
         res.json({ success: true, logs });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -542,7 +556,6 @@ app.post('/api/admin/update-credentials', async (req, res) => {
 
         let adminUser = await Admin.findOne({ username: currentUsername });
         if (!adminUser) {
-            // यदि यूजर नहीं मिला तो नया क्रिएट कर दें या पहले वाले को खोजें
             adminUser = await Admin.findOne({ username: 'mayank' });
         }
 
@@ -577,6 +590,39 @@ app.get('/api/visits', async (req, res) => {
         res.status(500).json({ success: false, error: err.message });
     }
 });
+
+// ================= [NEW] TODAY PAGE VISIT TRACKING APIS ================= //
+
+app.post('/api/track-visit', async (req, res) => {
+    try {
+        const { pageName } = req.body;
+        if (pageName) {
+            await PageVisitLog.create({ pageName });
+        }
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.get('/api/admin/today-page-stats', async (req, res) => {
+    try {
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0); // आज रात 12 बजे से शुरू
+
+        const visits = await PageVisitLog.find({ timestamp: { $gte: startOfDay } });
+        
+        let stats = {};
+        visits.forEach(v => {
+            stats[v.pageName] = (stats[v.pageName] || 0) + 1;
+        });
+
+        res.json({ success: true, stats });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+// =======================================================================
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
